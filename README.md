@@ -12,7 +12,7 @@ We propose to improve LLM-enabled domain model generation with a refinement loop
 
 The ToT-Q framework is supported by four components:
 
-1. **ToT & Confidence Quantification** – Creates the domain model using [ToT prompting](https://github.com/BESSER-PEARL/dsl-tot-dm) and estimates confidence of the recommended elements.  
+1. **ToT & Confidence Quantification** – Creates the domain model using [ToT4DM](https://github.com/BESSER-PEARL/dsl-tot-dm) framework and estimates confidence of the recommended elements.  
 2. **Modeling Pattern Matching** – Detects modeling patterns in the domain model and prepares relevant data for question generation.  
 3. **Question Generation & Selection** – Generates questions from matched patterns using a [rule-based agent](https://github.com/BESSER-PEARL/BESSER-Agentic-Framework), prioritizing the areas of uncertainty in the domain model.  
 4. **Model Refinement** – Updates the domain model and confidence scores based on  domain expert’s answers, until all questions are addressed or a limit is reached.
