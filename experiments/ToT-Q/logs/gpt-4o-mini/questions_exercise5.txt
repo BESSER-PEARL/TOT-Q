@@ -1,0 +1,461 @@
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:BESSER Agentic Framework:Stemmer added: english
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training started
+INFO:BESSER Agentic Framework:NER successfully trained.
+INFO:BESSER Agentic Framework:Intent classifier in next_question_state successfully trained.
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training finished
+INFO:BESSER Agentic Framework:Domain Modeling Assistant's WebSocketPlatform starting at ws://localhost:8765
+INFO:websockets.server:connection open
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Initial model:
+@startuml
+class Robot {
+    - id: string
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - id: string
+}
+class TaskExecution {
+    - id: string
+    - startTime: string
+    - location: string
+}
+abstract class Location {
+    - type: string
+}
+class Corridor {
+}
+class Room {
+}
+Task "1" -- "0..*"  TaskExecution
+Robot "1" *-- "0..*"  TaskExecution
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+TaskExecution "1" *-- "1"  Location
+Location <|-- Corridor
+Location <|-- Room
+@enduml
+INFO:__main__:(EnumerationVsInheritanceConfiguration) Question 1:
+There are different types for locations: corridor and room. Do these types have distinct characteristics or requirements?
+For example:
+1. Corridor and room are considered different types, allowing for distinct details for each type.
+2. Every location type is classified as either corridor or room. Both types have the same details, and there’s no need for extra information.
+
+Which option is better for you?
+
+DEBUG:BESSER Agentic Framework:Starting Event Loop for session: 516383f5-573c-48a1-9b1c-1c9c0f924171
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: Corridor and room doesn't have distinct characteristics.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q1:
+Option 2: Corridor and room doesn't have distinct characteristics.
+INFO:__main__:Model update required:
+@startuml
+class Robot {
+    - id: string
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - id: string
+}
+class TaskExecution {
+    - id: string
+    - startTime: string
+    - location: string
+}
+class Location {
+    - locationType: LocationType
+}
+enum LocationType {
+    CORRIDOR
+    ROOM
+}
+Task "1" -- "0..*"  TaskExecution
+Robot "1" *-- "0..*"  TaskExecution
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+TaskExecution "1" *-- "1"  Location
+Location <|-- Corridor
+Location <|-- Room
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(EnumerationVsInheritanceConfiguration) Question 2:
+There are different types for locations: corridor and room. Do these types have distinct characteristics or requirements?
+For example:
+1. Corridor and room are considered different types, allowing for distinct details for each type.
+2. Every location type is classified as either corridor or room. Both types have the same details, and there’s no need for extra information.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: Corridor and room doesn't have distinct characteristics.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q2:
+Option 2: Corridor and room doesn't have distinct characteristics.
+INFO:__main__:Model update required:
+@startuml
+class Robot {
+    - id: string
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - id: string
+}
+class TaskExecution {
+    - id: string
+    - startTime: string
+    - location: string
+}
+class Location {
+    - locationType: LocationType
+}
+enum LocationType {
+    CORRIDOR
+    ROOM
+}
+Task "1" -- "0..*"  TaskExecution
+Robot "1" *-- "0..*"  TaskExecution
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+TaskExecution "1" *-- "1"  Location
+Location <|-- Corridor
+Location <|-- Room
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 3:
+In the context of a task, does it always involve at least one task execution, or can it exist without any?.
+For example:
+1. A task can exist without any task execution.
+2. A task must have at least one task execution.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A task can exist without any task execution.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q3:
+Option 1: A task can exist without any task execution.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 4:
+In the context of a task execution, does it always involve at least one task, or can it exist without any?.
+For example:
+1. A task execution can exist without any task.
+2. A task execution must have at least one task.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A task execution must have at least one task.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q4:
+Option 2: A task execution must have at least one task.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 5:
+In the context of a task, does it always involve at least one task execution, or can it exist without any?.
+For example:
+1. A task can exist without any task execution.
+2. A task must have at least one task execution.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A task can exist without any task execution.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q5:
+Option 1: A task can exist without any task execution.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 6:
+In the context of a task execution, does it always involve at least one task, or can it exist without any?.
+For example:
+1. A task execution can exist without any task.
+2. A task execution must have at least one task.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A task execution must have at least one task.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q6:
+Option 2: A task execution must have at least one task.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 7:
+In the context of a location, does it always involve at least one task execution, or can it exist without any?.
+For example:
+1. A location can exist without any task execution.
+2. A location must have at least one task execution.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A location can exist without any task execution.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q7:
+Option 1: A location can exist without any task execution.
+INFO:__main__:Model update required:
+@startuml
+class Robot {
+    - id: string
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - id: string
+}
+class TaskExecution {
+    - id: string
+    - startTime: string
+    - location: string
+}
+class Location {
+    - locationType: LocationType
+}
+enum LocationType {
+    CORRIDOR
+    ROOM
+}
+Task "1" -- "0..*"  TaskExecution
+Robot "1" *-- "0..*"  TaskExecution
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+Location <|-- Corridor
+Location <|-- Room
+TaskExecution "0..1" *-- "1"  Location
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 8:
+In the context of a location, does it always involve at least one task execution, or can it exist without any?.
+For example:
+1. A location can exist without any task execution.
+2. A location must have at least one task execution.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A location can exist without any task execution.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q8:
+Option 1: A location can exist without any task execution.
+INFO:__main__:Model update required:
+@startuml
+class Robot {
+    - id: string
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - id: string
+}
+class TaskExecution {
+    - id: string
+    - startTime: string
+    - location: string
+}
+class Location {
+    - locationType: LocationType
+}
+enum LocationType {
+    CORRIDOR
+    ROOM
+}
+Task "1" -- "0..*"  TaskExecution
+Robot "1" *-- "0..*"  TaskExecution
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+Location <|-- Corridor
+Location <|-- Room
+TaskExecution "0..1" *-- "1"  Location
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 9:
+In the context of a task, can there be more than one task execution involved, or is it always associated with just one?
+For example:
+1. A task is linked to a single task execution.
+2. A task is linked to multiple task executions.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each task is always linked to a single task execution.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q9:
+Option 1: Each task is always linked to a single task execution.
+INFO:__main__:Model update required:
+@startuml
+class Robot {
+    - id: string
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - id: string
+}
+class TaskExecution {
+    - id: string
+    - startTime: string
+    - location: string
+}
+class Location {
+    - locationType: LocationType
+}
+enum LocationType {
+    CORRIDOR
+    ROOM
+}
+Robot "1" *-- "0..*"  TaskExecution
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+Location <|-- Corridor
+Location <|-- Room
+TaskExecution "0..1" *-- "1"  Location
+Task "1" -- "0..1"  TaskExecution
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 10:
+In the context of a task execution, can there be more than one task involved, or is it always associated with just one? 
+For example:
+1. A task execution is linked to a single task.
+2. A task execution is linked to multiple tasks.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each task execution is always linked to a single task.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q10:
+Option 1: Each task execution is always linked to a single task.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 11:
+In the context of a location, can there be more than one task execution involved, or is it always associated with just one? 
+For example:
+1. A location is linked to a single task execution.
+2. A location is linked to multiple task executions.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A location can be linked to multiple task executions.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q11:
+Option 2: A location can be linked to multiple task executions.
+INFO:__main__:Model update required:
+@startuml
+class Robot {
+    - id: string
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - id: string
+}
+class TaskExecution {
+    - id: string
+    - startTime: string
+    - location: string
+}
+class Location {
+    - locationType: LocationType
+}
+enum LocationType {
+    CORRIDOR
+    ROOM
+}
+Robot "1" *-- "0..*"  TaskExecution
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+Location <|-- Corridor
+Location <|-- Room
+Task "1" -- "0..1"  TaskExecution
+TaskExecution "0..*" *-- "1"  Location
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Final model:
+@startuml
+class Robot {
+    - id: string
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - id: string
+}
+class TaskExecution {
+    - id: string
+    - startTime: string
+    - location: string
+}
+class Location {
+    - locationType: LocationType
+}
+enum LocationType {
+    CORRIDOR
+    ROOM
+}
+Robot "1" *-- "0..*"  TaskExecution
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+Task "1" -- "0..1"  TaskExecution
+TaskExecution "0..*" *-- "1"  Location
+@enduml

@@ -1,0 +1,790 @@
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:BESSER Agentic Framework:Stemmer added: english
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training started
+INFO:BESSER Agentic Framework:NER successfully trained.
+INFO:BESSER Agentic Framework:Intent classifier in next_question_state successfully trained.
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training finished
+INFO:BESSER Agentic Framework:Domain Modeling Assistant's WebSocketPlatform starting at ws://localhost:8765
+INFO:websockets.server:connection open
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Initial model:
+@startuml
+class Student {
+    - studentID: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionTime: string
+    - labSectionLocation: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+AssignmentDetails "0..*" -- "1..*"  TeachingAssistant
+Course "1" -- "1..*"  AssignmentDetails
+Registration "1" *-- "0..*"  Student
+Registration "1" *-- "0..*"  Course
+@enduml
+INFO:__main__:(ClassVsAttributeConfiguration) Question 1:
+We know that each assignment details has an assignment description. When we think about assignment description, is it just a simple piece of information, like a line of text? 
+Or is assignment description made up of different parts that might be important?
+For example:
+1. For each assignment description, the detail information is saved separately, so users can filter assignment details by detail.
+2. The assignment description is a single piece of text. This works well when we just need to show the assignment description.
+
+Which option is better for you?
+
+DEBUG:BESSER Agentic Framework:Starting Event Loop for session: c87357b5-3ef5-4cd4-8df8-d62b5bdba6db
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for assignment description is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q1:
+Option 2: A single line of text for assignment description is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 2:
+We know that each assignment details has a responsibilities. When we think about responsibilities, is it just a simple piece of information, like a line of text? 
+Or is responsibilities made up of different parts that might be important?
+For example:
+1. For each responsibilities, the detail information is saved separately, so users can filter assignment details by detail.
+2. The responsibilities is a single piece of text. This works well when we just need to show the responsibilities.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for responsibilities is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q2:
+Option 2: A single line of text for responsibilities is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 3:
+We know that each course has a lab section time. When we think about lab section time, is it just a simple piece of information, like a line of text? 
+Or is lab section time made up of different parts that might be important?
+For example:
+1. For each lab section time, the detail information is saved separately, so users can filter course by detail.
+2. The lab section time is a single piece of text. This works well when we just need to show the lab section time.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: We need the lab section time details separately.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q3:
+Option 1: We need the lab section time details separately.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+AssignmentDetails "0..*" -- "1..*"  TeachingAssistant
+Course "1" -- "1..*"  AssignmentDetails
+Registration "1" *-- "0..*"  Student
+Registration "1" *-- "0..*"  Course
+Course "1" -- "1"  LabSectionTime
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 4:
+We know that each course has a lab section location. When we think about lab section location, is it just a simple piece of information, like a line of text? 
+Or is lab section location made up of different parts that might be important?
+For example:
+1. For each lab section location, the detail information is saved separately, so users can filter course by detail.
+2. The lab section location is a single piece of text. This works well when we just need to show the lab section location.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for lab section location is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q4:
+Option 2: A single line of text for lab section location is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 5:
+We know that each registration has a registration date. When we think about registration date, is it just a simple piece of information, like a line of text? 
+Or is registration date made up of different parts that might be important?
+For example:
+1. For each registration date, the detail information is saved separately, so users can filter registration by detail.
+2. The registration date is a single piece of text. This works well when we just need to show the registration date.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for registration date is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q5:
+Option 2: A single line of text for registration date is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 6:
+We know that each course has a course name. When we think about course name, is it just a simple piece of information, like a line of text? 
+Or is course name made up of different parts that might be important?
+For example:
+1. For each course name, the detail information is saved separately, so users can filter course by detail.
+2. The course name is a single piece of text. This works well when we just need to show the course name.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for course name is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q6:
+Option 2: A single line of text for course name is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 7:
+We know that each teaching assistant has a first name. When we think about first name, is it just a simple piece of information, like a line of text? 
+Or is first name made up of different parts that might be important?
+For example:
+1. For each first name, the detail information is saved separately, so users can filter teaching assistant by detail.
+2. The first name is a single piece of text. This works well when we just need to show the first name.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for first name is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q7:
+Option 2: A single line of text for first name is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 8:
+We know that each teaching assistant has a last name. When we think about last name, is it just a simple piece of information, like a line of text? 
+Or is last name made up of different parts that might be important?
+For example:
+1. For each last name, the detail information is saved separately, so users can filter teaching assistant by detail.
+2. The last name is a single piece of text. This works well when we just need to show the last name.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for last name is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q8:
+Option 2: A single line of text for last name is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 9:
+We know that each assignment details has a teaching assistant. When we think about teaching assistant, is it just a simple piece of information, like a line of text? 
+Or is teaching assistant made up of different parts that might be important?
+For example:
+1. For each teaching assistant, the first name and last name information is saved separately, so users can filter assignment detailss by first name and last name.
+2. The teaching assistant is a single piece of text. This works well when we just need to show the teaching assistant.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: We need the teaching assistant details separately.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q9:
+Option 1: We need the teaching assistant details separately.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 10:
+We know that each course has a course id. When we think about course id, is it just a simple piece of information, like a line of text? 
+Or is course id made up of different parts that might be important?
+For example:
+1. For each course id, the detail information is saved separately, so users can filter course by detail.
+2. The course id is a single piece of text. This works well when we just need to show the course id.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for course id is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q10:
+Option 2: A single line of text for course id is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(CompositionVsAssociationConfiguration) Question 11:
+Does a lab section time always require a course to exist, or could it exist independently and possibly be linked to multiple courses instances? If a course is removed, would all the associated lab section times also need to be removed, or could a lab section time still make sense on its own?
+
+For example:
+1. A lab section time belongs to a course and cannot exist without a specific course.
+2. A lab section time is linked to a course but can exist independently of it.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A lab section time is always for a specific course.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q11:
+Option 1: A lab section time is always for a specific course.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+AssignmentDetails "0..*" -- "1..*"  TeachingAssistant
+Course "1" -- "1..*"  AssignmentDetails
+Registration "1" *-- "0..*"  Student
+Registration "1" *-- "0..*"  Course
+Course "1" *-- "1"  LabSectionTime
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 12:
+In the context of an assignment details, does it always involve at least one teaching assistant, or can it exist without any?.
+For example:
+1. An assignment details can exist without any teaching assistant.
+2. An assignment details must have at least one teaching assistant.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: An assignment details can exist without any teaching assistant.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q12:
+Option 1: An assignment details can exist without any teaching assistant.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+Course "1" -- "1..*"  AssignmentDetails
+Registration "1" *-- "0..*"  Student
+Registration "1" *-- "0..*"  Course
+Course "1" *-- "1"  LabSectionTime
+AssignmentDetails "0..*" -- "0..*"  TeachingAssistant
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 13:
+In the context of a teaching assistant, does it always involve at least one assignment details, or can it exist without any?.
+For example:
+1. A teaching assistant can exist without any assignment details.
+2. A teaching assistant must have at least one assignment details.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A teaching assistant can exist without any assignment details.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q13:
+Option 1: A teaching assistant can exist without any assignment details.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 14:
+In the context of a student, does it always involve at least one registration, or can it exist without any?.
+For example:
+1. A student can exist without any registration.
+2. A student must have at least one registration.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A student can exist without any registration.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q14:
+Option 1: A student can exist without any registration.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+Course "1" -- "1..*"  AssignmentDetails
+Registration "1" *-- "0..*"  Course
+Course "1" *-- "1"  LabSectionTime
+AssignmentDetails "0..*" -- "0..*"  TeachingAssistant
+Registration "0..1" *-- "0..*"  Student
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 15:
+In the context of a course, does it always involve at least one registration, or can it exist without any?.
+For example:
+1. A course can exist without any registration.
+2. A course must have at least one registration.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A course can exist without any registration.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q15:
+Option 1: A course can exist without any registration.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+Course "1" -- "1..*"  AssignmentDetails
+Course "1" *-- "1"  LabSectionTime
+AssignmentDetails "0..*" -- "0..*"  TeachingAssistant
+Registration "0..1" *-- "0..*"  Student
+Registration "0..1" *-- "0..*"  Course
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 16:
+In the context of a course, does it always involve at least one assignment details, or can it exist without any?.
+For example:
+1. A course can exist without any assignment details.
+2. A course must have at least one assignment details.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A course can exist without any assignment details.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q16:
+Option 1: A course can exist without any assignment details.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+Course "1" *-- "1"  LabSectionTime
+AssignmentDetails "0..*" -- "0..*"  TeachingAssistant
+Registration "0..1" *-- "0..*"  Student
+Registration "0..1" *-- "0..*"  Course
+Course "1" -- "0..*"  AssignmentDetails
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 17:
+In the context of a assignment details, does it always involve at least one course, or can it exist without any?.
+For example:
+1. An assignment details can exist without any course.
+2. An assignment details must have at least one course.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: An assignment details must have at least one course.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q17:
+Option 2: An assignment details must have at least one course.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 18:
+In the context of an assignment details, can there be more than one teaching assistant involved, or is it always associated with just one?
+For example:
+1. An assignment details is linked to a single teaching assistant.
+2. An assignment details is linked to multiple teaching assistants.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: An assignment details can be linked to multiple teaching assistants.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q18:
+Option 2: An assignment details can be linked to multiple teaching assistants.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 19:
+In the context of a teaching assistant, can there be more than one assignment details involved, or is it always associated with just one? 
+For example:
+1. A teaching assistant is linked to a single assignment details.
+2. A teaching assistant is linked to multiple assignment detailss.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A teaching assistant can be linked to multiple assignment details.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q19:
+Option 2: A teaching assistant can be linked to multiple assignment details.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 20:
+In the context of a student, can there be more than one registration involved, or is it always associated with just one? 
+For example:
+1. A student is linked to a single registration.
+2. A student is linked to multiple registrations.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A student can be linked to multiple registrations.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q20:
+Option 2: A student can be linked to multiple registrations.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+Course "1" *-- "1"  LabSectionTime
+AssignmentDetails "0..*" -- "0..*"  TeachingAssistant
+Registration "0..1" *-- "0..*"  Course
+Course "1" -- "0..*"  AssignmentDetails
+Registration "0..*" *-- "0..*"  Student
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 21:
+In the context of a course, can there be more than one registration involved, or is it always associated with just one? 
+For example:
+1. A course is linked to a single registration.
+2. A course is linked to multiple registrations.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A course can be linked to multiple registrations.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q21:
+Option 2: A course can be linked to multiple registrations.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class Registration {
+    - registrationDate: date
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+Course "1" *-- "1"  LabSectionTime
+AssignmentDetails "0..*" -- "0..*"  TeachingAssistant
+Course "1" -- "0..*"  AssignmentDetails
+Registration "0..*" *-- "0..*"  Student
+Registration "0..*" *-- "0..*"  Course
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 22:
+In the context of a course, can there be more than one assignment details involved, or is it always associated with just one?
+For example:
+1. A course is linked to a single assignment details.
+2. A course is linked to multiple assignment detailss.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A course can be linked to multiple assignment details.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q22:
+Option 2: A course can be linked to multiple assignment details.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 23:
+In the context of an assignment details, can there be more than one course involved, or is it always associated with just one? 
+For example:
+1. An assignment details is linked to a single course.
+2. An assignment details is linked to multiple courses.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each assignment details is always linked to a single course.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q23:
+Option 1: Each assignment details is always linked to a single course.
+INFO:__main__:Model update not required.
+ERROR:BESSER Agentic Framework:An error occurred while executing 'fallback_body' of state'next_question_state' in agent 'Domain Modeling Assistant'. See the attached exception:
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(AssociationClassVsClassConfiguration) Question 24:
+A student has multiple registrations at different courses. Should we think of the link between a student and a course as something that only exists when a registration happens? Or would you say a student and a course should have a link even outside of specific registrations?
+For example:
+1. A student has a direct link with a course. The registration is a separate event that connects the student and course temporarily.
+2. The registration is the key event that establishes the link between a student and a course. The student and course are only linked when a registration occurs.
+
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: The student and the course are linked only when a registration happens.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q24:
+Option 1: The student and the course are linked only when a registration happens.
+INFO:__main__:Model update required:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+Course "1" *-- "1"  LabSectionTime
+AssignmentDetails "0..*" -- "0..*"  TeachingAssistant
+Course "1" -- "0..*"  AssignmentDetails
+Student "*" -- "*"  Course
+class Registration {
+    - registrationDate: date
+}
+(Student, Course) .. Registration
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(AssociationClassVsClassConfiguration) Question 25:
+A teachingassistant has multiple assignmentdetail at different courses. Should we think of the link between a teachingassistant and a course as something that only exists when an assignmentdetails happens? Or would you say a teachingassistant and a course should have a link even outside of specific assignmentdetail?
+For example:
+1. A teachingassistant has a direct link with a course. The assignmentdetails is a separate event that connects the teachingassistant and course temporarily.
+2. The assignmentdetails is the key event that establishes the link between a teachingassistant and a course. The teachingassistant and course are only linked when an assignmentdetails occurs.
+
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A teaching assistant and a course are always linked, even when no assignment details happen.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q25:
+Option 2: A teaching assistant and a course are always linked, even when no assignment details happen.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Final model:
+@startuml
+class Student {
+    - studentID: string
+}
+class TeachingAssistant {
+    - firstName: string
+    - lastName: string
+}
+class AssignmentDetails {
+    - assignmentDescription: string
+    - responsibilities: string
+}
+class Course {
+    - courseID: string
+    - courseName: string
+    - labSectionLocation: string
+}
+class LabSectionTime {
+}
+Course "1" *-- "1"  LabSectionTime
+AssignmentDetails "0..*" -- "0..*"  TeachingAssistant
+Course "1" -- "0..*"  AssignmentDetails
+Student "*" -- "*"  Course
+class Registration {
+    - registrationDate: date
+}
+(Student, Course) .. Registration
+@enduml
+DEBUG:BESSER Agentic Framework:Event Loop stopped for: c87357b5-3ef5-4cd4-8df8-d62b5bdba6db

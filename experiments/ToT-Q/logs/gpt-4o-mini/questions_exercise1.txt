@@ -1,0 +1,572 @@
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:BESSER Agentic Framework:Stemmer added: english
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training started
+INFO:BESSER Agentic Framework:NER successfully trained.
+INFO:BESSER Agentic Framework:Intent classifier in next_question_state successfully trained.
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training finished
+INFO:BESSER Agentic Framework:Domain Modeling Assistant's WebSocketPlatform starting at ws://localhost:8765
+INFO:websockets.server:connection open
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Initial model:
+@startuml
+class Customer {
+    - ID: string
+}
+class Order {
+    - OrderID: string
+    - OrderDate: string
+}
+class Product {
+    - Name: string
+    - Description: string
+    - Price : number
+}
+class OrderItem {
+    - Quantity: number
+    - Price: number
+}
+class Review {
+    - ReviewDate: string
+    - Rating: number
+}
+class Promotion {
+    - DiscountRate: number
+    - ValidityPeriod: string
+}
+class PromotionalCampaign {
+    - CampaignName: string
+}
+Customer "1" -- "0..*"  Order
+Order "1" *-- "1..*"  OrderItem
+OrderItem "1..*" -- "1..*"  Product
+Product "1..*" -- "0..*"  Review
+Product "0..*" *-- "1..*"  PromotionalCampaign
+PromotionalCampaign "1..*" -- "0..*"  Promotion
+@enduml
+INFO:__main__:(ClassVsAttributeConfiguration) Question 1:
+We know that each promotional campaign has a campaign name. When we think about campaign name, is it just a simple piece of information, like a line of text? 
+Or is campaign name made up of different parts that might be important?
+For example:
+1. For each campaign name, the detail information is saved separately, so users can filter promotional campaign by detail.
+2. The campaign name is a single piece of text. This works well when we just need to show the campaign name.
+
+Which option is better for you?
+
+DEBUG:BESSER Agentic Framework:Starting Event Loop for session: f99773c7-6de5-4faa-b9a6-32b81576a04f
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for campaign name is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q1:
+Option 2: A single line of text for campaign name is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 2:
+In the context of a promotional campaign, does it always involve at least one promotion, or can it exist without any?.
+For example:
+1. A promotional campaign can exist without any promotion.
+2. A promotional campaign must have at least one promotion.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A promotional campaign must have at least one promotion.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q2:
+Option 2: A promotional campaign must have at least one promotion.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - ID: string
+}
+class Order {
+    - OrderID: string
+    - OrderDate: string
+}
+class Product {
+    - Name: string
+    - Description: string
+    - Price : number
+}
+class OrderItem {
+    - Quantity: number
+    - Price: number
+}
+class Review {
+    - ReviewDate: string
+    - Rating: number
+}
+class Promotion {
+    - DiscountRate: number
+    - ValidityPeriod: string
+}
+class PromotionalCampaign {
+    - CampaignName: string
+}
+Customer "1" -- "0..*"  Order
+Order "1" *-- "1..*"  OrderItem
+OrderItem "1..*" -- "1..*"  Product
+Product "1..*" -- "0..*"  Review
+Product "0..*" *-- "1..*"  PromotionalCampaign
+PromotionalCampaign "1..*" -- "1..*"  Promotion
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 3:
+In the context of a promotion, does it always involve at least one promotional campaign, or can it exist without any?.
+For example:
+1. A promotion can exist without any promotional campaign.
+2. A promotion must have at least one promotional campaign.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A promotion must have at least one promotional campaign.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q3:
+Option 2: A promotion must have at least one promotional campaign.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 4:
+In the context of an order item, does it always involve at least one product, or can it exist without any?.
+For example:
+1. An order item can exist without any product.
+2. An order item must have at least one product.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: An order item must have at least one product.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q4:
+Option 2: An order item must have at least one product.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 5:
+In the context of a product, does it always involve at least one order item, or can it exist without any?.
+For example:
+1. A product can exist without any order item.
+2. A product must have at least one order item.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A product can exist without any order item.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q5:
+Option 1: A product can exist without any order item.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - ID: string
+}
+class Order {
+    - OrderID: string
+    - OrderDate: string
+}
+class Product {
+    - Name: string
+    - Description: string
+    - Price : number
+}
+class OrderItem {
+    - Quantity: number
+    - Price: number
+}
+class Review {
+    - ReviewDate: string
+    - Rating: number
+}
+class Promotion {
+    - DiscountRate: number
+    - ValidityPeriod: string
+}
+class PromotionalCampaign {
+    - CampaignName: string
+}
+Customer "1" -- "0..*"  Order
+Order "1" *-- "1..*"  OrderItem
+Product "1..*" -- "0..*"  Review
+Product "0..*" *-- "1..*"  PromotionalCampaign
+PromotionalCampaign "1..*" -- "1..*"  Promotion
+OrderItem "0..*" -- "1..*"  Product
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 6:
+In the context of a promotional campaign, does it always involve at least one product, or can it exist without any?.
+For example:
+1. A promotional campaign can exist without any product.
+2. A promotional campaign must have at least one product.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A promotional campaign must have at least one product.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q6:
+Option 2: A promotional campaign must have at least one product.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - ID: string
+}
+class Order {
+    - OrderID: string
+    - OrderDate: string
+}
+class Product {
+    - Name: string
+    - Description: string
+    - Price : number
+}
+class OrderItem {
+    - Quantity: number
+    - Price: number
+}
+class Review {
+    - ReviewDate: string
+    - Rating: number
+}
+class Promotion {
+    - DiscountRate: number
+    - ValidityPeriod: string
+}
+class PromotionalCampaign {
+    - CampaignName: string
+}
+Customer "1" -- "0..*"  Order
+Order "1" *-- "1..*"  OrderItem
+Product "1..*" -- "0..*"  Review
+PromotionalCampaign "1..*" -- "1..*"  Promotion
+OrderItem "0..*" -- "1..*"  Product
+Product "1..*" *-- "1..*"  PromotionalCampaign
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(LowerboundCardinalityOneVsManyConfiguration) Question 7:
+In the context of a order item, does it always involve at least one order, or can it exist without any?.
+For example:
+1. An order item can exist without any order.
+2. An order item must have at least one order.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: An order item must have at least one order.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q7:
+Option 2: An order item must have at least one order.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 8:
+In the context of a promotional campaign, can there be more than one promotion involved, or is it always associated with just one?
+For example:
+1. A promotional campaign is linked to a single promotion.
+2. A promotional campaign is linked to multiple promotions.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A promotional campaign can be linked to multiple promotions.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q8:
+Option 2: A promotional campaign can be linked to multiple promotions.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 9:
+In the context of a promotion, can there be more than one promotional campaign involved, or is it always associated with just one? 
+For example:
+1. A promotion is linked to a single promotional campaign.
+2. A promotion is linked to multiple promotional campaigns.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A promotion can be linked to multiple promotional campaigns.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q9:
+Option 2: A promotion can be linked to multiple promotional campaigns.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 10:
+In the context of an order item, can there be more than one product involved, or is it always associated with just one?
+For example:
+1. An order item is linked to a single product.
+2. An order item is linked to multiple products.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each order item is always linked to a single product.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q10:
+Option 1: Each order item is always linked to a single product.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - ID: string
+}
+class Order {
+    - OrderID: string
+    - OrderDate: string
+}
+class Product {
+    - Name: string
+    - Description: string
+    - Price : number
+}
+class OrderItem {
+    - Quantity: number
+    - Price: number
+}
+class Review {
+    - ReviewDate: string
+    - Rating: number
+}
+class Promotion {
+    - DiscountRate: number
+    - ValidityPeriod: string
+}
+class PromotionalCampaign {
+    - CampaignName: string
+}
+Customer "1" -- "0..*"  Order
+Order "1" *-- "1..*"  OrderItem
+Product "1..*" -- "0..*"  Review
+PromotionalCampaign "1..*" -- "1..*"  Promotion
+Product "1..*" *-- "1..*"  PromotionalCampaign
+OrderItem "0..*" -- "1"  Product
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 11:
+In the context of a product, can there be more than one order item involved, or is it always associated with just one? 
+For example:
+1. A product is linked to a single order item.
+2. A product is linked to multiple order items.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A product can be linked to multiple order items.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q11:
+Option 2: A product can be linked to multiple order items.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 12:
+In the context of a promotional campaign, can there be more than one product involved, or is it always associated with just one? 
+For example:
+1. A promotional campaign is linked to a single product.
+2. A promotional campaign is linked to multiple products.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A promotional campaign can be linked to multiple products.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q12:
+Option 2: A promotional campaign can be linked to multiple products.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 13:
+In the context of an order item, can there be more than one order involved, or is it always associated with just one? 
+For example:
+1. An order item is linked to a single order.
+2. An order item is linked to multiple orders.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each order item is always linked to a single order.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q13:
+Option 1: Each order item is always linked to a single order.
+INFO:__main__:Model update not required.
+ERROR:BESSER Agentic Framework:An error occurred while executing 'fallback_body' of state'next_question_state' in agent 'Domain Modeling Assistant'. See the attached exception:
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(AssociationClassVsClassConfiguration) Question 14:
+An order has multiple orderitems at different products. Should we think of the link between an order and a product as something that only exists when an orderitem happens? Or would you say an order and a product should have a link even outside of specific orderitems?
+For example:
+1. An order has a direct link with a product. The orderitem is a separate event that connects the order and product temporarily.
+2. The orderitem is the key event that establishes the link between an order and a product. The order and product are only linked when an orderitem occurs.
+
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: The order and the product are linked only when an orderitem happens.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q14:
+Option 1: The order and the product are linked only when an orderitem happens.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - ID: string
+}
+class Order {
+    - OrderID: string
+    - OrderDate: string
+}
+class Product {
+    - Name: string
+    - Description: string
+    - Price : number
+}
+class Review {
+    - ReviewDate: string
+    - Rating: number
+}
+class Promotion {
+    - DiscountRate: number
+    - ValidityPeriod: string
+}
+class PromotionalCampaign {
+    - CampaignName: string
+}
+Customer "1" -- "0..*"  Order
+Product "1..*" -- "0..*"  Review
+PromotionalCampaign "1..*" -- "1..*"  Promotion
+Product "1..*" *-- "1..*"  PromotionalCampaign
+Order "*" -- "*"  Product
+class OrderItem {
+    - Quantity: number
+    - Price: number
+}
+(Order, Product) .. OrderItem
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(AssociationClassVsClassConfiguration) Question 15:
+A promotion has multiple promotionalcampaigns at different products. Should we think of the link between a promotion and a product as something that only exists when a promotionalcampaign happens? Or would you say a promotion and a product should have a link even outside of specific promotionalcampaigns?
+For example:
+1. A promotion has a direct link with a product. The promotionalcampaign is a separate event that connects the promotion and product temporarily.
+2. The promotionalcampaign is the key event that establishes the link between a promotion and a product. The promotion and product are only linked when a promotionalcampaign occurs.
+
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: The promotion and the product are linked only when a promotionalcampaign happens.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q15:
+Option 1: The promotion and the product are linked only when a promotionalcampaign happens.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - ID: string
+}
+class Order {
+    - OrderID: string
+    - OrderDate: string
+}
+class Product {
+    - Name: string
+    - Description: string
+    - Price : number
+}
+class Review {
+    - ReviewDate: string
+    - Rating: number
+}
+class Promotion {
+    - DiscountRate: number
+    - ValidityPeriod: string
+}
+Customer "1" -- "0..*"  Order
+Product "1..*" -- "0..*"  Review
+Order "*" -- "*"  Product
+Promotion "*" -- "*"  Product
+class OrderItem {
+    - Quantity: number
+    - Price: number
+}
+(Order, Product) .. OrderItem
+class PromotionalCampaign {
+    - CampaignName: string
+}
+(Promotion, Product) .. PromotionalCampaign
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Final model:
+@startuml
+class Customer {
+    - ID: string
+}
+class Order {
+    - OrderID: string
+    - OrderDate: string
+}
+class Product {
+    - Name: string
+    - Description: string
+    - Price : number
+}
+class Review {
+    - ReviewDate: string
+    - Rating: number
+}
+class Promotion {
+    - DiscountRate: number
+    - ValidityPeriod: string
+}
+Customer "1" -- "0..*"  Order
+Product "1..*" -- "0..*"  Review
+Order "*" -- "*"  Product
+Promotion "*" -- "*"  Product
+class OrderItem {
+    - Quantity: number
+    - Price: number
+}
+(Order, Product) .. OrderItem
+class PromotionalCampaign {
+    - CampaignName: string
+}
+(Promotion, Product) .. PromotionalCampaign
+@enduml

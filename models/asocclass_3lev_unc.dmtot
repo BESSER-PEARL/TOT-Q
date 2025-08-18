@@ -1,0 +1,84 @@
+tree: 
+    levels: 3
+    number_samples: 3
+    number_votes: 1
+
+problem: 
+    purpose: "UML class diagram"
+task: 
+    level: 1
+    name: "Classes, abstract classes, and enumerations"
+    description: "You identify only the classes and attributes explicitly mentioned in the domain description. 
+As a reference, a class represents objects that share a common structure and behavior.
+Abstract class: A class that is identified with the word abstract prior the name of the class. 
+Enumeration: represent user-defined data types, it contain enumeration literals that represent the values of the enumeration.
+
+Additionally, for each class, attribute, enumeration, and literal, include a confidence value in the range of 0 to 100. This value represents how likely each element is correct according the domain description.
+Output format:
+Classes and enumerations:
+- ClassName (concrete) (Confidence: X)  
+  - Attributes:  
+    - attributeName (Confidence: Y)  
+- AbstractClassName (abstract) (Confidence: X)  
+  - Attributes:  
+    - attributeName (Confidence: Y)  
+- EnumerationName (enumeration) (Confidence: X)  
+  - Literals:  
+    - literalName (Confidence: Y)  
+"
+    assessments:
+        "Classes are retrieved from nouns in the domain description."
+        "The principal concepts of the domain are representend in classes."
+task: 
+    level: 2
+    name: "Relationships"
+    description: "Propose a list of relationships between classes with its corresponding cardinality. 
+There are only 3 types of relationships: 
+Associate: used when a class is related to another.
+Contain: Is a special kind of association relationship where the contained class exists as part of the containing class.
+Inherit: refers to one class (child class) to inherit the identical functionality of another class (super class).
+The relationships proposed start with associations, then containment, and finally with inheritance.
+Do not use other relationships.
+
+Additionally, for each relationship and cardinality, include a confidence value in the range of 0 to 100. This value represents how likely each element is correct according the domain description.
+Output format:
+Relationship Type:  
+- SourceClass — TargetClass (Confidence: X)  
+  - Cardinality:  
+    - source_cardinality (Confidence: Y)  
+    - target_cardinality (Confidence: Z)   
+"
+    assessments:
+                "The model uses inheritance with one super classes and more than one sub classes."
+                "The model uses contain relationship for whole-part relationship."
+                "Associations and cardinalities are included in the model with correct format."
+                "There are no duplicated relationships."
+task:
+    level: 3
+    name: "Association classes"
+    description: "Identify the association classes in the domain description.
+As a reference, an Association Class connects a set of Classes but also defines a set of Features that belong to the connection itself and not to any of the associated Classes.
+You apply changes to the domain model proposed if an association class has a conflict with other classes or relationships.
+Output format:
+Association Classes:  
+- AssociationClassName (Confidence: X)  
+  - Attributes:
+    - attributeName (Confidence: Y)    
+- SourceClass — TargetClass (Confidence: A)  
+  - Cardinality:  
+    - source_cardinality (Confidence: B)  
+    - target_cardinality (Confidence: C)   
+"
+    assessments:
+                "The association classes proposed include attributes."
+notation:
+name: "PlantUML code"
+description: 
+"Create the PlantUML code with the format described below:
+First, create the classes with attributes mentioned in the description. Omit methods in classes.
+Second, add contain and associations with its cardinalities. 
+Third, add the inheritance.
+Fourth, create the association classes using the following format:
+(<Source_Class> , <Target_Class>) .. <Association_Class>
+Then summarize the models in a list including the confidence."
+

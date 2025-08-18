@@ -1,0 +1,585 @@
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:BESSER Agentic Framework:Stemmer added: english
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training started
+INFO:BESSER Agentic Framework:NER successfully trained.
+INFO:BESSER Agentic Framework:Intent classifier in next_question_state successfully trained.
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training finished
+INFO:BESSER Agentic Framework:Domain Modeling Assistant's WebSocketPlatform starting at ws://localhost:8765
+INFO:websockets.server:connection open
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Initial model:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class Product {
+    - description: string
+    - productName: string
+}
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+Customer "1..*" -- "1..*"  Order
+Order "1..1" -- "1..*"  Product
+Product "1..*" -- "0..*"  Review
+Customer "1..*" -- "0..*"  Review
+Product "0..*" -- "1..*"  Promotion
+Product "1..1" -- "1..*"  OrderProductDetail
+Order "1..1" *-- "1..*"  OrderProductDetail
+@enduml
+INFO:__main__:(ClassVsAttributeConfiguration) Question 1:
+We know that each product has a product name. When we think about product name, is it just a simple piece of information, like a line of text? 
+Or is product name made up of different parts that might be important?
+For example:
+1. For each product name, the detail information is saved separately, so users can filter product by detail.
+2. The product name is a single piece of text. This works well when we just need to show the product name.
+
+Which option is better for you?
+
+DEBUG:BESSER Agentic Framework:Starting Event Loop for session: 3bf4f9f5-8c06-4fd6-a585-24ab47f40eda
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: We need the product name details separately)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q1:
+Option 1: We need the product name details separately
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+class Product {
+    - description: string
+}
+class ProductName {
+}
+Customer "1..*" -- "1..*"  Order
+Order "1..1" -- "1..*"  Product
+Product "1..*" -- "0..*"  Review
+Customer "1..*" -- "0..*"  Review
+Product "0..*" -- "1..*"  Promotion
+Product "1..1" -- "1..*"  OrderProductDetail
+Order "1..1" *-- "1..*"  OrderProductDetail
+Product "1" -- "1"  ProductName
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 2:
+We know that each order product detail has a price. When we think about price, is it just a simple piece of information, like a line of text? 
+Or is price made up of different parts that might be important?
+For example:
+1. For each price, the detail information is saved separately, so users can filter order product detail by detail.
+2. The price is a single piece of text. This works well when we just need to show the price.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for price is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q2:
+Option 2: A single line of text for price is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 3:
+We know that each product has a name. When we think about name, is it just a simple piece of information, like a line of text? 
+Or is name made up of different parts that might be important?
+For example:
+1. For each name, the detail information is saved separately, so users can filter product by detail.
+2. The name is a single piece of text. This works well when we just need to show the name.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for name is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q3:
+Option 2: A single line of text for name is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 4:
+In the context of a product, can there be more than one order product detail involved, or is it always associated with just one?
+For example:
+1. A product is linked to a single order product detail.
+2. A product is linked to multiple order product details.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A product can be linked to multiple order product details.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q4:
+Option 2: A product can be linked to multiple order product details.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 5:
+In the context of an order product detail, can there be more than one product involved, or is it always associated with just one? 
+For example:
+1. An order product detail is linked to a single product.
+2. An order product detail is linked to multiple products.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each order product detail is always linked to a single product.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q5:
+Option 1: Each order product detail is always linked to a single product.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 6:
+In the context of an order, can there be more than one product involved, or is it always associated with just one?
+For example:
+1. An order is linked to a single product.
+2. An order is linked to multiple products.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: An order can be linked to multiple products.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q6:
+Option 2: An order can be linked to multiple products.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 7:
+In the context of a product, can there be more than one order involved, or is it always associated with just one? 
+For example:
+1. A product is linked to a single order.
+2. A product is linked to multiple orders.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A product can be linked to multiple orders.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q7:
+Option 2: A product can be linked to multiple orders.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+class Product {
+    - description: string
+}
+class ProductName {
+}
+Customer "1..*" -- "1..*"  Order
+Product "1..*" -- "0..*"  Review
+Customer "1..*" -- "0..*"  Review
+Product "0..*" -- "1..*"  Promotion
+Product "1..1" -- "1..*"  OrderProductDetail
+Order "1..1" *-- "1..*"  OrderProductDetail
+Product "1" -- "1"  ProductName
+Order "1..*" -- "1..*"  Product
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 8:
+In the context of a product, can there be more than one product name involved, or is it always associated with just one?
+For example:
+1. A product is linked to a single product name.
+2. A product is linked to multiple product names.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each product is always linked to a single product name.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q8:
+Option 1: Each product is always linked to a single product name.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 9:
+In the context of a product name, can there be more than one product involved, or is it always associated with just one? 
+For example:
+1. A product name is linked to a single product.
+2. A product name is linked to multiple products.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each product name is always linked to a single product.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q9:
+Option 1: Each product name is always linked to a single product.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 10:
+In the context of a customer, can there be more than one review involved, or is it always associated with just one?
+For example:
+1. A customer is linked to a single review.
+2. A customer is linked to multiple reviews.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A customer can be linked to multiple reviews.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q10:
+Option 2: A customer can be linked to multiple reviews.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(UpperboundCardinalityOneVsManyConfiguration) Question 11:
+In the context of a review, can there be more than one customer involved, or is it always associated with just one? 
+For example:
+1. A review is linked to a single customer.
+2. A review is linked to multiple customers.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: Each review is always linked to a single customer.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q11:
+Option 1: Each review is always linked to a single customer.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+class Product {
+    - description: string
+}
+class ProductName {
+}
+Customer "1..*" -- "1..*"  Order
+Product "1..*" -- "0..*"  Review
+Product "0..*" -- "1..*"  Promotion
+Product "1..1" -- "1..*"  OrderProductDetail
+Order "1..1" *-- "1..*"  OrderProductDetail
+Product "1" -- "1"  ProductName
+Order "1..*" -- "1..*"  Product
+Customer "1" -- "0..*"  Review
+@enduml
+ERROR:BESSER Agentic Framework:An error occurred while executing 'fallback_body' of state'next_question_state' in agent 'Domain Modeling Assistant'. See the attached exception:
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(AssociationClassVsClassConfiguration) Question 12:
+An order has multiple orderproductdetails at different products. Should we think of the link between an order and a product as something that only exists when an orderproductdetail happens? Or would you say an order and a product should have a link even outside of specific orderproductdetails?
+For example:
+1. An order has a direct link with a product. The orderproductdetail is a separate event that connects the order and product temporarily.
+2. The orderproductdetail is the key event that establishes the link between an order and a product. The order and product are only linked when an orderproductdetail occurs.
+
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: The order and the product are linked only when an orderproductdetail happens.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q12:
+Option 1: The order and the product are linked only when an orderproductdetail happens.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+class Product {
+    - description: string
+}
+class ProductName {
+}
+Customer "1..*" -- "1..*"  Order
+Product "1..*" -- "0..*"  Review
+Product "0..*" -- "1..*"  Promotion
+Product "1" -- "1"  ProductName
+Order "1..*" -- "1..*"  Product
+Customer "1" -- "0..*"  Review
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+(Order, Product) .. OrderProductDetail
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(AssociationClassVsClassConfiguration) Question 13:
+A product has multiple orderproductdetails at different orders. Should we think of the link between a product and an order as something that only exists when an orderproductdetail happens? Or would you say a product and an order should have a link even outside of specific orderproductdetails?
+For example:
+1. A product has a direct link with an order. The orderproductdetail is a separate event that connects the product and order temporarily.
+2. The orderproductdetail is the key event that establishes the link between a product and an order. The product and order are only linked when an orderproductdetail occurs.
+
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: The product and the order are linked only when an orderproductdetail happens.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q13:
+Option 1: The product and the order are linked only when an orderproductdetail happens.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+class Product {
+    - description: string
+}
+class ProductName {
+}
+Customer "1..*" -- "1..*"  Order
+Product "1..*" -- "0..*"  Review
+Product "0..*" -- "1..*"  Promotion
+Product "1" -- "1"  ProductName
+Order "1..*" -- "1..*"  Product
+Customer "1" -- "0..*"  Review
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+(Order, Product) .. OrderProductDetail
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(AssociationClassVsClassConfiguration) Question 14:
+A product has multiple reviews at different customers. Should we think of the link between a product and a customer as something that only exists when a review happens? Or would you say a product and a customer should have a link even outside of specific reviews?
+For example:
+1. A product has a direct link with a customer. The review is a separate event that connects the product and customer temporarily.
+2. The review is the key event that establishes the link between a product and a customer. The product and customer are only linked when a review occurs.
+
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: The product and the customer are linked only when a review happens.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q14:
+Option 1: The product and the customer are linked only when a review happens.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+class Product {
+    - description: string
+}
+class ProductName {
+}
+Customer "1..*" -- "1..*"  Order
+Product "0..*" -- "1..*"  Promotion
+Product "1" -- "1"  ProductName
+Order "1..*" -- "1..*"  Product
+Product "*" -- "*"  Customer
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+(Order, Product) .. OrderProductDetail
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+(Product, Customer) .. Review
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(CompositionVsAssociationConfiguration) Question 15:
+Does a product name always require a product to exist, or could it exist independently and possibly be linked to multiple products instances? If a product is removed, would all the associated product names also need to be removed, or could a product name still make sense on its own?
+
+For example:
+1. A product name belongs to a product and cannot exist without a specific product.
+2. A product name is linked to a product but can exist independently of it.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 1: A product name is always for a specific product.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q15:
+Option 1: A product name is always for a specific product.
+INFO:__main__:Model update required:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+class Product {
+    - description: string
+}
+class ProductName {
+}
+Customer "1..*" -- "1..*"  Order
+Product "0..*" -- "1..*"  Promotion
+Order "1..*" -- "1..*"  Product
+Product "*" -- "*"  Customer
+Product "1" *-- "1"  ProductName
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+(Order, Product) .. OrderProductDetail
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+(Product, Customer) .. Review
+@enduml
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Final model:
+@startuml
+class Customer {
+    - customerId: string
+}
+class Order {
+    - orderId: string
+}
+class Promotion {
+    - discountRate: number
+    - validityPeriod: date
+}
+class Product {
+    - description: string
+}
+class ProductName {
+}
+Customer "1..*" -- "1..*"  Order
+Product "0..*" -- "1..*"  Promotion
+Order "1..*" -- "1..*"  Product
+Product "*" -- "*"  Customer
+Product "1" *-- "1"  ProductName
+class OrderProductDetail {
+    - quantity: number
+    - price: number
+}
+(Order, Product) .. OrderProductDetail
+class Review {
+    - reviewDate: date
+    - rating: Rating
+}
+(Product, Customer) .. Review
+@enduml

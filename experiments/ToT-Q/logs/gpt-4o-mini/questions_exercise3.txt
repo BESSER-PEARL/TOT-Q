@@ -1,0 +1,201 @@
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://uniludm.openai.azure.com//openai/deployments/gpt4o-mini/chat/completions?api-version=2024-10-21 "HTTP/1.1 200 OK"
+INFO:BESSER Agentic Framework:Stemmer added: english
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training started
+INFO:BESSER Agentic Framework:NER successfully trained.
+INFO:BESSER Agentic Framework:Intent classifier in next_question_state successfully trained.
+INFO:BESSER Agentic Framework:Domain Modeling Assistant training finished
+INFO:BESSER Agentic Framework:Domain Modeling Assistant's WebSocketPlatform starting at ws://localhost:8765
+INFO:websockets.server:connection open
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Initial model:
+@startuml
+class Theater {
+    - location: string
+}
+abstract class Play {
+    - name: string
+    - timeOfDay: TimeOfDay
+}
+class Musical {
+}
+class Opera {
+}
+class Author {
+}
+class Participant {
+}
+class Session {
+    - startTime: string
+    - endTime: string
+}
+abstract class Person {
+    - name: string
+}
+enum TimeOfDay {
+    DAY
+    NIGHT
+}
+Theater "1" -- "0..*"  Play
+Play "0..*" -- "1"  Author
+Play "0..*" -- "0..*"  Participant
+Play "1" *-- "0..*"  Session
+Play <|-- Musical
+Play <|-- Opera
+Person <|-- Author
+Person <|-- Participant
+@enduml
+INFO:__main__:(EnumerationVsInheritanceConfiguration) Question 1:
+There are different times of day: day and night. Do these times of day have distinct characteristics or requirements?
+For example:
+1. Day and night are considered different times of day, allowing for distinct details for each time of day.
+2. Every play time of day is classified as either day or night. Both times of day have the same details, and there’s no need for extra information.
+
+Which option is better for you?
+
+DEBUG:BESSER Agentic Framework:Starting Event Loop for session: 4617e219-b23a-4c6b-b580-bc3ada8acd2a
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: Day and night doesn't have distinct characteristics.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q1:
+Option 2: Day and night doesn't have distinct characteristics.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(EnumerationVsInheritanceConfiguration) Question 2:
+There are different times of day: day and night. Do these times of day have distinct characteristics or requirements?
+For example:
+1. Day and night are considered different times of day, allowing for distinct details for each time of day.
+2. Every play time of day is classified as either day or night. Both times of day have the same details, and there’s no need for extra information.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: Day and night doesn't have distinct characteristics.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q2:
+Option 2: Day and night doesn't have distinct characteristics.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 3:
+We know that each musical has a time. When we think about time, is it just a simple piece of information, like a line of text? 
+Or is time made up of different parts that might be important?
+For example:
+1. For each time, the detail information is saved separately, so users can filter musical by detail.
+2. The time is a single piece of text. This works well when we just need to show the time.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for time is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q3:
+Option 2: A single line of text for time is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 4:
+We know that each opera has a time. When we think about time, is it just a simple piece of information, like a line of text? 
+Or is time made up of different parts that might be important?
+For example:
+1. For each time, the detail information is saved separately, so users can filter opera by detail.
+2. The time is a single piece of text. This works well when we just need to show the time.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for time is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q4:
+Option 2: A single line of text for time is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ClassVsAttributeConfiguration) Question 5:
+We know that each person has a name. When we think about name, is it just a simple piece of information, like a line of text? 
+Or is name made up of different parts that might be important?
+For example:
+1. For each name, the detail information is saved separately, so users can filter person by detail.
+2. The name is a single piece of text. This works well when we just need to show the name.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: A single line of text for name is enough.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q5:
+Option 2: A single line of text for name is enough.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:(ConcreteVsAbstractClassConfiguration) Question 6:
+When we talk about people, do we always have a clear idea of a specific example, or do we sometimes speak about it in a more general way? Should we think of Person as a general concept that covers all possible forms, or is it always tied to a particular type or instance?
+
+For example:
+1. A general person can exist that is not an author or participant.
+2. A person is just a concept and cannot exist on its own. We only need specific types like author or participant.
+
+Which option is better for you?
+
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Option 2: The general person is not needed, and we only need its types.)
+INFO:BESSER Agentic Framework:Detected intent: fallback_intent
+INFO:BESSER Agentic Framework:[next_question_state] Running fallback body fallback_body
+INFO:__main__:Answer to Q6:
+Option 2: The general person is not needed, and we only need its types.
+INFO:__main__:Model update not required.
+INFO:BESSER Agentic Framework:Received event: receive_message_text (Next question)
+INFO:BESSER Agentic Framework:Detected intent: next_question_intent
+INFO:BESSER Agentic Framework:receive_message_text (Intent Matching - next_question_intent): [next_question_state] --> [next_question_state]
+INFO:BESSER Agentic Framework:[next_question_state] Running body next_question
+INFO:__main__:Final model:
+@startuml
+class Theater {
+    - location: string
+}
+abstract class Play {
+    - name: string
+    - timeOfDay: TimeOfDay
+}
+class Musical {
+}
+class Opera {
+}
+class Author {
+}
+class Participant {
+}
+class Session {
+    - startTime: string
+    - endTime: string
+}
+abstract class Person {
+    - name: string
+}
+enum TimeOfDay {
+    DAY
+    NIGHT
+}
+Theater "1" -- "0..*"  Play
+Play "0..*" -- "1"  Author
+Play "0..*" -- "0..*"  Participant
+Play "1" *-- "0..*"  Session
+Play <|-- Musical
+Play <|-- Opera
+Person <|-- Author
+Person <|-- Participant
+@enduml
