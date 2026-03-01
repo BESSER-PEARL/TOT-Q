@@ -1,0 +1,29 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt5;case_13_theater_scheduling;model011;Class;Abstract Play;1
+gpt5;case_13_theater_scheduling;model011;Attributes;Play.name;1
+gpt5;case_13_theater_scheduling;model011;Attributes;Play.timeOfDay;1
+gpt5;case_13_theater_scheduling;model011;Class;Musical;1
+gpt5;case_13_theater_scheduling;model011;Class;Opera;1
+gpt5;case_13_theater_scheduling;model011;Class;Theater;1
+gpt5;case_13_theater_scheduling;model011;Attributes;Theater.location;1
+gpt5;case_13_theater_scheduling;model011;Class;Session;1
+gpt5;case_13_theater_scheduling;model011;Attributes;Session.scheduledDate;1
+gpt5;case_13_theater_scheduling;model011;Attributes;Session.startTime;1
+gpt5;case_13_theater_scheduling;model011;Attributes;Session.endTime;1
+gpt5;case_13_theater_scheduling;model011;Class;Author;1
+gpt5;case_13_theater_scheduling;model011;Attributes;Author.name;1
+gpt5;case_13_theater_scheduling;model011;Class;Participant;1
+gpt5;case_13_theater_scheduling;model011;Attributes;Participant.name;1
+gpt5;case_13_theater_scheduling;model011;Class;Enumeration TimeOfDay;1
+gpt5;case_13_theater_scheduling;model011;Attributes;TimeOfDay.Day;1
+gpt5;case_13_theater_scheduling;model011;Attributes;TimeOfDay.Night;1
+gpt5;case_13_theater_scheduling;model011;Association;"Play ""1..*"" -- ""0..*"" Theater";1
+gpt5;case_13_theater_scheduling;model011;Association;"Play ""1..*"" -- ""1..*"" Author";1
+gpt5;case_13_theater_scheduling;model011;Association;"Play ""1..*"" -- ""1..*"" Participant";1
+gpt5;case_13_theater_scheduling;model011;Association;"Session ""1"" -- ""0..*"" Theater";1
+gpt5;case_13_theater_scheduling;model011;Association;"Session ""1..*"" -- ""0..*"" Participant";1
+gpt5;case_13_theater_scheduling;model011;Association;"Author ""0..1"" -- ""0..1"" Participant";1
+gpt5;case_13_theater_scheduling;model011;Composition;"Play ""0..*"" *-- ""1"" Session";1
+gpt5;case_13_theater_scheduling;model011;Inheritance;Musical --|> Play;1
+gpt5;case_13_theater_scheduling;model011;Inheritance;Opera --|> Play;1
+gpt5;case_13_theater_scheduling;model011;Association Class;(Play, Theater) .. Session;1

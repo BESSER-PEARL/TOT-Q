@@ -64,9 +64,7 @@ def get_samples(task, x, y, n_generate_sample, prompt_sample):
     return samples
 
 def solve(args, task, to_print=True, log_name = "test.log"):
-    if not exists(log_folder):
-        mkdir(log_folder)
-    log_file = join(log_folder, log_name)
+    log_file = log_name
     logging.basicConfig(filename = log_file, filemode="a", level=logging.INFO)
 
     global gpt

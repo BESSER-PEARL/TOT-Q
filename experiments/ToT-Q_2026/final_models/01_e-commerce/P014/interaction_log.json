@@ -1,0 +1,551 @@
+{
+  "session_id": "P014",
+  "domain": "In a e-commerce retail organization, customers are registered with unique ids to place orders that includes multiple products. An order also has a unique identifier and consists of one or more products, which are described by their name and description. When the customer completes the order, it is necessary to specify the quantity requested and the price for the item is updated.\n\nThe retailer also ask customers to provide feedback by writing reviews for specific products. These reviews capture the opinion of a customer regarding a product, including the date it was written and a rating score. Finally, the marketing department organizes promotional campaigns. A product may be included in various promotions over time. Whenever a product is part of a campaign, specific terms are established for that offer, such as the applicable discount rate and a validity period defined by a start and end date.",
+  "domain_name": "E-commerce",
+  "user_profile": "low",
+  "llm_initial_model": "model012",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Order : Places\nOrder \"1\" *-- \"1..*\"  OrderItem\n(Customer, Product) .. Review\n(Product, PromotionalCampaign) .. ProductPromotion\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Product",
+      "confidence": 0.98
+    },
+    {
+      "pos": 2,
+      "class": "OrderItem",
+      "confidence": 0.92
+    },
+    {
+      "pos": 3,
+      "class": "Order",
+      "confidence": 0.98
+    },
+    {
+      "pos": 4,
+      "class": "Customer",
+      "confidence": 0.98
+    },
+    {
+      "pos": 5,
+      "class": "ProductPromotion",
+      "confidence": 0.91
+    },
+    {
+      "pos": 6,
+      "class": "PromotionalCampaign",
+      "confidence": 0.92
+    },
+    {
+      "pos": 7,
+      "class": "Review",
+      "confidence": 0.96
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "In the context of a product, is it always association with at least one order item, or can it exist without any?\nFor example:\n1. A product can exist without any order item.\n2. A product must have at least one order item.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A product can exist without any order item.",
+      "option_2": "Option 2: A product must have at least one order item.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "OrderItem",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ForProduct"
+      },
+      "selected": "Option 2: A product must have at least one order item.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "OrderItem",
+          "target": "Product",
+          "type": "Association",
+          "name": "ForProduct",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Order : Places\nCustomer \"1\" -- \"0..*\"  Review : Writes\nProduct \"1\" -- \"0..*\"  Review : ReceivesReviews\nProduct \"1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nOrder \"1\" *-- \"1..*\"  OrderItem\nPromotionalCampaign \"1\" *-- \"0..*\"  ProductPromotion\nOrderItem \"1..*\" -- \"1\"  Product : ForProduct\n@enduml"
+    },
+    {
+      "q_num": 2,
+      "question": "In the context of an order item, is it always associated with at least one product, or can it exist without any?\nFor example:\n1. An order item can exist without any product.\n2. An order item must have at least one product.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An order item can exist without any product.",
+      "option_2": "Option 2: An order item must have at least one product.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "OrderItem",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ForProduct"
+      },
+      "selected": "Option 2: An order item must have at least one product.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "OrderItem",
+          "target": "Product",
+          "type": "Association",
+          "name": "ForProduct",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 3,
+      "question": "In the context of an order item, can there be more than one product involved, or is it always associated with just one?\n\nFor example:\n1. An order item is linked to a single product.\n2. An order item is linked to multiple products.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each order item is always linked to a single product.",
+      "option_2": "Option 2: An order item can be linked to multiple products.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "OrderItem",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ForProduct"
+      },
+      "selected": "Option 1: Each order item is always linked to a single product.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "OrderItem",
+          "target": "Product",
+          "type": "Association",
+          "name": "ForProduct",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "In the context of a order, is it always associated with at least one customer, or can it exist without any?\nFor example:\n1. An order can exist without any customer.\n2. An order must have at least one customer.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An order can exist without any customer.",
+      "option_2": "Option 2: An order must have at least one customer.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Customer",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Places"
+      },
+      "selected": "Option 1: An order can exist without any customer.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Order",
+          "type": "Association",
+          "name": "Places",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Review : Writes\nProduct \"1\" -- \"0..*\"  Review : ReceivesReviews\nProduct \"1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nOrder \"1\" *-- \"1..*\"  OrderItem\nPromotionalCampaign \"1\" *-- \"0..*\"  ProductPromotion\nOrderItem \"1..*\" -- \"1\"  Product : ForProduct\nCustomer \"0..1\" -- \"0..*\"  Order : Places\n@enduml"
+    },
+    {
+      "q_num": 5,
+      "question": "In the context of a customer, is it always association with at least one order, or can it exist without any?\nFor example:\n1. A customer can exist without any order.\n2. A customer must have at least one order.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A customer can exist without any order.",
+      "option_2": "Option 2: A customer must have at least one order.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Customer",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Places"
+      },
+      "selected": "Option 1: A customer can exist without any order.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Order",
+          "type": "Association",
+          "name": "Places",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 6,
+      "question": "In the context of a customer, can there be more than one order involved, or is it always associated with just one?\nFor example:\n1. A customer is linked to a single order.\n2. A customer is linked to multiple orders.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each customer is always linked to a single order.",
+      "option_2": "Option 2: A customer can be linked to multiple orders.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Customer",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Places"
+      },
+      "selected": "Option 2: A customer can be linked to multiple orders.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Order",
+          "type": "Association",
+          "name": "Places",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "In the context of a product promotion, is it always associated with at least one product, or can it exist without any?\nFor example:\n1. A product promotion can exist without any product.\n2. A product promotion must have at least one product.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A product promotion can exist without any product.",
+      "option_2": "Option 2: A product promotion must have at least one product.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "ProductPromotion",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ParticipatesIn"
+      },
+      "selected": "Option 1: A product promotion can exist without any product.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Product",
+          "target": "ProductPromotion",
+          "type": "Association",
+          "name": "ParticipatesIn",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Review : Writes\nProduct \"1\" -- \"0..*\"  Review : ReceivesReviews\nOrder \"1\" *-- \"1..*\"  OrderItem\nPromotionalCampaign \"1\" *-- \"0..*\"  ProductPromotion\nOrderItem \"1..*\" -- \"1\"  Product : ForProduct\nCustomer \"0..1\" -- \"0..*\"  Order : Places\nProduct \"0..1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\n@enduml"
+    },
+    {
+      "q_num": 8,
+      "question": "In the context of a product, is it always association with at least one product promotion, or can it exist without any?\nFor example:\n1. A product can exist without any product promotion.\n2. A product must have at least one product promotion.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A product can exist without any product promotion.",
+      "option_2": "Option 2: A product must have at least one product promotion.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "ProductPromotion",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ParticipatesIn"
+      },
+      "selected": "Option 1: A product can exist without any product promotion.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Product",
+          "target": "ProductPromotion",
+          "type": "Association",
+          "name": "ParticipatesIn",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 9,
+      "question": "In the context of a product, can there be more than one product promotion involved, or is it always associated with just one?\nFor example:\n1. A product is linked to a single product promotion.\n2. A product is linked to multiple product promotions.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each product is always linked to a single product promotion.",
+      "option_2": "Option 2: A product can be linked to multiple product promotions.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "ProductPromotion",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ParticipatesIn"
+      },
+      "selected": "Option 2: A product can be linked to multiple product promotions.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Product",
+          "target": "ProductPromotion",
+          "type": "Association",
+          "name": "ParticipatesIn",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 10,
+      "question": "In the context of a product promotion, is it always associated with at least one promotional campaign, or can it exist without any?\nFor example:\n1. A product promotion can exist without any promotional campaign.\n2. A product promotion must have at least one promotional campaign.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A product promotion can exist without any promotional campaign.",
+      "option_2": "Option 2: A product promotion must have at least one promotional campaign.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "PromotionalCampaign",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IncludesProductPromotions"
+      },
+      "selected": "Option 1: A product promotion can exist without any promotional campaign.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "PromotionalCampaign",
+          "target": "ProductPromotion",
+          "type": "Containment",
+          "name": "IncludesProductPromotions",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Review : Writes\nProduct \"1\" -- \"0..*\"  Review : ReceivesReviews\nOrder \"1\" *-- \"1..*\"  OrderItem\nOrderItem \"1..*\" -- \"1\"  Product : ForProduct\nCustomer \"0..1\" -- \"0..*\"  Order : Places\nProduct \"0..1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nPromotionalCampaign \"0..1\" *-- \"0..*\"  ProductPromotion\n@enduml"
+    },
+    {
+      "q_num": 11,
+      "question": "In the context of a review, is it always associated with at least one customer, or can it exist without any?\nFor example:\n1. A review can exist without any customer.\n2. A review must have at least one customer.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A review can exist without any customer.",
+      "option_2": "Option 2: A review must have at least one customer.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Review",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Writes"
+      },
+      "selected": "Option 2: A review must have at least one customer.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Review",
+          "type": "Association",
+          "name": "Writes",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "In the context of a review, can there be more than one customer involved, or is it always associated with just one? \nFor example:\n1. A review is linked to a single customer.\n2. A review is linked to multiple customers.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each review is always linked to a single customer.",
+      "option_2": "Option 2: A review can be linked to multiple customers.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Review",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Writes"
+      },
+      "selected": "Option 1: Each review is always linked to a single customer.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Review",
+          "type": "Association",
+          "name": "Writes",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 13,
+      "question": "In the context of a customer, can there be more than one review involved, or is it always associated with just one?\nFor example:\n1. A customer is linked to a single review.\n2. A customer is linked to multiple reviews.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each customer is always linked to a single review.",
+      "option_2": "Option 2: A customer can be linked to multiple reviews.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Review",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Writes"
+      },
+      "selected": "Option 2: A customer can be linked to multiple reviews.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Review",
+          "type": "Association",
+          "name": "Writes",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 14,
+      "question": "In the context of a review, is it always associated with at least one product, or can it exist without any?\nFor example:\n1. A review can exist without any product.\n2. A review must have at least one product.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A review can exist without any product.",
+      "option_2": "Option 2: A review must have at least one product.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Review",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ReceivesReviews"
+      },
+      "selected": "Option 1: A review can exist without any product.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Product",
+          "target": "Review",
+          "type": "Association",
+          "name": "ReceivesReviews",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Review : Writes\nOrder \"1\" *-- \"1..*\"  OrderItem\nOrderItem \"1..*\" -- \"1\"  Product : ForProduct\nCustomer \"0..1\" -- \"0..*\"  Order : Places\nProduct \"0..1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nPromotionalCampaign \"0..1\" *-- \"0..*\"  ProductPromotion\nProduct \"0..1\" -- \"0..*\"  Review : ReceivesReviews\n@enduml"
+    },
+    {
+      "q_num": 15,
+      "question": "In the context of a product, can there be more than one review involved, or is it always associated with just one?\nFor example:\n1. A product is linked to a single review.\n2. A product is linked to multiple reviews.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each product is always linked to a single review.",
+      "option_2": "Option 2: A product can be linked to multiple reviews.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Review",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ReceivesReviews"
+      },
+      "selected": "Option 2: A product can be linked to multiple reviews.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Product",
+          "target": "Review",
+          "type": "Association",
+          "name": "ReceivesReviews",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 16,
+      "question": "The concept order item potentially represents a link between orders and products. How should we understand this connection?\n\nFor example:\n1. An order item is a concept, but it does not represent a link between an order and a product.\n2. An order item is a concept and a link that connects an order and a product. \n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The order item does not represent a link between an order and a product.",
+      "option_2": "Option 2: The order item is a concept and a link between an order and a product.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.92,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "OrderItem"
+      },
+      "selected": "Option 1: The order item does not represent a link between an order and a product.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "OrderItem"
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Review : Writes\nCustomer \"0..1\" -- \"0..*\"  Order : Places\nProduct \"0..1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nPromotionalCampaign \"0..1\" *-- \"0..*\"  ProductPromotion\nProduct \"0..1\" -- \"0..*\"  Review : ReceivesReviews\nOrder \"*\" -- \"*\"  Product : associates\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Order, Product) .. OrderItem\n@enduml"
+    },
+    {
+      "q_num": 17,
+      "question": "The concept review potentially represents a link between customers and products. How should we understand this connection?\n\nFor example:\n1. A review is a concept, but it does not represent a link between a customer and a product.\n2. A review is a concept and a link that connects a customer and a product. \n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The review does not represent a link between a customer and a product.",
+      "option_2": "Option 2: The review is a concept and a link between a customer and a product.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.96,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "Review"
+      },
+      "selected": "Option 1: The review does not represent a link between a customer and a product.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Review"
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"0..1\" -- \"0..*\"  Order : Places\nProduct \"0..1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nPromotionalCampaign \"0..1\" *-- \"0..*\"  ProductPromotion\nOrder \"*\" -- \"*\"  Product : associates\nCustomer \"*\" -- \"*\"  Product\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Order, Product) .. OrderItem\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\n(Customer, Product) .. Review\n@enduml"
+    },
+    {
+      "q_num": 18,
+      "question": "The concept product promotion potentially represents a link between products and promotional campaigns. How should we understand this connection?\n\nFor example:\n1. A product promotion is a concept, but it does not represent a link between a product and a promotional campaign.\n2. A product promotion is a concept and a link that connects a product and a promotional campaign. \n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The product promotion does not represent a link between a product and a promotional campaign.",
+      "option_2": "Option 2: The product promotion is a concept and a link between a product and a promotional campaign.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.91,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "ProductPromotion"
+      },
+      "selected": "Option 2: The product promotion is a concept and a link between a product and a promotional campaign.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "ProductPromotion"
+      }
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass PromotionalCampaign {\n}\nCustomer \"0..1\" -- \"0..*\"  Order : Places\nProduct \"0..1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nPromotionalCampaign \"0..1\" *-- \"0..*\"  ProductPromotion\nOrder \"*\" -- \"*\"  Product : associates\nCustomer \"*\" -- \"*\"  Product\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Order, Product) .. OrderItem\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\n(Customer, Product) .. Review\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\n(Product, PromotionalCampaign) .. ProductPromotion\n@enduml"
+  },
+  "summary": {
+    "total_questions": 18,
+    "model_changes": 7,
+    "changes_by_pattern": {
+      "LowerboundCardinalityOneVsMany": 5,
+      "UpperboundCardinalityOneVsMany": 0,
+      "AssociationClassVsClass": 2
+    }
+  }
+}

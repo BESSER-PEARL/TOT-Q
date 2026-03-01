@@ -1,0 +1,184 @@
+{
+  "session_id": "P101",
+  "domain": "In an e-commerce retail organization, customers are registered with unique ids to place orders that includes multiple products. An order also has a unique identifier and consists of one or more products, which are described by their name and description. When the customer completes the order, it is necessary to specify the quantity requested and the price for the item is updated.\n\nThe retailer also ask customers to provide feedback by writing reviews for specific products. These reviews capture the opinion of a customer regarding a product, including the date it was written and a rating score. Finally, the marketing department organizes promotional campaigns. A product may be included in various promotions over time. Whenever a product is part of a campaign, specific terms are established for that offer, such as the applicable discount rate and a validity period defined by a start and end date.",
+  "domain_name": "E-commerce",
+  "user_profile": "low",
+  "llm_initial_model": "model011",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Customer {\n    - id : String\n}\nclass Order {\n    - id : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - reviewDate : Date\n    - ratingScore : Integer\n}\nclass Promotion {\n}\nclass Offer {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"0..*\" -- \"1\"  Order : Places\nOffer \"1\" -- \"0..*\"  Product : AppliesTo\nPromotion \"0..*\" *-- \"1\"  Offer\n(Product, Order) .. OrderItem\n(Customer, Product) .. Review\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Product",
+      "confidence": 0.98
+    },
+    {
+      "pos": 2,
+      "class": "Offer",
+      "confidence": 0.85
+    },
+    {
+      "pos": 3,
+      "class": "Promotion",
+      "confidence": 0.92
+    },
+    {
+      "pos": 4,
+      "class": "OrderItem",
+      "confidence": 0.9
+    },
+    {
+      "pos": 5,
+      "class": "Order",
+      "confidence": 0.98
+    },
+    {
+      "pos": 6,
+      "class": "Customer",
+      "confidence": 0.98
+    },
+    {
+      "pos": 7,
+      "class": "Review",
+      "confidence": 0.95
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "Does an offer always require a promotion to exist. \nIf a promotion is removed, would all the associated offers also need to be removed?\n\nFor example:\n1. An offer belongs to a promotion and cannot exist on its own.\n2. An offer is linked to a promotion but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A offer always belongs to a promotion.",
+      "option_2": "Option 2: A offer is linked to promotion but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.62,
+      "visiting_class": "Promotion",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "composition",
+        "description": "IncludesOffers"
+      },
+      "selected": "Option 1: A offer always belongs to a promotion.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Promotion",
+          "target": "Offer",
+          "type": "Containment",
+          "name": "IncludesOffers",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "In the context of a offer, is it always association with at least one promotion, or can it exist without any?\nFor example:\n1. An offer can exist without any promotion.\n2. An offer must have at least one promotion.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An offer can exist without any promotion.",
+      "option_2": "Option 2: An offer must have at least one promotion.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.58,
+      "visiting_class": "Promotion",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IncludesOffers"
+      },
+      "selected": "Option 2: An offer must have at least one promotion.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Promotion",
+          "target": "Offer",
+          "type": "Containment",
+          "name": "IncludesOffers",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - id : String\n}\nclass Order {\n    - id : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - reviewDate : Date\n    - ratingScore : Integer\n}\nclass Promotion {\n}\nclass Offer {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"0..*\" -- \"1\"  Order : Places\nOrderItem \"1\" -- \"0..*\"  Product : ForProduct\nCustomer \"0..*\" -- \"1\"  Review : Writes\nProduct \"0..1\" -- \"1\"  Review : HasReviews\nOffer \"1\" -- \"0..*\"  Product : AppliesTo\nOrder \"1\" *-- \"1\"  OrderItem\nPromotion \"1\" *-- \"1\"  Offer\n@enduml"
+    },
+    {
+      "q_num": 3,
+      "question": "The concept order item potentially represents a link between products and orders. How should we understand this connection?\n\nFor example:\n1. An order item is a concept and a link that connects a product and an order. \n2. An order item is a concept, but it does not represent a link between a product and an order.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The order item is a concept and a link between a product and an order.",
+      "option_2": "Option 2: The order item does not represent a link between a product and an order.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.9,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "OrderItem"
+      },
+      "selected": "Option 1: The order item is a concept and a link between a product and an order.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "OrderItem"
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - id : String\n}\nclass Order {\n    - id : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass Review {\n    - reviewDate : Date\n    - ratingScore : Integer\n}\nclass Promotion {\n}\nclass Offer {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"0..*\" -- \"1\"  Order : Places\nCustomer \"0..*\" -- \"1\"  Review : Writes\nProduct \"0..1\" -- \"1\"  Review : HasReviews\nOffer \"1\" -- \"0..*\"  Product : AppliesTo\nPromotion \"1\" *-- \"1\"  Offer\nProduct \"*\" -- \"*\"  Order : associates\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Product, Order) .. OrderItem\n@enduml"
+    },
+    {
+      "q_num": 4,
+      "question": "The concept review potentially represents a link between customers and products. How should we understand this connection?\n\nFor example:\n1. A review is a concept and a link that connects a customer and a product. \n2. A review is a concept, but it does not represent a link between a customer and a product.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The review is a concept and a link between a customer and a product.",
+      "option_2": "Option 2: The review does not represent a link between a customer and a product.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.95,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "Review"
+      },
+      "selected": "Option 1: The review is a concept and a link between a customer and a product.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Review"
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - id : String\n}\nclass Order {\n    - id : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass Promotion {\n}\nclass Offer {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"0..*\" -- \"1\"  Order : Places\nOffer \"1\" -- \"0..*\"  Product : AppliesTo\nPromotion \"1\" *-- \"1\"  Offer\nProduct \"*\" -- \"*\"  Order : associates\nCustomer \"*\" -- \"*\"  Product\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Product, Order) .. OrderItem\nclass Review {\n    - reviewDate : Date\n    - ratingScore : Integer\n}\n(Customer, Product) .. Review\n@enduml"
+    },
+    {
+      "q_num": 5,
+      "question": "The concept offer potentially represents a link between products and promotions. How should we understand this connection?\n\nFor example:\n1. An offer is a concept and a link that connects a product and a promotion. \n2. An offer is a concept, but it does not represent a link between a product and a promotion.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The offer is a concept and a link between a product and a promotion.",
+      "option_2": "Option 2: The offer does not represent a link between a product and a promotion.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.85,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "Offer"
+      },
+      "selected": "Option 1: The offer is a concept and a link between a product and a promotion.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Offer"
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - id : String\n}\nclass Order {\n    - id : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass Promotion {\n}\nCustomer \"0..*\" -- \"1\"  Order : Places\nProduct \"*\" -- \"*\"  Order : associates\nCustomer \"*\" -- \"*\"  Product\nProduct \"*\" -- \"*\"  Promotion\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Product, Order) .. OrderItem\nclass Review {\n    - reviewDate : Date\n    - ratingScore : Integer\n}\n(Customer, Product) .. Review\nclass Offer {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\n(Product, Promotion) .. Offer\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Customer {\n    - id : String\n}\nclass Order {\n    - id : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass Promotion {\n}\nCustomer \"0..*\" -- \"1\"  Order : Places\nProduct \"*\" -- \"*\"  Order : associates\nCustomer \"*\" -- \"*\"  Product\nProduct \"*\" -- \"*\"  Promotion\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Product, Order) .. OrderItem\nclass Review {\n    - reviewDate : Date\n    - ratingScore : Integer\n}\n(Customer, Product) .. Review\nclass Offer {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\n(Product, Promotion) .. Offer\n@enduml"
+  },
+  "summary": {
+    "total_questions": 5,
+    "model_changes": 4,
+    "changes_by_pattern": {
+      "CompositionVsAssociation": 0,
+      "LowerboundCardinalityOneVsMany": 1,
+      "AssociationClassVsClass": 3
+    }
+  }
+}

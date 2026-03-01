@@ -1,0 +1,18 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P010;robots;model013;Class;Task;1
+P010;robots;model013;Attributes;Task.code;1
+P010;robots;model013;Class;Robot;1
+P010;robots;model013;Attributes;Robot.identifier;1
+P010;robots;model013;Attributes;Robot.RobotType;1
+P010;robots;model013;Class;Enumeration LocationCategory;1
+P010;robots;model013;Attributes;LocationCategory.Corridor;1
+P010;robots;model013;Attributes;LocationCategory.Room;1
+P010;robots;model013;Class;Enumeration RobotType;1
+P010;robots;model013;Attributes;RobotType.CLEANING;1
+P010;robots;model013;Attributes;RobotType.TRANSPORT;1
+P010;robots;model013;Association;"Robot ""0..1"" -- ""0..*"" Task";1
+P010;robots;model013;Class;TaskExecution;1
+P010;robots;model013;Attributes;TaskExecution.referenceCode;1
+P010;robots;model013;Attributes;TaskExecution.startTime;1
+P010;robots;model013;Attributes;TaskExecution.locationCategory;1
+P010;robots;model013;Association Class;(Robot, Task) .. TaskExecution;1

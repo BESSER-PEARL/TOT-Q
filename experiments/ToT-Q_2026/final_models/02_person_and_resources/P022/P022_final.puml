@@ -1,0 +1,28 @@
+@startuml
+abstract class Resource {
+    - name : String
+}
+class File {
+}
+class Folder {
+}
+class User {
+    - password : String
+}
+class Person {
+    - name : String
+    - identifier : String
+    - Ancestor : string
+}
+Person "0..1" -- "0..1"  Person : ChildOf
+Resource <|-- File
+Resource <|-- Folder
+Person <|-- User
+Folder "1" -- "0..1"  Resource : Folder_Contains_Resource
+User "*" -- "*"  Resource : associates
+class Access {
+    - canView : Boolean
+    - canEdit : Boolean
+}
+(User, Resource) .. Access
+@enduml

@@ -1,0 +1,22 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt5;case_14_university_courses;model012;Class;Student;1
+gpt5;case_14_university_courses;model012;Attributes;Student.studentCode;1
+gpt5;case_14_university_courses;model012;Class;Course;1
+gpt5;case_14_university_courses;model012;Class;Enrollment;1
+gpt5;case_14_university_courses;model012;Attributes;Enrollment.date;1
+gpt5;case_14_university_courses;model012;Class;TeachingAssistant;1
+gpt5;case_14_university_courses;model012;Attributes;TeachingAssistant.firstName;1
+gpt5;case_14_university_courses;model012;Attributes;TeachingAssistant.lastName;1
+gpt5;case_14_university_courses;model012;Class;Assignment;1
+gpt5;case_14_university_courses;model012;Attributes;Assignment.role;1
+gpt5;case_14_university_courses;model012;Attributes;Assignment.details;1
+gpt5;case_14_university_courses;model012;Attributes;Assignment.responsibilities;1
+gpt5;case_14_university_courses;model012;Class;LabSection;1
+gpt5;case_14_university_courses;model012;Attributes;LabSection.location;1
+gpt5;case_14_university_courses;model012;Class;TimeSlot;1
+gpt5;case_14_university_courses;model012;Attributes;TimeSlot.startTime;1
+gpt5;case_14_university_courses;model012;Attributes;TimeSlot.endTime;1
+gpt5;case_14_university_courses;model012;Association;"Student ""0..*"" -- ""1"" Enrollment";1
+gpt5;case_14_university_courses;model012;Composition;"Course ""1..*"" *-- ""1"" LabSection";1
+gpt5;case_14_university_courses;model012;Composition;"LabSection ""1"" *-- ""1"" TimeSlot";1
+gpt5;case_14_university_courses;model012;Association Class;(TeachingAssistant, Course) .. Assignment;1

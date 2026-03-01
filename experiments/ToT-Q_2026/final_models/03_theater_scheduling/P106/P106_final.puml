@@ -1,0 +1,37 @@
+@startuml
+class Theater {
+    - location : String
+}
+abstract class Play {
+    - name : String
+    - timeOfDay : TimeOfDay
+}
+class Musical {
+}
+class Opera {
+}
+class Session {
+    - scheduledDate : Date
+    - startTime : Time
+    - endTime : Time
+}
+class Author {
+}
+class Participant {
+}\nabstract class Person {
+    - name : String
+}
+enum TimeOfDay {
+    Day
+    Night
+}
+Play "1..*" -- "0..*"  Author : WrittenBy
+Play "1" -- "0..*"  Participant : InvolvesParticipant
+Session "1" -- "0..*"  Theater : OccursIn
+Play <|-- Musical
+Play <|-- Opera
+Person <|-- Author
+Person <|-- Participant
+Play "1" *-- "1"  Session
+Play "0..*" -- "0..1"  Theater : PerformedAt
+@enduml

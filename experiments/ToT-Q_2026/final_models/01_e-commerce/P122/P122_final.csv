@@ -1,0 +1,27 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P122;e-commerce;model003;Class;Customer;1
+P122;e-commerce;model003;Attributes;Customer.customerId;1
+P122;e-commerce;model003;Class;Order;1
+P122;e-commerce;model003;Attributes;Order.orderId;1
+P122;e-commerce;model003;Class;Product;1
+P122;e-commerce;model003;Attributes;Product.name;1
+P122;e-commerce;model003;Attributes;Product.description;1
+P122;e-commerce;model003;Class;OrderItem;1
+P122;e-commerce;model003;Attributes;OrderItem.quantity;1
+P122;e-commerce;model003;Attributes;OrderItem.agreedPrice;1
+P122;e-commerce;model003;Class;Review;1
+P122;e-commerce;model003;Attributes;Review.dateWritten;1
+P122;e-commerce;model003;Attributes;Review.ratingScore;1
+P122;e-commerce;model003;Class;Promotion;1
+P122;e-commerce;model003;Attributes;Promotion.promotionId;1
+P122;e-commerce;model003;Association;"Customer ""1"" -- ""0..*"" Order";1
+P122;e-commerce;model003;Association;"Customer ""1"" -- ""0..*"" Review";1
+P122;e-commerce;model003;Association;"Product ""1"" -- ""0..*"" Review";1
+P122;e-commerce;model003;Composition;"Order ""1"" *-- ""1..*"" OrderItem";1
+P122;e-commerce;model003;Composition;"OrderItem ""0..1"" *-- ""1"" Product";1
+P122;e-commerce;model003;Association;"Promotion ""*"" -- ""*"" Product";1
+P122;e-commerce;model003;Class;ProductPromotion;1
+P122;e-commerce;model003;Attributes;ProductPromotion.discountRate;1
+P122;e-commerce;model003;Attributes;ProductPromotion.startDate;1
+P122;e-commerce;model003;Attributes;ProductPromotion.endDate;1
+P122;e-commerce;model003;Association Class;(Promotion, Product) .. ProductPromotion;1

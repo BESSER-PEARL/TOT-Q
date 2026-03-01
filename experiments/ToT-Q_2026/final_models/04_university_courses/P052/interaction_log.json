@@ -1,0 +1,813 @@
+{
+  "session_id": "P052",
+  "domain": "In an academic institution, students enroll in various courses offered by the university. Each student is uniquely identified by a student code. An enrollment in the course requires the specific date on which it occurred for administrative purposes.\n\nCourses are supported by Teaching Assistants (TAs), who are identified by their first and last names. A TA may assist in multiple different courses, and the specific role of a TA within a course is defined by an assignment, which describes the details and responsibilities assigned to them. Regarding courses logistics, they consist of one or more lab sections. Each section occurs at a specific location and time slot with start and end times.",
+  "domain_name": "University courses",
+  "user_profile": "medium",
+  "llm_initial_model": "model012",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - role : String\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"1..*\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\n(TeachingAssistant, Course) .. Assignment\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Course",
+      "confidence": 0.96
+    },
+    {
+      "pos": 2,
+      "class": "Assignment",
+      "confidence": 0.86
+    },
+    {
+      "pos": 3,
+      "class": "TeachingAssistant",
+      "confidence": 0.96
+    },
+    {
+      "pos": 4,
+      "class": "Enrollment",
+      "confidence": 0.95
+    },
+    {
+      "pos": 5,
+      "class": "Student",
+      "confidence": 0.98
+    },
+    {
+      "pos": 6,
+      "class": "LabSection",
+      "confidence": 0.93
+    },
+    {
+      "pos": 7,
+      "class": "TimeSlot",
+      "confidence": 0.57
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "We know that each assignment has a responsibilities. When we think about responsibilities, is it just a simple piece of information, like a line of text? \nOr is responsibilities made up of different parts that might be important?\nFor example:\n1. For each responsibilities, the detail information is saved separately, so users can filter assignment by detail.\n2. The responsibilities is a single piece of text. This works well when we just need to show the responsibilities.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Responsibilities is a separate class with its own attributes.",
+      "option_2": "Option 2: Model responsibilities as a simple representation in Assignment.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.5,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "responsibilities"
+      },
+      "selected": "Option 1: We need the responsibilities details separately.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "Assignment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - role : String\n    - details : String\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  Assignment : has\n@enduml"
+    },
+    {
+      "q_num": 2,
+      "question": "We know that each assignment has a details. When we think about details, is it just a simple piece of information, like a line of text? \nOr is details made up of different parts that might be important?\nFor example:\n1. For each details, the detail information is saved separately, so users can filter assignment by detail.\n2. The details is a single piece of text. This works well when we just need to show the details.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Details is a separate class with its own attributes.",
+      "option_2": "Option 2: Model details as a simple representation in Assignment.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.52,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "details"
+      },
+      "selected": "Option 2: A single line of text for details is enough.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "details"
+      }
+    },
+    {
+      "q_num": 3,
+      "question": "Should the details in assignment be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use details as string attribute in assignment, which allows any text value.\n2. Use details as an enumeration which uses predefined values in literals: grading, tutoring, course preparation, lab assistance or administrative support.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for details.",
+      "option_2": "Option 2: Enumeration details with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.52,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "details"
+      },
+      "selected": "Option 1: String attribute that allows any text value for details.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "details"
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "Should role be modeled as a separate class associated with Assignment, or remain as a simple representation?\n\nFor example:\n1. Role is a separate class with its own attributes. This allows users to query and filter by individual role properties.\n2. Role is modeled as a simple representation in Assignment. This is suitable when role details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Role is a separate class with its own attributes.",
+      "option_2": "Option 2: Model role as a simple representation in Assignment.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.53,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "role"
+      },
+      "selected": "Option 1: The Role is a separate class with its own attributes.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "Role"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n    - type : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  Assignment : has\nAssignment \"1\" -- \"1\"  Role\n@enduml"
+    },
+    {
+      "q_num": 5,
+      "question": "Should the relationship between Assignment and Assignment be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Assignment would depend on Assignment for its existence.\n2. Use association, Assignment could exist independently of Assignment, and can also be linked to multiple assignments.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Assignment depends on Assignment.",
+      "option_2": "Option 2: Association is sufficient because class Assignment exists independently of Assignment.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.4,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "association",
+        "description": "has"
+      },
+      "selected": "Option 1: Composition is needed because class Assignment depends on Assignment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Assignment",
+          "target": "Assignment",
+          "type": "Composition",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n    - type : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  Role : has\nAssignment \"1\" *-- \"1\"  Assignment\n@enduml"
+    },
+    {
+      "q_num": 6,
+      "question": "What is the minimum cardinality of Course in the relationship with Assignment?\n\nFor example:\n1. Minimum cardinality of zero, an assignment can exist without any associated course.\n2. Minimum cardinality of one, an assignment must have at least one associated course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Assignment can exist without Course.",
+      "option_2": "Option 2: One as minimum cardinality,Assignment must have at least one Course.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.61,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TaAssignments"
+      },
+      "selected": "Option 2: One as minimum cardinality,Assignment must have at least one Course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "TaAssignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n    - type : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  Role : has\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"1\"  Assignment : TaAssignments\n@enduml"
+    },
+    {
+      "q_num": 7,
+      "question": "What is the minimum cardinality of Assignment in the relationship with Course?\n\nFor example:\n1. Minimum cardinality of zero, a course can exist without any associated assignment.\n2. Minimum cardinality of one, a course must have at least one associated assignment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Course can exist without Assignment.",
+      "option_2": "Option 2: One as minimum cardinality,Course must have at least one Assignment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TaAssignments"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Course can exist without Assignment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "TaAssignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n    - type : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  Role : has\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\n@enduml"
+    },
+    {
+      "q_num": 8,
+      "question": "Should type be modeled as a separate class associated with Role, or remain as a simple representation?\n\nFor example:\n1. Type is a separate class with its own attributes. This allows users to query and filter by individual type properties.\n2. Type is modeled as a simple representation in Role. This is suitable when type details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Type is a separate class with its own attributes.",
+      "option_2": "Option 2: Model type as a simple representation in Role.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.8,
+      "visiting_class": "Role",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "type"
+      },
+      "selected": "Option 1: The Type is a separate class with its own attributes.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "RoleType"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  Role : has\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nRole \"1\" -- \"1\"  RoleType\n@enduml"
+    },
+    {
+      "q_num": 9,
+      "question": "Should the relationship between Assignment and Role be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Role would depend on Assignment for its existence.\n2. Use association, Role could exist independently of Assignment, and can also be linked to multiple assignments.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Role depends on Assignment.",
+      "option_2": "Option 2: Association is sufficient because class Role exists independently of Assignment.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.4,
+      "visiting_class": "Role",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "association",
+        "description": "has"
+      },
+      "selected": "Option 1: Composition is needed because class Role depends on Assignment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Assignment",
+          "target": "Role",
+          "type": "Composition",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nRole \"1\" -- \"1\"  RoleType : has\nAssignment \"1\" *-- \"1\"  Role\n@enduml"
+    },
+    {
+      "q_num": 10,
+      "question": "Is name a relevant attribute of role type that should be included in the model?\n\nFor example:\n1. Name captures important domain information about role type.\n2. Name does not represent important domain information for role type.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Keep name, it is relevant information for role type.",
+      "option_2": "Option 2: Remove name, it is not a relevant information.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.0,
+      "visiting_class": "RoleType",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "name"
+      },
+      "selected": "Option 1: Keep name, it is relevant information for role type.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "name"
+      }
+    },
+    {
+      "q_num": 11,
+      "question": "Should name be modeled as a separate class associated with RoleType, or remain as a simple representation?\n\nFor example:\n1. Name is a separate class with its own attributes. This allows users to query and filter by individual name properties.\n2. Name is modeled as a simple representation in RoleType. This is suitable when name details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Name is a separate class with its own attributes.",
+      "option_2": "Option 2: Model name as a simple representation in RoleType.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.0,
+      "visiting_class": "RoleType",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "name"
+      },
+      "selected": "Option 2: Model name as a simple representation in RoleType.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "name"
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "Should the name in role type be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use name as string attribute in role type, which allows any text value.\n2. Use name as an enumeration which uses predefined values in literals: instructor, grader, lab assistant or course coordinator.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for name.",
+      "option_2": "Option 2: Enumeration name with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.0,
+      "visiting_class": "RoleType",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "name"
+      },
+      "selected": "Option 1: String attribute that allows any text value for name.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "name"
+      }
+    },
+    {
+      "q_num": 13,
+      "question": "Is description a relevant attribute of role type that should be included in the model?\n\nFor example:\n1. Description captures important domain information about role type.\n2. Description does not represent important domain information for role type.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Keep description, it is relevant information for role type.",
+      "option_2": "Option 2: Remove description, it is not a relevant information.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.0,
+      "visiting_class": "RoleType",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "description"
+      },
+      "selected": "Option 2: Remove description, it is not a relevant information.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "removed_attribute",
+        "description": "description"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nRole \"1\" -- \"1\"  RoleType : has\nAssignment \"1\" *-- \"1\"  Role\n@enduml"
+    },
+    {
+      "q_num": 14,
+      "question": "Should the relationship between Role and RoleType be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, RoleType would depend on Role for its existence.\n2. Use association, RoleType could exist independently of Role, and can also be linked to multiple roles.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class RoleType depends on Role.",
+      "option_2": "Option 2: Association is sufficient because class RoleType exists independently of Role.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.4,
+      "visiting_class": "RoleType",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "association",
+        "description": "has"
+      },
+      "selected": "Option 2: Association is sufficient because class RoleType exists independently of Role.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "association",
+        "description": {
+          "source": "Role",
+          "target": "RoleType",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 15,
+      "question": "What is the minimum cardinality of Role in the relationship with RoleType?\n\nFor example:\n1. Minimum cardinality of zero, a role type can exist without any associated role.\n2. Minimum cardinality of one, a role type must have at least one associated role.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, RoleType can exist without Role.",
+      "option_2": "Option 2: One as minimum cardinality, RoleType must have at least one Role.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "RoleType",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, RoleType can exist without Role.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Role",
+          "target": "RoleType",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1\"  RoleType : has\n@enduml"
+    },
+    {
+      "q_num": 16,
+      "question": "What is the minimum cardinality of RoleType in the relationship with Role?\n\nFor example:\n1. Minimum cardinality of zero, a role can exist without any associated role type.\n2. Minimum cardinality of one, a role must have at least one associated role type.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Role can exist without RoleType.",
+      "option_2": "Option 2: One as minimum cardinality,Role must have at least one RoleType.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "RoleType",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 2: One as minimum cardinality,Role must have at least one RoleType.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Role",
+          "target": "RoleType",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 17,
+      "question": "What is the maximum cardinality of RoleType in the relationship with Role?\n\nFor example:\n1. Maximum cardinality of one, a role is associated with exactly one role type.\n2. Maximum cardinality of many, a role can be associated with multiple role types.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each role links to one role type.",
+      "option_2": "Option 2: Many as maximun cardinality, each role can link to multiple role types.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "RoleType",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each role can link to multiple role types.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Role",
+          "target": "RoleType",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\n@enduml"
+    },
+    {
+      "q_num": 18,
+      "question": "What is the minimum cardinality of TeachingAssistant in the relationship with Assignment?\n\nFor example:\n1. Minimum cardinality of zero, an assignment can exist without any associated teaching assistant.\n2. Minimum cardinality of one, an assignment must have at least one associated teaching assistant.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Assignment can exist without TeachingAssistant.",
+      "option_2": "Option 2: One as minimum cardinality,Assignment must have at least one TeachingAssistant.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.62,
+      "visiting_class": "TeachingAssistant",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Assignments"
+      },
+      "selected": "Option 2: One as minimum cardinality,Assignment must have at least one TeachingAssistant.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "TeachingAssistant",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "Assignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1\"  Assignment : Assignments\n@enduml"
+    },
+    {
+      "q_num": 19,
+      "question": "What is the minimum cardinality of Assignment in the relationship with TeachingAssistant?\n\nFor example:\n1. Minimum cardinality of zero, a teaching assistant can exist without any associated assignment.\n2. Minimum cardinality of one, a teaching assistant must have at least one associated assignment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, TeachingAssistant can exist without Assignment.",
+      "option_2": "Option 2: One as minimum cardinality,TeachingAssistant must have at least one Assignment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "TeachingAssistant",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Assignments"
+      },
+      "selected": "Option 2: One as minimum cardinality,TeachingAssistant must have at least one Assignment.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "TeachingAssistant",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "Assignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 20,
+      "question": "What is the maximum cardinality of Assignment in the relationship with TeachingAssistant?\n\nFor example:\n1. Maximum cardinality of one, a teaching assistant is associated with exactly one assignment.\n2. Maximum cardinality of many, a teaching assistant can be associated with multiple assignments.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each teaching assistant links to one assignment.",
+      "option_2": "Option 2: Many as maximun cardinality, each teaching assistant can link to multiple assignments.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "TeachingAssistant",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Assignments"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each teaching assistant can link to multiple assignments.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "TeachingAssistant",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "Assignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\n@enduml"
+    },
+    {
+      "q_num": 21,
+      "question": "What is the minimum cardinality of Course in the relationship with Enrollment?\n\nFor example:\n1. Minimum cardinality of zero, an enrollment can exist without any associated course.\n2. Minimum cardinality of one, an enrollment must have at least one associated course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Enrollment can exist without Course.",
+      "option_2": "Option 2: One as minimum cardinality,Enrollment must have at least one Course.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.62,
+      "visiting_class": "Enrollment",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Enrollments"
+      },
+      "selected": "Option 2: One as minimum cardinality,Enrollment must have at least one Course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "Enrollments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"1..*\" -- \"1\"  Enrollment\n@enduml"
+    },
+    {
+      "q_num": 22,
+      "question": "What is the minimum cardinality of Enrollment in the relationship with Course?\n\nFor example:\n1. Minimum cardinality of zero, a course can exist without any associated enrollment.\n2. Minimum cardinality of one, a course must have at least one associated enrollment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Course can exist without Enrollment.",
+      "option_2": "Option 2: One as minimum cardinality,Course must have at least one Enrollment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Enrollment",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Enrollments"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Course can exist without Enrollment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "Enrollments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment\n@enduml"
+    },
+    {
+      "q_num": 23,
+      "question": "What is the minimum cardinality of Student in the relationship with Enrollment?\n\nFor example:\n1. Minimum cardinality of zero, an enrollment can exist without any associated student.\n2. Minimum cardinality of one, an enrollment must have at least one associated student.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Enrollment can exist without Student.",
+      "option_2": "Option 2: One as minimum cardinality,Enrollment must have at least one Student.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "Student",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Enrollments"
+      },
+      "selected": "Option 2: One as minimum cardinality,Enrollment must have at least one Student.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Student",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "Enrollments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"1\"  Enrollment\n@enduml"
+    },
+    {
+      "q_num": 24,
+      "question": "What is the minimum cardinality of Enrollment in the relationship with Student?\n\nFor example:\n1. Minimum cardinality of zero, a student can exist without any associated enrollment.\n2. Minimum cardinality of one, a student must have at least one associated enrollment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Student can exist without Enrollment.",
+      "option_2": "Option 2: One as minimum cardinality,Student must have at least one Enrollment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Student",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Enrollments"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Student can exist without Enrollment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Student",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "Enrollments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"0..1\"  Enrollment\n@enduml"
+    },
+    {
+      "q_num": 25,
+      "question": "Should the relationship between Course and LabSection be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, LabSection would depend on Course for its existence.\n2. Use association, LabSection could exist independently of Course, and can also be linked to multiple courses.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class LabSection depends on Course.",
+      "option_2": "Option 2: Association is sufficient because class LabSection exists independently of Course.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.63,
+      "visiting_class": "LabSection",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "composition",
+        "description": "LabSections"
+      },
+      "selected": "Option 1: Composition is needed because class LabSection depends on Course.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Course",
+          "target": "LabSection",
+          "type": "Containment",
+          "name": "LabSections",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 26,
+      "question": "What is the minimum cardinality of Course in the relationship with LabSection?\n\nFor example:\n1. Minimum cardinality of zero, a lab section can exist without any associated course.\n2. Minimum cardinality of one, a lab section must have at least one associated course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, LabSection can exist without Course.",
+      "option_2": "Option 2: One as minimum cardinality, LabSection must have at least one Course.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "LabSection",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "LabSections"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, LabSection can exist without Course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "LabSection",
+          "type": "Containment",
+          "name": "LabSections",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"0..1\"  Enrollment\nCourse \"0..1\" *-- \"1\"  LabSection\n@enduml"
+    },
+    {
+      "q_num": 27,
+      "question": "Should time slot be modeled as a separate class associated with LabSection, or as a simple representation within LabSection?\n\nFor example:\n1. Time slot is a separate class with attributes: start time and end time. This allows users to query and filter by individual time slot properties.\n2. Time slot is modeled as a simple represntation in LabSection. This is suitable when time slot details are not needed.\nWhich option is better for you?\n",
+      "option_1": "Option 1: The TimeSlot is a separate class with its own attributes.",
+      "option_2": "Option 2: The time slot is a simple representation in LabSection.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.57,
+      "visiting_class": "TimeSlot",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "class",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 2: The time slot is a simple representation in LabSection.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "TimeSlot"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nclass LabSection {\n    - location : String\n    - TimeSlot : string\n}\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"0..1\"  Enrollment\nCourse \"0..1\" *-- \"1\"  LabSection\n@enduml"
+    },
+    {
+      "q_num": 28,
+      "question": "Should the time slot in lab section be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use time slot as string attribute in lab section, which allows any text value.\n2. Use time slot as an enumeration which uses predefined values in literals: morning, afternoon, evening or night.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for TimeSlot.",
+      "option_2": "Option 2: Enumeration TimeSlot with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.57,
+      "visiting_class": "Unknown",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "class",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 1: String attribute that allows any text value for TimeSlot.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "TimeSlot"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nclass LabSection {\n    - location : String\n    - timeSlot : string\n}\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"0..1\"  Enrollment\nCourse \"0..1\" *-- \"1\"  LabSection\n@enduml"
+    },
+    {
+      "q_num": 29,
+      "question": "Should Enrollment be modeled as an association class linking Course and Student, or as a regular class with two separate associations?\n\nFor example:\n1. Association class: Enrollment exists only as part of the relationship between Course and Student. A enrollment cannot exist without the link between Course and Student.\n2. Regular class: Enrollment is a class that has links to Course and Student. In this case multiple enrollments can exist for every Course and Student.\n\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Association class, Enrollment as association class linking Course and Student.",
+      "option_2": "Option 2: Regular class, Enrollment as separate class with two associations.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.95,
+      "visiting_class": "Unknown",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "class",
+        "description": "Enrollment"
+      },
+      "selected": "Option 1: Association class, Enrollment as association class linking Course and Student.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Enrollment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nclass LabSection {\n    - location : String\n    - timeSlot : string\n}\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"0..1\" *-- \"1\"  LabSection\nCourse \"*\" -- \"*\"  Student : associates\nclass Enrollment {\n    - date : Date\n}\n(Course, Student) .. Enrollment\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n}\nclass Role {\n    - name : string},{\n}\nclass RoleType {\n    - name : string\n}\nclass LabSection {\n    - location : String\n    - timeSlot : string\n}\nAssignment \"1\" *-- \"1\"  Assignment\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"1\" *-- \"1\"  Role\nRole \"0..1\" -- \"1..*\"  RoleType : has\nTeachingAssistant \"1..*\" -- \"1..*\"  Assignment : Assignments\nCourse \"0..1\" *-- \"1\"  LabSection\nCourse \"*\" -- \"*\"  Student : associates\nclass Enrollment {\n    - date : Date\n}\n(Course, Student) .. Enrollment\n@enduml"
+  },
+  "summary": {
+    "total_questions": 29,
+    "model_changes": 20,
+    "changes_by_pattern": {
+      "ConceptDecision(ClassVsAttribute)": 4,
+      "ConceptDecision(AttributeVsEnumeration)": 1,
+      "CompositionVsAssociation": 2,
+      "LowerboundCardinalityOneVsMany": 9,
+      "ElementRelevance": 1,
+      "UpperboundCardinalityOneVsMany": 2,
+      "AssociationClassVsClass": 1
+    }
+  }
+}

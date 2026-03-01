@@ -1,0 +1,3 @@
+In an automated facility, a fleet of robots is deployed, where each one is recognized by a unique identifier. These robots perform tasks based on their function, some are cleaning robots, while others serve as transport robots. In the facility, the robots are assigned to a set of tasks, each distinguished by a unique code. Throughout the operation, a robot may be assigned to perform various tasks. 
+
+When a robot performs a task, the execution  is identified by a unique code and occurs at a specific starting time. Finally, each robot is assigned to a location within the facility, which can be either a corridor or a room.

@@ -1,0 +1,607 @@
+{
+  "session_id": "P098",
+  "domain": "A Person has a name and an identifier. Every Person is the child of another Person and can have an indeterminate number of children (however, there will be one Person who is not the child of any other Person). A Person has an indeterminate number of ancestors (the ancestors of a Person are their father and the ancestors of their father). We will be interested in knowing the degree of each ancestor of a Person (1 for the father, 2 for the father's father, etc.).\n\nA Resource has a name. There are two types of Resources, such as Files and Folders. Every resource belongs to a Folder and cannot exist outside of a Folder (however, there will be one Folder that does not follow that rule, the root Folder does not belong to any other Folder). Each Folder contains an indeterminate number of Resources.\n\nA User is a Person who, in addition to a name and an identifier, also has a password to access an indeterminate number of Resources, and each Resource can be accessed by an indeterminate number of Users. When a User can access a resource, we will be interested in knowing if they can view it and if they can edit it.",
+  "domain_name": "Person and resources",
+  "user_profile": "low",
+  "llm_initial_model": "model012",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nPerson \"0..*\" -- \"1\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1\"  ResourceAccess : AccessAssignments\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..*\" *-- \"1\"  File\nFolder \"0..*\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Person",
+      "confidence": 0.99
+    },
+    {
+      "pos": 2,
+      "class": "AncestorRelation",
+      "confidence": 0.56
+    },
+    {
+      "pos": 3,
+      "class": "User",
+      "confidence": 0.98
+    },
+    {
+      "pos": 4,
+      "class": "ResourceAccess",
+      "confidence": 0.58
+    },
+    {
+      "pos": 5,
+      "class": "Resource",
+      "confidence": 0.95
+    },
+    {
+      "pos": 6,
+      "class": "File",
+      "confidence": 0.97
+    },
+    {
+      "pos": 7,
+      "class": "Folder",
+      "confidence": 0.97
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "We know that each person has an ancestor relation. When we think about ancestor relation, is it just a simple piece of information, like a line of text? \nOr is ancestor relation made up of different parts that might be important?\nFor example:\n1. For each ancestor relation, the degree information is saved separately, so users can filter people by degree.\n2. The ancestor relation is a single piece of text. This works well when we just need to show the ancestor relation.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the ancestor relation details separately.",
+      "option_2": "Option 2: A single line of text for ancestor relation is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.56,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "AncestorRelation"
+      },
+      "selected": "Option 1: We need the ancestor relation details separately.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "AncestorRelation"
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "In the context of a ancestor relation, is it always association with at least one person, or can it exist without any?\nFor example:\n1. An ancestor relation can exist without any person.\n2. An ancestor relation must have at least one person.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An ancestor relation can exist without any person.",
+      "option_2": "Option 2: An ancestor relation must have at least one person.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.31,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 2: An ancestor relation must have at least one person.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nUser \"0..*\" -- \"1\"  ResourceAccess : AccessAssignments\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"1\"  AncestorRelation : AncestorLinks\n@enduml"
+    },
+    {
+      "q_num": 3,
+      "question": "In the context of an ancestor relation, can there be more than one person involved, or is it always associated with just one? \nFor example:\n1. An ancestor relation is linked to a single person.\n2. An ancestor relation is linked to multiple people.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each ancestor relation is always linked to a single person.",
+      "option_2": "Option 2: An ancestor relation can be linked to multiple people.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.02,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 2: An ancestor relation can be linked to multiple people.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "In the context of a person, is it always associated with at least one ancestor relation, or can it exist without any?\nFor example:\n1. A person can exist without any ancestor relation.\n2. A person must have at least one ancestor relation.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A person can exist without any ancestor relation.",
+      "option_2": "Option 2: A person must have at least one ancestor relation.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.32,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 1: A person can exist without any ancestor relation.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nUser \"0..*\" -- \"1\"  ResourceAccess : AccessAssignments\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..1\"  AncestorRelation : AncestorLinks\n@enduml"
+    },
+    {
+      "q_num": 5,
+      "question": "In the context of a person, can there be more than one ancestor relation involved, or is it always associated with just one?\n\nFor example:\n1. A person is linked to a single ancestor relation.\n2. A person is linked to multiple ancestor relations.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each person is always linked to a single ancestor relation.",
+      "option_2": "Option 2: A person can be linked to multiple ancestor relations.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.02,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 2: A person can be linked to multiple ancestor relations.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nUser \"0..*\" -- \"1\"  ResourceAccess : AccessAssignments\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..*\"  AncestorRelation : AncestorLinks\n@enduml"
+    },
+    {
+      "q_num": 6,
+      "question": "In the context of a person, is it always association with at least one ancestor relation, or can it exist without any?\nFor example:\n1. A person can exist without any ancestor relation.\n2. A person must have at least one ancestor relation.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A person can exist without any ancestor relation.",
+      "option_2": "Option 2: A person must have at least one ancestor relation.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.0,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 1: A person can exist without any ancestor relation.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "\nWhen thinking about resource accesses, how should we represent a view? \n\nDoes being a view involve additional information that a regular resource access does not have, \nor is it enough to label it as a view?\n\nFor example:\n1. A view is a separate kind of resource access, because it may have additional information.\n2. Resource accesses include a status to indicate whether it is a view or not.\n\nWhich option best reflects the situation?\n",
+      "option_1": "Option 1: A views are a special kind of resource access.",
+      "option_2": "Option 2: A views are similar to other resource accesses.",
+      "pattern": "AttributeVsInheritance",
+      "confidence": 0.64,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "canView"
+      },
+      "selected": "Option 2: A views are similar to other resource accesses.",
+      "model_changed": false,
+      "answer_source": "llm",
+      "llm_raw_response": "Option 2: A views are similar to other resource accesses.\n\nThe domain says when a User can access a resource we are interested in knowing if they can view it and if they can edit it, which implies \"view\" is an attribute/status of a resource access rather than a distinct kind of access.",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "canView"
+      }
+    },
+    {
+      "q_num": 8,
+      "question": "\nWhen thinking about resource accesses, how should we represent an edit? \n\nDoes being an edit involve additional information that a regular resource access does not have, \nor is it enough to label it as an edit?\n\nFor example:\n1. An edit is a separate kind of resource access, because it may have additional information.\n2. Resource accesses include a status to indicate whether it is an edit or not.\n\nWhich option best reflects the situation?\n",
+      "option_1": "Option 1: An edits are a special kind of resource access.",
+      "option_2": "Option 2: An edits are similar to other resource accesses.",
+      "pattern": "AttributeVsInheritance",
+      "confidence": 0.64,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "canEdit"
+      },
+      "selected": "Option 2: An edits are similar to other resource accesses.",
+      "model_changed": false,
+      "answer_source": "llm",
+      "llm_raw_response": "Option 2: An edits are similar to other resource accesses.\n\nThe domain states we are interested in knowing if a User can view a resource and if they can edit it, implying edit is an attribute/flag of a resource access rather than a separate kind of access.",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "canEdit"
+      }
+    },
+    {
+      "q_num": 9,
+      "question": "In the context of a resource access, is it always association with at least one user, or can it exist without any?\nFor example:\n1. A resource access can exist without any user.\n2. A resource access must have at least one user.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A resource access can exist without any user.",
+      "option_2": "Option 2: A resource access must have at least one user.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AccessAssignments"
+      },
+      "selected": "Option 2: A resource access must have at least one user.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "Accesses",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..*\"  AncestorRelation : AncestorLinks\nUser \"1..*\" -- \"0..*\"  ResourceAccess : Accesses\n@enduml"
+    },
+    {
+      "q_num": 10,
+      "question": "In the context of a resource access, can there be more than one user involved, or is it always associated with just one? \nFor example:\n1. A resource access is linked to a single user.\n2. A resource access is linked to multiple users.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each resource access is always linked to a single user.",
+      "option_2": "Option 2: A resource access can be linked to multiple users.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.0,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Accesses"
+      },
+      "selected": "Option 1: Each resource access is always linked to a single user.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "Accesses",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..*\"  AncestorRelation : AncestorLinks\nUser \"1\" -- \"0..*\"  ResourceAccess : Accesses\n@enduml"
+    },
+    {
+      "q_num": 11,
+      "question": "In the context of a resource access, is it always associated with at least one user, or can it exist without any?\nFor example:\n1. A resource access can exist without any user.\n2. A resource access must have at least one user.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A resource access can exist without any user.",
+      "option_2": "Option 2: A resource access must have at least one user.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.0,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Accesses"
+      },
+      "selected": "Option 1: A resource access can exist without any user.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "ResourcePermissions",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..*\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1\"  ResourceAccess : ResourcePermissions\n@enduml"
+    },
+    {
+      "q_num": 12,
+      "question": "In the context of a user, is it always associated with at least one resource access, or can it exist without any?\nFor example:\n1. A user can exist without any resource access.\n2. A user must have at least one resource access.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A user can exist without any resource access.",
+      "option_2": "Option 2: A user must have at least one resource access.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.32,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ResourcePermissions"
+      },
+      "selected": "Option 2: A user must have at least one resource access.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "ResourcePermissions",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 13,
+      "question": "In the context of a user, can there be more than one resource access involved, or is it always associated with just one?\n\nFor example:\n1. A user is linked to a single resource access.\n2. A user is linked to multiple resource accesses.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each user is always linked to a single resource access.",
+      "option_2": "Option 2: A user can be linked to multiple resource accesses.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.32,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ResourcePermissions"
+      },
+      "selected": "Option 1: Each user is always linked to a single resource access.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "ResourcePermissions",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 14,
+      "question": "In the context of a resource, is it always associated with at least one resource access, or can it exist without any?\nFor example:\n1. A resource can exist without any resource access.\n2. A resource must have at least one resource access.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A resource can exist without any resource access.",
+      "option_2": "Option 2: A resource must have at least one resource access.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Resource",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TargetResource"
+      },
+      "selected": "Option 2: A resource must have at least one resource access.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "ResourceAccess",
+          "target": "Resource",
+          "type": "Association",
+          "name": "TargetResource",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 15,
+      "question": "In the context of a resource, can there be more than one resource access involved, or is it always associated with just one? \nFor example:\n1. A resource is linked to a single resource access.\n2. A resource is linked to multiple resource accesses.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each resource is always linked to a single resource access.",
+      "option_2": "Option 2: A resource can be linked to multiple resource accesses.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Resource",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TargetResource"
+      },
+      "selected": "Option 1: Each resource is always linked to a single resource access.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "ResourceAccess",
+          "target": "Resource",
+          "type": "Association",
+          "name": "TargetResource",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 16,
+      "question": "In the context of a resource access, is it always association with at least one resource, or can it exist without any?\nFor example:\n1. A resource access can exist without any resource.\n2. A resource access must have at least one resource.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A resource access can exist without any resource.",
+      "option_2": "Option 2: A resource access must have at least one resource.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Resource",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TargetResource"
+      },
+      "selected": "Option 2: A resource access must have at least one resource.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "ResourceAccess",
+          "target": "Resource",
+          "type": "Association",
+          "name": "TargetResource",
+          "source_cardinality": "1",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..*\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1\"  ResourceAccess : ResourcePermissions\nResourceAccess \"1\" -- \"1..*\"  Resource : TargetResource\n@enduml"
+    },
+    {
+      "q_num": 17,
+      "question": "Does a folder always require a folder to exist. \nIf a folder is removed, would all the associated folders also need to be removed?\n\nFor example:\n1. A folder belongs to a folder and cannot exist on its own.\n2. A folder is linked to a folder but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A folder always belongs to a folder.",
+      "option_2": "Option 2: A folder is linked to folder but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.64,
+      "visiting_class": "Folder",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "composition",
+        "description": "ContainsFolders"
+      },
+      "selected": "Option 1: A folder always belongs to a folder.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Folder",
+          "target": "Folder",
+          "type": "Containment",
+          "name": "ContainsFolders",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..1"
+        }
+      }
+    },
+    {
+      "q_num": 18,
+      "question": "Does a file always require a folder to exist. \nIf a folder is removed, would all the associated files also need to be removed?\n\nFor example:\n1. A file belongs to a folder and cannot exist on its own.\n2. A file is linked to a folder but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A file always belongs to a folder.",
+      "option_2": "Option 2: A file is linked to folder but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.64,
+      "visiting_class": "Folder",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "composition",
+        "description": "ContainsFiles"
+      },
+      "selected": "Option 1: A file always belongs to a folder.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Folder",
+          "target": "File",
+          "type": "Containment",
+          "name": "ContainsFiles",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 19,
+      "question": "In the context of a file, is it always association with at least one folder, or can it exist without any?\nFor example:\n1. A file can exist without any folder.\n2. A file must have at least one folder.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A file can exist without any folder.",
+      "option_2": "Option 2: A file must have at least one folder.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Folder",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ContainsFiles"
+      },
+      "selected": "Option 2: A file must have at least one folder.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Folder",
+          "target": "File",
+          "type": "Containment",
+          "name": "ContainsFiles",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..*\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1\"  ResourceAccess : ResourcePermissions\nResourceAccess \"1\" -- \"1..*\"  Resource : TargetResource\nFolder \"1\" *-- \"1\"  File\n@enduml"
+    },
+    {
+      "q_num": 20,
+      "question": "The concept resource access potentially represents a link between users and resources. How should we understand this connection?\n\nFor example:\n1. A resource access is a concept and a link that connects a user and a resource. \n2. A resource access is a concept, but it does not represent a link between a user and a resource.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The resource access is a concept and a link between a user and a resource.",
+      "option_2": "Option 2: The resource access does not represent a link between a user and a resource.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.58,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "ResourceAccess"
+      },
+      "selected": "Option 1: The resource access is a concept and a link between a user and a resource.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "ResourceAccess"
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..*\"  AncestorRelation : AncestorLinks\nFolder \"1\" *-- \"1\"  File\nUser \"*\" -- \"*\"  Resource : associates\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\n(User, Resource) .. ResourceAccess\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"1..*\" -- \"0..*\"  AncestorRelation : AncestorLinks\nFolder \"1\" *-- \"1\"  File\nUser \"*\" -- \"*\"  Resource : associates\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\n(User, Resource) .. ResourceAccess\n@enduml"
+  },
+  "summary": {
+    "total_questions": 20,
+    "model_changes": 9,
+    "changes_by_pattern": {
+      "ConceptDecision(ClassVsAttribute)": 0,
+      "LowerboundCardinalityOneVsMany": 6,
+      "UpperboundCardinalityOneVsMany": 2,
+      "AttributeVsInheritance": 0,
+      "CompositionVsAssociation": 0,
+      "AssociationClassVsClass": 1
+    }
+  }
+}

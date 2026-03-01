@@ -1,0 +1,24 @@
+@startuml
+abstract class Robot {
+    - robotId : String
+}
+class CleaningRobot {
+}
+class TransportRobot {
+}
+class Task {
+    - taskCode : String
+}
+class TaskExecution {
+    - executionRefCode : String
+    - startTime : DateTime
+    - locationCategory : LocationCategory
+}
+enum LocationCategory {
+    corridor
+    room
+}
+Robot <|-- CleaningRobot
+Robot <|-- TransportRobot
+(Robot, Task) .. TaskExecution
+@enduml

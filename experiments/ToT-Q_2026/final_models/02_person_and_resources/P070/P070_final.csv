@@ -1,0 +1,24 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P070;person_and_resources;model001;Class;Person;1
+P070;person_and_resources;model001;Attributes;Person.name;1
+P070;person_and_resources;model001;Attributes;Person.identifier;1
+P070;person_and_resources;model001;Class;Abstract Resource;1
+P070;person_and_resources;model001;Attributes;Resource.name;1
+P070;person_and_resources;model001;Class;File;1
+P070;person_and_resources;model001;Class;Folder;1
+P070;person_and_resources;model001;Class;User;1
+P070;person_and_resources;model001;Attributes;User.password;1
+P070;person_and_resources;model001;Class;AccessPermission;1
+P070;person_and_resources;model001;Attributes;AccessPermission.canEdit;1
+P070;person_and_resources;model001;Class;AncestorDegree;1
+P070;person_and_resources;model001;Attributes;AncestorDegree.degree;1
+P070;person_and_resources;model001;Association;"Person ""0..1"" -- ""0..*"" Person";1
+P070;person_and_resources;model001;Association;"Person ""0..*"" -- ""0..1"" Person";1
+P070;person_and_resources;model001;Composition;"Folder ""0..1"" *-- ""1"" Resource";1
+P070;person_and_resources;model001;Composition;"Folder ""0..1"" *-- ""0..*"" Folder";1
+P070;person_and_resources;model001;Inheritance;File --|> Resource;1
+P070;person_and_resources;model001;Inheritance;Folder --|> Resource;1
+P070;person_and_resources;model001;Inheritance;User --|> Person;1
+P070;person_and_resources;model001;Association;"Person ""0..*"" -- ""0..1"" AncestorDegree";1
+P070;person_and_resources;model001;Association;"User ""0..*"" -- ""0..*"" AccessPermission";1
+P070;person_and_resources;model001;Association;"Resource ""0..*"" -- ""0..*"" AccessPermission";1

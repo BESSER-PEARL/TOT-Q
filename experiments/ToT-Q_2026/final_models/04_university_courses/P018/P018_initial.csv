@@ -1,0 +1,24 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt4.1;case_14_university_courses;model002;Class;Student;1
+gpt4.1;case_14_university_courses;model002;Attributes;Student.studentCode;1
+gpt4.1;case_14_university_courses;model002;Class;Course;1
+gpt4.1;case_14_university_courses;model002;Attributes;Course.courseName;1
+gpt4.1;case_14_university_courses;model002;Class;Enrollment;1
+gpt4.1;case_14_university_courses;model002;Attributes;Enrollment.enrollmentDate;1
+gpt4.1;case_14_university_courses;model002;Class;TeachingAssistant;1
+gpt4.1;case_14_university_courses;model002;Attributes;TeachingAssistant.firstName;1
+gpt4.1;case_14_university_courses;model002;Attributes;TeachingAssistant.lastName;1
+gpt4.1;case_14_university_courses;model002;Class;Assignment;1
+gpt4.1;case_14_university_courses;model002;Attributes;Assignment.details;1
+gpt4.1;case_14_university_courses;model002;Attributes;Assignment.responsibilities;1
+gpt4.1;case_14_university_courses;model002;Class;LabSection;1
+gpt4.1;case_14_university_courses;model002;Attributes;LabSection.location;1
+gpt4.1;case_14_university_courses;model002;Attributes;LabSection.startTime;1
+gpt4.1;case_14_university_courses;model002;Attributes;LabSection.endTime;1
+gpt4.1;case_14_university_courses;model002;Association;"Student ""1"" -- ""0..*"" Enrollment";1
+gpt4.1;case_14_university_courses;model002;Association;"Course ""1"" -- ""0..*"" Enrollment";1
+gpt4.1;case_14_university_courses;model002;Association;"LabSection ""0..*"" -- ""0..*"" TeachingAssistant";1
+gpt4.1;case_14_university_courses;model002;Composition;"Course ""1"" *-- ""1..*"" LabSection";1
+gpt4.1;case_14_university_courses;model002;Association Class;(Student, Course) .. Enrollment;1
+gpt4.1;case_14_university_courses;model002;Association Class;(TeachingAssistant, LabSection) .. LabSectionSupport;1
+gpt4.1;case_14_university_courses;model002;Association Class;(Course, TeachingAssistant) .. Assignment;1

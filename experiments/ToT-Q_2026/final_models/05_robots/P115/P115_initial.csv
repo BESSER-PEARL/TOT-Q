@@ -1,0 +1,24 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt5;case_15_robots;model012;Class;Abstract Robot;1
+gpt5;case_15_robots;model012;Attributes;Robot.identifier;1
+gpt5;case_15_robots;model012;Class;CleaningRobot;1
+gpt5;case_15_robots;model012;Class;TransportRobot;1
+gpt5;case_15_robots;model012;Class;Task;1
+gpt5;case_15_robots;model012;Attributes;Task.code;1
+gpt5;case_15_robots;model012;Class;TaskExecution;1
+gpt5;case_15_robots;model012;Attributes;TaskExecution.referenceCode;1
+gpt5;case_15_robots;model012;Attributes;TaskExecution.startTime;1
+gpt5;case_15_robots;model012;Attributes;TaskExecution.locationCategory;1
+gpt5;case_15_robots;model012;Class;Facility;1
+gpt5;case_15_robots;model012;Attributes;Facility.id;1
+gpt5;case_15_robots;model012;Class;Enumeration LocationCategory;1
+gpt5;case_15_robots;model012;Attributes;LocationCategory.Corridor;1
+gpt5;case_15_robots;model012;Attributes;LocationCategory.Room;1
+gpt5;case_15_robots;model012;Association;"Robot ""0..*"" -- ""1"" TaskExecution";1
+gpt5;case_15_robots;model012;Association;"Task ""0..*"" -- ""1"" TaskExecution";1
+gpt5;case_15_robots;model012;Association;"Robot ""0..*"" -- ""0..*"" Task";1
+gpt5;case_15_robots;model012;Composition;"Facility ""0..*"" *-- ""1"" Robot";1
+gpt5;case_15_robots;model012;Composition;"Facility ""0..*"" *-- ""1"" Task";1
+gpt5;case_15_robots;model012;Composition;"Facility ""0..*"" *-- ""1"" TaskExecution";1
+gpt5;case_15_robots;model012;Inheritance;CleaningRobot --|> Robot;1
+gpt5;case_15_robots;model012;Inheritance;TransportRobot --|> Robot;1

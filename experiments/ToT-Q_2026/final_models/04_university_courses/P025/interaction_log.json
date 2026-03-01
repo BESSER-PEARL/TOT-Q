@@ -1,0 +1,348 @@
+{
+  "session_id": "P025",
+  "domain": "In an academic institution, students enroll in various courses offered by the university. Each student is uniquely identified by a student code. An enrollment in the course requires the specific date on which it occurred for administrative purposes.\n\nCourses are supported by Teaching Assistants (TAs), who are identified by their first and last names. A TA may assist in multiple different courses, and the specific role of a TA within a course is defined by an assignment, which describes the details and responsibilities assigned to them. Regarding courses logistics, they consist of one or more lab sections. Each section occurs at a specific location and time slot with start and end times.",
+  "domain_name": "University courses",
+  "user_profile": "medium",
+  "llm_initial_model": "model011",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - role : String\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : TimeSlot\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass University {\n}\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1..*\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nUniversity \"0..*\" *-- \"1\"  Course\n(Student, Course) .. Enrollment\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Course",
+      "confidence": 0.95
+    },
+    {
+      "pos": 2,
+      "class": "University",
+      "confidence": 0.22
+    },
+    {
+      "pos": 3,
+      "class": "Assignment",
+      "confidence": 0.87
+    },
+    {
+      "pos": 4,
+      "class": "TeachingAssistant",
+      "confidence": 0.97
+    },
+    {
+      "pos": 5,
+      "class": "Enrollment",
+      "confidence": 0.95
+    },
+    {
+      "pos": 6,
+      "class": "Student",
+      "confidence": 0.98
+    },
+    {
+      "pos": 7,
+      "class": "LabSection",
+      "confidence": 0.95
+    },
+    {
+      "pos": 8,
+      "class": "TimeSlot",
+      "confidence": 0.62
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "Is university a relevant domain concept that should be included in the model?\n\nFor example:\n1. University is a relevant concept in this domain and should be represented in the model.\n2. University does not correspond to any relevant domain concept and should be removed from the model.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Keep university, it is a relevant domain concept.",
+      "option_2": "Option 2: Remove university, it is not relevant.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.22,
+      "visiting_class": "University",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "University"
+      },
+      "selected": "Option 1: Keep university, it is a relevant domain concept.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "University"
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "Should university be modeled as a separate class associated with Course, or as a simple representation within Course?\n\nFor example:\n1. University is a separate class with attributes: . This allows users to query and filter by individual university properties.\n2. University is modeled as a simple represntation in Course. This is suitable when university details are not needed.\nWhich option is better for you?\n",
+      "option_1": "Option 1: The University is a separate class with its own attributes.",
+      "option_2": "Option 2: The university is a simple representation in Course.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.22,
+      "visiting_class": "University",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "University"
+      },
+      "selected": "Option 2: The university is a simple representation in Course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "University"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - role : String\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : TimeSlot\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n    - University : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\n@enduml"
+    },
+    {
+      "q_num": 3,
+      "question": "Should the university in course be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use university as string attribute in course, which allows any text value.\n2. Use university as an enumeration which uses predefined values in literals: university or academic institution.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for University.",
+      "option_2": "Option 2: Enumeration University with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.22,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "University"
+      },
+      "selected": "Option 1: String attribute that allows any text value for University.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "University"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - role : String\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : TimeSlot\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n    - University : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\n@enduml"
+    },
+    {
+      "q_num": 4,
+      "question": "Is role a relevant attribute of assignment that should be included in the model?\n\nFor example:\n1. Role captures important domain information about assignment.\n2. Role does not represent important domain information for assignment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Keep role, it is relevant information for assignment.",
+      "option_2": "Option 2: Remove role, it is not a relevant information.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.3,
+      "visiting_class": "Assignment",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "role"
+      },
+      "selected": "Option 2: Remove role, it is not a relevant information.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "removed_attribute",
+        "description": "role"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : TimeSlot\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n    - University : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\n@enduml"
+    },
+    {
+      "q_num": 5,
+      "question": "Should details be modeled as a separate class associated with Assignment, or remain as a simple representation?\n\nFor example:\n1. Details is a separate class with its own attributes. This allows users to query and filter by individual details properties.\n2. Details is modeled as a simple representation in Assignment. This is suitable when details details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Details is a separate class with its own attributes.",
+      "option_2": "Option 2: The details is a simple representation in Assignment.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.82,
+      "visiting_class": "Assignment",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "details"
+      },
+      "selected": "Option 2: The details is a simple representation in Assignment.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "details"
+      }
+    },
+    {
+      "q_num": 6,
+      "question": "Should the details in assignment be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use details as string attribute in assignment, which allows any text value.\n2. Use details as an enumeration which uses predefined values in literals: grading, lab supervision, recitation lead, office hours, tutoring, exam proctoring, content preparation or administrative support.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for details.",
+      "option_2": "Option 2: Enumeration details with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.82,
+      "visiting_class": "Assignment",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "details"
+      },
+      "selected": "Option 1: String attribute that allows any text value for details.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "details"
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "Should responsibilities be modeled as a separate class associated with Assignment, or remain as a simple representation?\n\nFor example:\n1. Responsibilities is a separate class with its own attributes. This allows users to query and filter by individual responsibilities properties.\n2. Responsibilities is modeled as a simple representation in Assignment. This is suitable when responsibilities details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Responsibilities is a separate class with its own attributes.",
+      "option_2": "Option 2: The responsibilities is a simple representation in Assignment.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.82,
+      "visiting_class": "Assignment",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "responsibilities"
+      },
+      "selected": "Option 2: The responsibilities is a simple representation in Assignment.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "responsibilities"
+      }
+    },
+    {
+      "q_num": 8,
+      "question": "Should the responsibilities in assignment be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use responsibilities as string attribute in assignment, which allows any text value.\n2. Use responsibilities as an enumeration which uses predefined values in literals: lab supervision, grading, office hours, lecture assistance, exam proctoring, course preparation or tutoring.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for responsibilities.",
+      "option_2": "Option 2: Enumeration responsibilities with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.82,
+      "visiting_class": "Assignment",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "responsibilities"
+      },
+      "selected": "Option 1: String attribute that allows any text value for responsibilities.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "responsibilities"
+      }
+    },
+    {
+      "q_num": 9,
+      "question": "Is time slot a relevant attribute of lab section that should be included in the model?\n\nFor example:\n1. Time slot captures important domain information about lab section.\n2. Time slot does not represent important domain information for lab section.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Keep time slot, it is relevant information for lab section.",
+      "option_2": "Option 2: Remove time slot, it is not a relevant information.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.3,
+      "visiting_class": "LabSection",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "attribute",
+        "description": "timeSlot"
+      },
+      "selected": "Option 2: Remove time slot, it is not a relevant information.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "removed_attribute",
+        "description": "timeSlot"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n    - University : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\n@enduml"
+    },
+    {
+      "q_num": 10,
+      "question": "Should time slot be modeled as a separate class associated with LabSection, or as a simple representation within LabSection?\n\nFor example:\n1. Time slot is a separate class with attributes: start time and end time. This allows users to query and filter by individual time slot properties.\n2. Time slot is modeled as a simple represntation in LabSection. This is suitable when time slot details are not needed.\nWhich option is better for you?\n",
+      "option_1": "Option 1: The TimeSlot is a separate class with its own attributes.",
+      "option_2": "Option 2: The time slot is a simple representation in LabSection.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.62,
+      "visiting_class": "TimeSlot",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 2: The time slot is a simple representation in LabSection.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "TimeSlot"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass Course {\n    - University : string\n}\nclass LabSection {\n    - location : String\n    - TimeSlot : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\n@enduml"
+    },
+    {
+      "q_num": 11,
+      "question": "Should the time slot in lab section be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use time slot as string attribute in lab section, which allows any text value.\n2. Use time slot as an enumeration which uses predefined values in literals: morning, afternoon or evening.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for TimeSlot.",
+      "option_2": "Option 2: Enumeration TimeSlot with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.62,
+      "visiting_class": "Unknown",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 1: String attribute that allows any text value for TimeSlot.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "TimeSlot"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass Course {\n    - University : string\n}\nclass LabSection {\n    - location : String\n    - TimeSlot : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\n@enduml"
+    },
+    {
+      "q_num": 12,
+      "question": "Should Enrollment be modeled as an association class linking Student and Course, or as a regular class with two separate associations?\n\nFor example:\n1. Association class: Enrollment exists only as part of the relationship between Student and Course. A enrollment cannot exist without the link between Student and Course.\n2. Regular class: Enrollment is a class that has links to Student and Course. In this case multiple enrollments can exist for every Student and Course.\n\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Association class, Enrollment as association class linking Student and Course.",
+      "option_2": "Option 2: Regular class, Enrollment as separate class with two associations.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.95,
+      "visiting_class": "Unknown",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "Enrollment"
+      },
+      "selected": "Option 1: Association class, Enrollment as association class linking Student and Course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Enrollment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass Course {\n    - University : string\n}\nclass LabSection {\n    - location : String\n    - TimeSlot : string\n}\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nStudent \"*\" -- \"*\"  Course : associates\nclass Enrollment {\n    - date : Date\n}\n(Student, Course) .. Enrollment\n@enduml"
+    },
+    {
+      "q_num": 13,
+      "question": "Should Assignment be modeled as an association class linking TeachingAssistant and Course, or as a regular class with two separate associations?\n\nFor example:\n1. Association class: Assignment exists only as part of the relationship between TeachingAssistant and Course. A assignment cannot exist without the link between TeachingAssistant and Course.\n2. Regular class: Assignment is a class that has links to TeachingAssistant and Course. In this case multiple assignments can exist for every TeachingAssistant and Course.\n\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Association class, Assignment as association class linking TeachingAssistant and Course.",
+      "option_2": "Option 2: Regular class, Assignment as separate class with two associations.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.87,
+      "visiting_class": "Unknown",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "Assignment"
+      },
+      "selected": "Option 1: Association class, Assignment as association class linking TeachingAssistant and Course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Assignment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Course {\n    - University : string\n}\nclass LabSection {\n    - location : String\n    - TimeSlot : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nStudent \"*\" -- \"*\"  Course : associates\nTeachingAssistant \"*\" -- \"*\"  Course\nclass Enrollment {\n    - date : Date\n}\n(Student, Course) .. Enrollment\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\n(TeachingAssistant, Course) .. Assignment\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Course {\n    - University : string\n}\nclass LabSection {\n    - location : String\n    - TimeSlot : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nStudent \"*\" -- \"*\"  Course : associates\nTeachingAssistant \"*\" -- \"*\"  Course\nclass Enrollment {\n    - date : Date\n}\n(Student, Course) .. Enrollment\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\n(TeachingAssistant, Course) .. Assignment\n@enduml"
+  },
+  "summary": {
+    "total_questions": 13,
+    "model_changes": 8,
+    "changes_by_pattern": {
+      "ElementRelevance": 2,
+      "ConceptDecision(ClassVsAttribute)": 2,
+      "ConceptDecision(AttributeVsEnumeration)": 2,
+      "AssociationClassVsClass": 2
+    }
+  }
+}

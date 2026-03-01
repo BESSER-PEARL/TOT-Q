@@ -1,0 +1,473 @@
+{
+  "session_id": "P082",
+  "domain": "In an academic institution, students enroll in various courses offered by the university. Each student is uniquely identified by a student code. An enrollment in the course requires the specific date on which it occurred for administrative purposes.\n\nCourses are supported by Teaching Assistants (TAs), who are identified by their first and last names. A TA may assist in multiple different courses, and the specific role of a TA within a course is defined by an assignment, which describes the details and responsibilities assigned to them. Regarding courses logistics, they consist of one or more lab sections. Each section occurs at a specific location and time slot with start and end times.",
+  "domain_name": "University courses",
+  "user_profile": "low",
+  "llm_initial_model": "model003",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n    - courseName : String\n}\nclass Enrollment {\n    - enrollmentDate : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nStudent \"1\" -- \"0..*\"  Enrollment : EnrolledIn\nEnrollment \"1\" -- \"1\"  Course : EnrolledCourse\nTeachingAssistant \"1\" -- \"0..*\"  Assignment : AssistsWith\nAssignment \"1\" -- \"1\"  Course : AssignedToCourse\nCourse \"1\" *-- \"1..*\"  LabSection\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Course",
+      "confidence": 1.0
+    },
+    {
+      "pos": 2,
+      "class": "LabSection",
+      "confidence": 1.0
+    },
+    {
+      "pos": 3,
+      "class": "Assignment",
+      "confidence": 1.0
+    },
+    {
+      "pos": 4,
+      "class": "TeachingAssistant",
+      "confidence": 1.0
+    },
+    {
+      "pos": 5,
+      "class": "Enrollment",
+      "confidence": 1.0
+    },
+    {
+      "pos": 6,
+      "class": "Student",
+      "confidence": 1.0
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "We know that each course has a course name. When we think about course name, is it just a simple piece of information, like a line of text? \nOr is course name made up of different parts that might be important?\nFor example:\n1. For each course name, the detail information is saved separately, so users can filter course by detail.\n2. The course name is a single piece of text. This works well when we just need to show the course name.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the course name details separately.",
+      "option_2": "Option 2: A single line of text for course name is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.6,
+      "visiting_class": "Course",
+      "submodel_size": 1,
+      "originated_from": {
+        "type": "attribute",
+        "description": "courseName"
+      },
+      "selected": "Option 1: We need the course name details separately.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "CourseDetails"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - enrollmentDate : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n}\nclass CourseDetails {\n    - name : string\n    - type : string\n}\nStudent \"1\" -- \"0..*\"  Enrollment : EnrolledIn\nEnrollment \"1\" -- \"1\"  Course : EnrolledCourse\nTeachingAssistant \"1\" -- \"0..*\"  Assignment : AssistsWith\nAssignment \"1\" -- \"1\"  Course : AssignedToCourse\nCourse \"1\" *-- \"1..*\"  LabSection\nCourse \"1\" -- \"1\"  CourseDetails : has\n@enduml"
+    },
+    {
+      "q_num": 2,
+      "question": "Should type be modeled as a separate class associated with CourseDetails, or remain as a simple representation?\n\nFor example:\n1. Type is a separate class with its own attributes. This allows users to query and filter by individual type properties.\n2. Type is modeled as a simple representation in CourseDetails. This is suitable when type details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the type details separately.",
+      "option_2": "Option 2: A single line of text for type is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.8,
+      "visiting_class": "CourseDetails",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "type"
+      },
+      "selected": "Option 1: The Type is a separate class with its own attributes.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "CourseType"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - enrollmentDate : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n}\nclass CourseDetails {\n    - name : string\n}\nclass CourseType {\n    - name : string\n    - description : string\n}\nStudent \"1\" -- \"0..*\"  Enrollment : EnrolledIn\nEnrollment \"1\" -- \"1\"  Course : EnrolledCourse\nTeachingAssistant \"1\" -- \"0..*\"  Assignment : AssistsWith\nAssignment \"1\" -- \"1\"  Course : AssignedToCourse\nCourse \"1\" *-- \"1..*\"  LabSection\nCourse \"1\" -- \"1\"  CourseDetails : has\nCourseDetails \"1\" -- \"1\"  CourseType\n@enduml"
+    },
+    {
+      "q_num": 3,
+      "question": "Does a course details always require a course to exist. \nIf a course is removed, would all the associated course detailss also need to be removed?\n\nFor example:\n1. A course details belongs to a course and cannot exist on its own.\n2. A course details is linked to a course but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course details always belongs to a course.",
+      "option_2": "Option 2: A course details is linked to course but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.4,
+      "visiting_class": "CourseDetails",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "association",
+        "description": "has"
+      },
+      "selected": "Option 1: A course details always belongs to a course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Course",
+          "target": "CourseDetails",
+          "type": "Composition",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - enrollmentDate : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n}\nclass CourseDetails {\n    - name : string\n}\nclass CourseType {\n    - name : string\n    - description : string\n}\nStudent \"1\" -- \"0..*\"  Enrollment : EnrolledIn\nEnrollment \"1\" -- \"1\"  Course : EnrolledCourse\nTeachingAssistant \"1\" -- \"0..*\"  Assignment : AssistsWith\nAssignment \"1\" -- \"1\"  Course : AssignedToCourse\nCourse \"1\" *-- \"1..*\"  LabSection\nCourseDetails \"1\" -- \"1\"  CourseType : has\nCourse \"1\" *-- \"1\"  CourseDetails\n@enduml"
+    },
+    {
+      "q_num": 4,
+      "question": "Should description be modeled as a separate class associated with CourseType, or remain as a simple representation?\n\nFor example:\n1. Description is a separate class with its own attributes. This allows users to query and filter by individual description properties.\n2. Description is modeled as a simple representation in CourseType. This is suitable when description details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the description details separately.",
+      "option_2": "Option 2: A single line of text for description is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.8,
+      "visiting_class": "CourseType",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "description"
+      },
+      "selected": "Option 2: Model description as a simple representation in CourseType.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "description"
+      }
+    },
+    {
+      "q_num": 5,
+      "question": "Should the description in course type be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use description as string attribute in course type, which allows any text value.\n2. Use description as an enumeration which uses predefined values in literals: lecture, seminar, workshop, lab or online.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The description can be any text value.",
+      "option_2": "Option 2: The description must be one of these: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.8,
+      "visiting_class": "CourseType",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "description"
+      },
+      "selected": "Option 1: The description can be any text value.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "description"
+      }
+    },
+    {
+      "q_num": 6,
+      "question": "Does a course type always require a course details to exist. \nIf a course details is removed, would all the associated course types also need to be removed?\n\nFor example:\n1. A course type belongs to a course details and cannot exist on its own.\n2. A course type is linked to a course details but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course type always belongs to a course details.",
+      "option_2": "Option 2: A course type is linked to course details but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.4,
+      "visiting_class": "CourseType",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "association",
+        "description": "has"
+      },
+      "selected": "Option 2: A course type is linked to course details but can exist independently.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "association",
+        "description": {
+          "source": "CourseDetails",
+          "target": "CourseType",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "In the context of a course type, is it always associated with at least one course details, or can it exist without any?\nFor example:\n1. A course type can exist without any course details.\n2. A course type must have at least one course details.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course type can exist without any course details.",
+      "option_2": "Option 2: A course type must have at least one course details.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "CourseType",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 2: A course type must have at least one course details.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "CourseDetails",
+          "target": "CourseType",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 8,
+      "question": "In the context of a course details, is it always associated with at least one course type, or can it exist without any?\nFor example:\n1. A course details can exist without any course type.\n2. A course details must have at least one course type.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course details can exist without any course type.",
+      "option_2": "Option 2: A course details must have at least one course type.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "CourseType",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 2: A course details must have at least one course type.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "CourseDetails",
+          "target": "CourseType",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 9,
+      "question": "In the context of a course details, can there be more than one course type involved, or is it always associated with just one?\n\nFor example:\n1. A course details is linked to a single course type.\n2. A course details is linked to multiple course types.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each course details is always linked to a single course type.",
+      "option_2": "Option 2: A course details can be linked to multiple course types.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "CourseType",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 2: A course details can be linked to multiple course types.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "CourseDetails",
+          "target": "CourseType",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - enrollmentDate : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n}\nclass CourseDetails {\n    - name : string\n}\nclass CourseType {\n    - name : string\n    - description : string\n}\nStudent \"1\" -- \"0..*\"  Enrollment : EnrolledIn\nEnrollment \"1\" -- \"1\"  Course : EnrolledCourse\nTeachingAssistant \"1\" -- \"0..*\"  Assignment : AssistsWith\nAssignment \"1\" -- \"1\"  Course : AssignedToCourse\nCourse \"1\" *-- \"1..*\"  LabSection\nCourse \"1\" *-- \"1\"  CourseDetails\nCourseDetails \"1\" -- \"1..*\"  CourseType : has\n@enduml"
+    },
+    {
+      "q_num": 10,
+      "question": "In the context of a course, is it always associated with at least one assignment, or can it exist without any?\nFor example:\n1. A course can exist without any assignment.\n2. A course must have at least one assignment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course can exist without any assignment.",
+      "option_2": "Option 2: A course must have at least one assignment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.67,
+      "visiting_class": "Assignment",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AssignedToCourse"
+      },
+      "selected": "Option 1: A course can exist without any assignment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Assignment",
+          "target": "Course",
+          "type": "Association",
+          "name": "AssignedToCourse",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Enrollment {\n    - enrollmentDate : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n}\nclass CourseDetails {\n    - name : string\n}\nclass CourseType {\n    - name : string\n    - description : string\n}\nStudent \"1\" -- \"0..*\"  Enrollment : EnrolledIn\nEnrollment \"1\" -- \"1\"  Course : EnrolledCourse\nTeachingAssistant \"1\" -- \"0..*\"  Assignment : AssistsWith\nCourse \"1\" *-- \"1..*\"  LabSection\nCourse \"1\" *-- \"1\"  CourseDetails\nCourseDetails \"1\" -- \"1..*\"  CourseType : has\nAssignment \"0..1\" -- \"1\"  Course : AssignedToCourse\n@enduml"
+    },
+    {
+      "q_num": 11,
+      "question": "In the context of a teaching assistant, is it always association with at least one assignment, or can it exist without any?\nFor example:\n1. A teaching assistant can exist without any assignment.\n2. A teaching assistant must have at least one assignment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A teaching assistant can exist without any assignment.",
+      "option_2": "Option 2: A teaching assistant must have at least one assignment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.67,
+      "visiting_class": "TeachingAssistant",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AssistsWith"
+      },
+      "selected": "Option 1: A teaching assistant can exist without any assignment.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "TeachingAssistant",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "AssistsWith",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "In the context of a teaching assistant, can there be more than one assignment involved, or is it always associated with just one?\nFor example:\n1. A teaching assistant is linked to a single assignment.\n2. A teaching assistant is linked to multiple assignments.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each teaching assistant is always linked to a single assignment.",
+      "option_2": "Option 2: A teaching assistant can be linked to multiple assignments.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.67,
+      "visiting_class": "TeachingAssistant",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AssistsWith"
+      },
+      "selected": "Option 2: A teaching assistant can be linked to multiple assignments.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "TeachingAssistant",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "AssistsWith",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 13,
+      "question": "In the context of a student, is it always association with at least one enrollment, or can it exist without any?\nFor example:\n1. A student can exist without any enrollment.\n2. A student must have at least one enrollment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A student can exist without any enrollment.",
+      "option_2": "Option 2: A student must have at least one enrollment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "Student",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "EnrolledIn"
+      },
+      "selected": "Option 1: A student can exist without any enrollment.",
+      "model_changed": false,
+      "answer_source": "llm",
+      "llm_raw_response": "Option 1: A student can exist without any enrollment.  \nThe domain description does not specify that a student must have an enrollment, indicating that a student can exist independently of any course enrollments.",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Student",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "EnrolledIn",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 14,
+      "question": "In the context of a student, can there be more than one enrollment involved, or is it always associated with just one?\nFor example:\n1. A student is linked to a single enrollment.\n2. A student is linked to multiple enrollments.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each student is always linked to a single enrollment.",
+      "option_2": "Option 2: A student can be linked to multiple enrollments.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "Student",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "EnrolledIn"
+      },
+      "selected": "Option 2: A student can be linked to multiple enrollments.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Student",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "EnrolledIn",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 15,
+      "question": "The concept enrollment potentially represents a link between students and courses. How should we understand this connection?\n\nFor example:\n1. An enrollment is a concept and a link that connects a student and a course. \n2. An enrollment is a concept, but it does not represent a link between a student and a course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The enrollment is a concept and a link between a student and a course.",
+      "option_2": "Option 2: The enrollment does not represent a link between a student and a course.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 1.0,
+      "visiting_class": "Unknown",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "Enrollment"
+      },
+      "selected": "Option 1: The enrollment is a concept and a link between a student and a course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Enrollment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n}\nclass CourseDetails {\n    - name : string\n}\nclass CourseType {\n    - name : string\n    - description : string\n}\nTeachingAssistant \"1\" -- \"0..*\"  Assignment : AssistsWith\nCourse \"1\" *-- \"1..*\"  LabSection\nCourse \"1\" *-- \"1\"  CourseDetails\nCourseDetails \"1\" -- \"1..*\"  CourseType : has\nAssignment \"0..1\" -- \"1\"  Course : AssignedToCourse\nStudent \"*\" -- \"*\"  Course : associates\nclass Enrollment {\n    - enrollmentDate : Date\n}\n(Student, Course) .. Enrollment\n@enduml"
+    },
+    {
+      "q_num": 16,
+      "question": "The concept assignment potentially represents a link between teaching assistants and courses. How should we understand this connection?\n\nFor example:\n1. An assignment is a concept and a link that connects a teaching assistant and a course. \n2. An assignment is a concept, but it does not represent a link between a teaching assistant and a course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The assignment is a concept and a link between a teaching assistant and a course.",
+      "option_2": "Option 2: The assignment does not represent a link between a teaching assistant and a course.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 1.0,
+      "visiting_class": "Unknown",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "Assignment"
+      },
+      "selected": "Option 1: The assignment is a concept and a link between a teaching assistant and a course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Assignment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n}\nclass CourseDetails {\n    - name : string\n}\nclass CourseType {\n    - name : string\n    - description : string\n}\nCourse \"1\" *-- \"1..*\"  LabSection\nCourse \"1\" *-- \"1\"  CourseDetails\nCourseDetails \"1\" -- \"1..*\"  CourseType : has\nStudent \"*\" -- \"*\"  Course : associates\nTeachingAssistant \"*\" -- \"*\"  Course\nclass Enrollment {\n    - enrollmentDate : Date\n}\n(Student, Course) .. Enrollment\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\n(TeachingAssistant, Course) .. Assignment\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n    - startTime : Time\n    - endTime : Time\n}\nclass Course {\n}\nclass CourseDetails {\n    - name : string\n}\nclass CourseType {\n    - name : string\n    - description : string\n}\nCourse \"1\" *-- \"1..*\"  LabSection\nCourse \"1\" *-- \"1\"  CourseDetails\nCourseDetails \"1\" -- \"1..*\"  CourseType : has\nStudent \"*\" -- \"*\"  Course : associates\nTeachingAssistant \"*\" -- \"*\"  Course\nclass Enrollment {\n    - enrollmentDate : Date\n}\n(Student, Course) .. Enrollment\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\n(TeachingAssistant, Course) .. Assignment\n@enduml"
+  },
+  "summary": {
+    "total_questions": 16,
+    "model_changes": 7,
+    "changes_by_pattern": {
+      "ConceptDecision(ClassVsAttribute)": 2,
+      "CompositionVsAssociation": 1,
+      "ConceptDecision(AttributeVsEnumeration)": 0,
+      "LowerboundCardinalityOneVsMany": 1,
+      "UpperboundCardinalityOneVsMany": 1,
+      "AssociationClassVsClass": 2
+    }
+  }
+}

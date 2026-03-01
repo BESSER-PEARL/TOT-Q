@@ -1,0 +1,34 @@
+@startuml
+class Person {
+    - name : String
+    - identifier : String
+}
+abstract class Resource {
+    - name : String
+}
+class File {
+}
+class Folder {
+}
+class User {
+    - password : String
+}
+class AncestorLink {
+    - degree : Integer
+}
+class Access {
+    - canView : Boolean
+}
+class Edit {
+}
+Person "0..1" -- "0..*"  Person : Parent
+AncestorLink "1" -- "0..*"  Person : Ancestor
+Folder "0..1" *-- "0..1"  Folder
+Person <|-- User
+Resource <|-- File
+Resource <|-- Folder
+Access <|-- Edit
+User "1" -- "0..1"  Access : Accesses
+Access "0..*" -- "1..*"  Resource : Resource
+Folder "1" *-- "1"  File
+@enduml

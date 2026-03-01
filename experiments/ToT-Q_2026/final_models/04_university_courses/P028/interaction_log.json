@@ -1,0 +1,276 @@
+{
+  "session_id": "P028",
+  "domain": "In an academic institution, students enroll in various courses offered by the university. Each student is uniquely identified by a student code. An enrollment in the course requires the specific date on which it occurred for administrative purposes.\n\nCourses are supported by Teaching Assistants (TAs), who are identified by their first and last names. A TA may assist in multiple different courses, and the specific role of a TA within a course is defined by an assignment, which describes the details and responsibilities assigned to them. Regarding courses logistics, they consist of one or more lab sections. Each section occurs at a specific location and time slot with start and end times.",
+  "domain_name": "University courses",
+  "user_profile": "low",
+  "llm_initial_model": "model011",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - role : String\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : TimeSlot\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass University {\n}\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1..*\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nUniversity \"0..*\" *-- \"1\"  Course\n(Student, Course) .. Enrollment\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Course",
+      "confidence": 0.95
+    },
+    {
+      "pos": 2,
+      "class": "University",
+      "confidence": 0.22
+    },
+    {
+      "pos": 3,
+      "class": "Assignment",
+      "confidence": 0.87
+    },
+    {
+      "pos": 4,
+      "class": "TeachingAssistant",
+      "confidence": 0.97
+    },
+    {
+      "pos": 5,
+      "class": "Enrollment",
+      "confidence": 0.95
+    },
+    {
+      "pos": 6,
+      "class": "Student",
+      "confidence": 0.98
+    },
+    {
+      "pos": 7,
+      "class": "LabSection",
+      "confidence": 0.95
+    },
+    {
+      "pos": 8,
+      "class": "TimeSlot",
+      "confidence": 0.62
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "When thinking about the domain, is university a relevant concept that should be included in the model?\n\nFor example:\n1. University is a key concept in this domain and should be modeled.\n2. University is not relevant or seems like an error and should be removed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: University is relevant and should be kept.",
+      "option_2": "Option 2: University is not relevant and should be removed.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.22,
+      "visiting_class": "University",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "University"
+      },
+      "selected": "Option 1: University is relevant and should be kept.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "University"
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "We know that each course has a university. When we think about university, is it just a simple piece of information, like a line of text? \nOr is university made up of different parts that might be important?\nFor example:\n1. For each university, the  information is saved separately, so users can filter courses by .\n2. The university is a single piece of text. This works well when we just need to show the university.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the university details separately.",
+      "option_2": "Option 2: A single line of text for university is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.22,
+      "visiting_class": "University",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "University"
+      },
+      "selected": "Option 1: We need the university details separately.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "Course"
+      }
+    },
+    {
+      "q_num": 3,
+      "question": "Does a course always require a university to exist. \nIf a university is removed, would all the associated courses also need to be removed?\n\nFor example:\n1. A course belongs to a university and cannot exist on its own.\n2. A course is linked to a university but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course always belongs to a university.",
+      "option_2": "Option 2: A course is linked to university but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.8,
+      "visiting_class": "University",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "composition",
+        "description": "OfferedCourses"
+      },
+      "selected": "Option 1: A course always belongs to a university.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "University",
+          "target": "Course",
+          "type": "Containment",
+          "name": "OfferedCourses",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "In the context of a course, is it always association with at least one university, or can it exist without any?\nFor example:\n1. A course can exist without any university.\n2. A course must have at least one university.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course can exist without any university.",
+      "option_2": "Option 2: A course must have at least one university.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.78,
+      "visiting_class": "University",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "OfferedCourses"
+      },
+      "selected": "Option 2: A course must have at least one university.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "University",
+          "target": "Course",
+          "type": "Containment",
+          "name": "OfferedCourses",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - role : String\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : TimeSlot\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass University {\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nUniversity \"1\" *-- \"1\"  Course\n@enduml"
+    },
+    {
+      "q_num": 5,
+      "question": "When thinking about assignment, is role a relevant piece of information that should be tracked?\n\nFor example:\n1. Role is important information about assignment.\n2. Role is not relevant or seems like an error.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: role is relevant information.",
+      "option_2": "Option 2: role is not relevant and should be removed.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.3,
+      "visiting_class": "Assignment",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "role"
+      },
+      "selected": "Option 2: role is not relevant and should be removed.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "removed_attribute",
+        "description": "role"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : TimeSlot\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass University {\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nUniversity \"1\" *-- \"1\"  Course\n@enduml"
+    },
+    {
+      "q_num": 6,
+      "question": "When thinking about lab section, is time slot a relevant piece of information that should be tracked?\n\nFor example:\n1. Time slot is important information about lab section.\n2. Time slot is not relevant or seems like an error.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: time slot is relevant information.",
+      "option_2": "Option 2: time slot is not relevant and should be removed.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.3,
+      "visiting_class": "LabSection",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "attribute",
+        "description": "timeSlot"
+      },
+      "selected": "Option 1: time slot is relevant information.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "timeSlot"
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "We know that each lab section has a time slot. When we think about time slot, is it just a simple piece of information, like a line of text? \nOr is time slot made up of different parts that might be important?\nFor example:\n1. For each time slot, the start time and end time information is saved separately, so users can filter lab sections by start time and end time.\n2. The time slot is a single piece of text. This works well when we just need to show the time slot.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the time slot details separately.",
+      "option_2": "Option 2: A single line of text for time slot is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.62,
+      "visiting_class": "TimeSlot",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 2: A single line of text for time slot is enough.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "TimeSlot"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : string\n}\nclass University {\n}\nStudent \"0..*\" -- \"1\"  Enrollment : StudentEnrollments\nCourse \"0..*\" -- \"1\"  Enrollment : CourseEnrollments\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nUniversity \"1\" *-- \"1\"  Course\n@enduml"
+    },
+    {
+      "q_num": 8,
+      "question": "The concept enrollment potentially represents a link between students and courses. How should we understand this connection?\n\nFor example:\n1. An enrollment is a concept and a link that connects a student and a course. \n2. An enrollment is a concept, but it does not represent a link between a student and a course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The enrollment is a concept and a link between a student and a course.",
+      "option_2": "Option 2: The enrollment does not represent a link between a student and a course.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.95,
+      "visiting_class": "Unknown",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "Enrollment"
+      },
+      "selected": "Option 1: The enrollment is a concept and a link between a student and a course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Enrollment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : string\n}\nclass University {\n}\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"0..*\" -- \"1\"  Assignment : CourseTAAssignments\nCourse \"1\" *-- \"1\"  LabSection\nUniversity \"1\" *-- \"1\"  Course\nStudent \"*\" -- \"*\"  Course : associates\nclass Enrollment {\n    - date : Date\n}\n(Student, Course) .. Enrollment\n@enduml"
+    },
+    {
+      "q_num": 9,
+      "question": "The concept assignment potentially represents a link between teaching assistants and courses. How should we understand this connection?\n\nFor example:\n1. An assignment is a concept and a link that connects a teaching assistant and a course. \n2. An assignment is a concept, but it does not represent a link between a teaching assistant and a course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The assignment is a concept and a link between a teaching assistant and a course.",
+      "option_2": "Option 2: The assignment does not represent a link between a teaching assistant and a course.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.87,
+      "visiting_class": "Unknown",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "Assignment"
+      },
+      "selected": "Option 1: The assignment is a concept and a link between a teaching assistant and a course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Assignment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : string\n}\nclass University {\n}\nCourse \"1\" *-- \"1\"  LabSection\nUniversity \"1\" *-- \"1\"  Course\nStudent \"*\" -- \"*\"  Course : associates\nTeachingAssistant \"*\" -- \"*\"  Course\nclass Enrollment {\n    - date : Date\n}\n(Student, Course) .. Enrollment\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\n(TeachingAssistant, Course) .. Assignment\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n    - timeSlot : string\n}\nclass University {\n}\nCourse \"1\" *-- \"1\"  LabSection\nUniversity \"1\" *-- \"1\"  Course\nStudent \"*\" -- \"*\"  Course : associates\nTeachingAssistant \"*\" -- \"*\"  Course\nclass Enrollment {\n    - date : Date\n}\n(Student, Course) .. Enrollment\nclass Assignment {\n    - details : String\n    - responsibilities : String\n}\n(TeachingAssistant, Course) .. Assignment\n@enduml"
+  },
+  "summary": {
+    "total_questions": 9,
+    "model_changes": 5,
+    "changes_by_pattern": {
+      "ElementRelevance": 1,
+      "ConceptDecision(ClassVsAttribute)": 1,
+      "CompositionVsAssociation": 0,
+      "LowerboundCardinalityOneVsMany": 1,
+      "AssociationClassVsClass": 2
+    }
+  }
+}

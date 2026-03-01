@@ -1,0 +1,546 @@
+{
+  "session_id": "P060",
+  "domain": "In the context of a theater organization, various plays are performed in one or more theaters, each identified by its own location, for example \"The Northwest Theater\". A play may have multiple scheduled sessions, and each session occurs on a scheduled date. Plays are identified by a unique name and is either a musical or an opera. Furthermore, each play may take place during the day or at night.\n\nEach play is written by one or more authors, who are uniquely identified by name. Plays involve participants each also identified by name, and the same participant may act in multiple plays. For each play session, the starting time and an ending time is recorded, and participants can act in one or more sessions. Both authors and participant can be the same person, who may write a play and participate in its performance.",
+  "domain_name": "Theater scheduling",
+  "user_profile": "low",
+  "llm_initial_model": "model001",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Author : IsWrittenBy\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nParticipant \"0..*\" -- \"0..*\"  Session : ActsIn\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\n(Play , Participant) .. Session\n(Theater, Play) .. Session\n(Session, Participant) .. Play\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Play",
+      "confidence": 1.0
+    },
+    {
+      "pos": 2,
+      "class": "Author",
+      "confidence": 1.0
+    },
+    {
+      "pos": 3,
+      "class": "Participant",
+      "confidence": 1.0
+    },
+    {
+      "pos": 4,
+      "class": "Session",
+      "confidence": 1.0
+    },
+    {
+      "pos": 5,
+      "class": "Theater",
+      "confidence": 1.0
+    },
+    {
+      "pos": 6,
+      "class": "Musical",
+      "confidence": 1.0
+    },
+    {
+      "pos": 7,
+      "class": "Opera",
+      "confidence": 1.0
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "In the context of a author, is it always associated with at least one play, or can it exist without any?\nFor example:\n1. An author can exist without any play.\n2. An author must have at least one play.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An author can exist without any play.",
+      "option_2": "Option 2: An author must have at least one play.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.66,
+      "visiting_class": "Author",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsWrittenBy"
+      },
+      "selected": "Option 1: An author can exist without any play.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Author",
+          "type": "Association",
+          "name": "IsWrittenBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\n@enduml"
+    },
+    {
+      "q_num": 2,
+      "question": "In the context of an author, can there be more than one play involved, or is it always associated with just one? \nFor example:\n1. An author is linked to a single play.\n2. An author is linked to multiple plays.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each author is always linked to a single play.",
+      "option_2": "Option 2: An author can be linked to multiple plays.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.67,
+      "visiting_class": "Author",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsWrittenBy"
+      },
+      "selected": "Option 2: An author can be linked to multiple plays.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Author",
+          "type": "Association",
+          "name": "IsWrittenBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 3,
+      "question": "In the context of a play, is it always associated with at least one author, or can it exist without any?\nFor example:\n1. A play can exist without any author.\n2. A play must have at least one author.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A play can exist without any author.",
+      "option_2": "Option 2: A play must have at least one author.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "Author",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsWrittenBy"
+      },
+      "selected": "Option 2: A play must have at least one author.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Author",
+          "type": "Association",
+          "name": "IsWrittenBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "In the context of a play, can there be more than one author involved, or is it always associated with just one?\nFor example:\n1. A play is linked to a single author.\n2. A play is linked to multiple authors.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each play is always linked to a single author.",
+      "option_2": "Option 2: A play can be linked to multiple authors.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "Author",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsWrittenBy"
+      },
+      "selected": "Option 2: A play can be linked to multiple authors.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Author",
+          "type": "Association",
+          "name": "IsWrittenBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 5,
+      "question": "In the context of a participant, is it always association with at least one author, or can it exist without any?\nFor example:\n1. A participant can exist without any author.\n2. A participant must have at least one author.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A participant can exist without any author.",
+      "option_2": "Option 2: A participant must have at least one author.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.53,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsSamePersonAs"
+      },
+      "selected": "Option 1: A participant can exist without any author.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Author",
+          "target": "Participant",
+          "type": "Association",
+          "name": "IsSamePersonAs",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 6,
+      "question": "In the context of a participant, can there be more than one author involved, or is it always associated with just one? \nFor example:\n1. A participant is linked to a single author.\n2. A participant is linked to multiple authors.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each participant is always linked to a single author.",
+      "option_2": "Option 2: A participant can be linked to multiple authors.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.53,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsSamePersonAs"
+      },
+      "selected": "Option 2: A participant can be linked to multiple authors.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Author",
+          "target": "Participant",
+          "type": "Association",
+          "name": "IsSamePersonAs",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "In the context of an author, is it always association with at least one participant, or can it exist without any?\nFor example:\n1. An author can exist without any participant.\n2. An author must have at least one participant.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An author can exist without any participant.",
+      "option_2": "Option 2: An author must have at least one participant.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.53,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsSamePersonAs"
+      },
+      "selected": "Option 1: An author can exist without any participant.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Author",
+          "target": "Participant",
+          "type": "Association",
+          "name": "IsSamePersonAs",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 8,
+      "question": "In the context of an author, can there be more than one participant involved, or is it always associated with just one?\nFor example:\n1. An author is linked to a single participant.\n2. An author is linked to multiple participants.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each author is always linked to a single participant.",
+      "option_2": "Option 2: An author can be linked to multiple participants.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.53,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsSamePersonAs"
+      },
+      "selected": "Option 2: An author can be linked to multiple participants.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Author",
+          "target": "Participant",
+          "type": "Association",
+          "name": "IsSamePersonAs",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 9,
+      "question": "In the context of a participant, is it always associated with at least one play, or can it exist without any?\nFor example:\n1. A participant can exist without any play.\n2. A participant must have at least one play.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A participant can exist without any play.",
+      "option_2": "Option 2: A participant must have at least one play.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Involves"
+      },
+      "selected": "Option 1: A participant can exist without any play.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Participant",
+          "type": "Association",
+          "name": "Involves",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nPlay \"0..*\" -- \"1..*\"  Participant : Involves\n@enduml"
+    },
+    {
+      "q_num": 10,
+      "question": "In the context of a participant, can there be more than one play involved, or is it always associated with just one? \nFor example:\n1. A participant is linked to a single play.\n2. A participant is linked to multiple plays.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each participant is always linked to a single play.",
+      "option_2": "Option 2: A participant can be linked to multiple plays.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Involves"
+      },
+      "selected": "Option 2: A participant can be linked to multiple plays.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Participant",
+          "type": "Association",
+          "name": "Involves",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 11,
+      "question": "In the context of a play, is it always associated with at least one participant, or can it exist without any?\nFor example:\n1. A play can exist without any participant.\n2. A play must have at least one participant.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A play can exist without any participant.",
+      "option_2": "Option 2: A play must have at least one participant.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.62,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Involves"
+      },
+      "selected": "Option 1: A play can exist without any participant.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Participant",
+          "type": "Association",
+          "name": "Involves",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nPlay \"0..*\" -- \"0..*\"  Participant : Involves\n@enduml"
+    },
+    {
+      "q_num": 12,
+      "question": "In the context of a play, can there be more than one participant involved, or is it always associated with just one?\nFor example:\n1. A play is linked to a single participant.\n2. A play is linked to multiple participants.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each play is always linked to a single participant.",
+      "option_2": "Option 2: A play can be linked to multiple participants.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Involves"
+      },
+      "selected": "Option 2: A play can be linked to multiple participants.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Participant",
+          "type": "Association",
+          "name": "Involves",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 13,
+      "question": "We know that each theater has a name. When we think about name, is it just a simple piece of information, like a line of text? \nOr is name made up of different parts that might be important?\nFor example:\n1. For each name, the detail information is saved separately, so users can filter theater by detail.\n2. The name is a single piece of text. This works well when we just need to show the name.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the name details separately.",
+      "option_2": "Option 2: A single line of text for name is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.6,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "attribute",
+        "description": "name"
+      },
+      "selected": "Option 2: A single line of text for name is enough.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "name"
+      }
+    },
+    {
+      "q_num": 14,
+      "question": "Should the name in theater be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use name as string attribute in theater, which allows any text value.\n2. Use name as an enumeration which uses predefined values in literals: day or night.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The name can be any text value.",
+      "option_2": "Option 2: The name must be one of these: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.6,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "attribute",
+        "description": "name"
+      },
+      "selected": "Option 1: String attribute that allows any text value for name.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "name"
+      }
+    },
+    {
+      "q_num": 15,
+      "question": "Does a session always require a theater to exist. \nIf a theater is removed, would all the associated sessions also need to be removed?\n\nFor example:\n1. A session belongs to a theater and cannot exist on its own.\n2. A session is linked to a theater but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A session always belongs to a theater.",
+      "option_2": "Option 2: A session is linked to theater but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.66,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "composition",
+        "description": "Schedules"
+      },
+      "selected": "Option 1: A session always belongs to a theater.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Theater",
+          "target": "Session",
+          "type": "Containment",
+          "name": "Schedules",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 16,
+      "question": "In the context of a session, is it always associated with at least one theater, or can it exist without any?\nFor example:\n1. A session can exist without any theater.\n2. A session must have at least one theater.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A session can exist without any theater.",
+      "option_2": "Option 2: A session must have at least one theater.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.66,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Schedules"
+      },
+      "selected": "Option 2: A session must have at least one theater.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Theater",
+          "target": "Session",
+          "type": "Containment",
+          "name": "Schedules",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 17,
+      "question": "Do the concepts (participant and author) represent different kinds of a more general concept called person?.\n\nFor example: \n1. Participant and author are unrelated concepts, with no connection to person.\n2. Participant and author are different kinds of person.\n\nWhich option is better for you?\n\n    ",
+      "option_1": "Option 1: Keep participant and author as unrelated concepts.",
+      "option_2": "Option 2: Create the concept person, with participant and author as its kinds.",
+      "pattern": "ClassGeneralization",
+      "confidence": 1.0,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "[class Participant, class Author]"
+      },
+      "selected": "Option 2: Create the concept person, with participant and author as its kinds.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "superclass",
+        "description": "Person"
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n}\nclass Participant {\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nabstract class Person {\n    - name : String\n}\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nPlay \"0..*\" -- \"0..*\"  Participant : Involves\nPerson <|-- Participant\nPerson <|-- Author\n@enduml"
+    },
+    {
+      "q_num": 18,
+      "question": "The concept session potentially represents a link between theaters and plays. How should we understand this connection?\n\nFor example:\n1. A session is a concept and a link that connects a theater and a play. \n2. A session is a concept, but it does not represent a link between a theater and a play.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The session is a concept and a link between a theater and a play.",
+      "option_2": "Option 2: The session does not represent a link between a theater and a play.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 1.0,
+      "visiting_class": "Unknown",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "class",
+        "description": "Session"
+      },
+      "selected": "Option 1: The session is a concept and a link between a theater and a play.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Session"
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n}\nclass Participant {\n}\nabstract class Person {\n    - name : String\n}\nPlay <|-- Musical\nPlay <|-- Opera\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nPlay \"0..*\" -- \"0..*\"  Participant : Involves\nPerson <|-- Participant\nPerson <|-- Author\nTheater \"*\" -- \"*\"  Play : associates\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\n(Theater, Play) .. Session\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n}\nclass Participant {\n}\nabstract class Person {\n    - name : String\n}\nPlay <|-- Musical\nPlay <|-- Opera\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nPlay \"0..*\" -- \"0..*\"  Participant : Involves\nTheater \"*\" -- \"*\"  Play : associates\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\n(Theater, Play) .. Session\n@enduml"
+  },
+  "summary": {
+    "total_questions": 18,
+    "model_changes": 5,
+    "changes_by_pattern": {
+      "LowerboundCardinalityOneVsMany": 3,
+      "UpperboundCardinalityOneVsMany": 0,
+      "ConceptDecision(ClassVsAttribute)": 0,
+      "ConceptDecision(AttributeVsEnumeration)": 0,
+      "CompositionVsAssociation": 0,
+      "ClassGeneralization": 1,
+      "AssociationClassVsClass": 1
+    }
+  }
+}

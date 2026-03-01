@@ -1,0 +1,752 @@
+{
+  "session_id": "P088",
+  "domain": "In an academic institution, students enroll in various courses offered by the university. Each student is uniquely identified by a student code. An enrollment in the course requires the specific date on which it occurred for administrative purposes.\n\nCourses are supported by Teaching Assistants (TAs), who are identified by their first and last names. A TA may assist in multiple different courses, and the specific role of a TA within a course is defined by an assignment, which describes the details and responsibilities assigned to them. Regarding courses logistics, they consist of one or more lab sections. Each section occurs at a specific location and time slot with start and end times.",
+  "domain_name": "University courses",
+  "user_profile": "low",
+  "llm_initial_model": "model012",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - role : String\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"1..*\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\n(TeachingAssistant, Course) .. Assignment\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Course",
+      "confidence": 0.96
+    },
+    {
+      "pos": 2,
+      "class": "Assignment",
+      "confidence": 0.86
+    },
+    {
+      "pos": 3,
+      "class": "TeachingAssistant",
+      "confidence": 0.96
+    },
+    {
+      "pos": 4,
+      "class": "Enrollment",
+      "confidence": 0.95
+    },
+    {
+      "pos": 5,
+      "class": "Student",
+      "confidence": 0.98
+    },
+    {
+      "pos": 6,
+      "class": "LabSection",
+      "confidence": 0.93
+    },
+    {
+      "pos": 7,
+      "class": "TimeSlot",
+      "confidence": 0.57
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "Should responsibilities be modeled as a separate class associated with Assignment, or remain as a simple representation?\n\nFor example:\n1. Responsibilities is a separate class with its own attributes. This allows users to query and filter by individual responsibilities properties.\n2. Responsibilities is modeled as a simple representation in Assignment. This is suitable when responsibilities details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the responsibilities details separately.",
+      "option_2": "Option 2: A single line of text for responsibilities is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.5,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "responsibilities"
+      },
+      "selected": "Option 2: A single line of text for responsibilities is enough.",
+      "model_changed": false,
+      "answer_source": "llm",
+      "llm_raw_response": "Option 2: A single line of text for responsibilities is enough.\n\nThe domain description does not indicate that responsibilities consist of multiple parts or require detailed information to be saved separately; it simply states that each assignment has responsibilities.",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "responsibilities"
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "Should the responsibilities in assignment be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use responsibilities as string attribute in assignment, which allows any text value.\n2. Use responsibilities as an enumeration which uses predefined values in literals: grading, tutoring, course preparation, office hours or lab supervision.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The responsibilities can be any text value.",
+      "option_2": "Option 2: The responsibilities must be one of these: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.5,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "responsibilities"
+      },
+      "selected": "Option 1: The responsibilities can be any text value.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "responsibilities"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass Assignment {\n    - role : String\n    - details : String\n    - responsibilities : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\n@enduml"
+    },
+    {
+      "q_num": 3,
+      "question": "Should details be modeled as a separate class associated with Assignment, or remain as a simple representation?\n\nFor example:\n1. Details is a separate class with its own attributes. This allows users to query and filter by individual details properties.\n2. Details is modeled as a simple representation in Assignment. This is suitable when details details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the details details separately.",
+      "option_2": "Option 2: A single line of text for details is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.52,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "details"
+      },
+      "selected": "Option 2: Model details as a simple representation in Assignment.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "details"
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "Should the details in assignment be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use details as string attribute in assignment, which allows any text value.\n2. Use details as an enumeration which uses predefined values in literals: grading, tutoring, course preparation, office hours or lab supervision.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The details can be any text value.",
+      "option_2": "Option 2: The details must be one of these: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.52,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "details"
+      },
+      "selected": "Option 2: Enumeration details with predefined values: grading, tutoring, course preparation, office hours and lab supervision.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "details"
+      }
+    },
+    {
+      "q_num": 5,
+      "question": "We know that each assignment has a role. When we think about role, is it just a simple piece of information, like a line of text? \nOr is role made up of different parts that might be important?\nFor example:\n1. For each role, the detail information is saved separately, so users can filter assignment by detail.\n2. The role is a single piece of text. This works well when we just need to show the role.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the role details separately.",
+      "option_2": "Option 2: A single line of text for role is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.53,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "role"
+      },
+      "selected": "Option 1: We need the role details separately.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "TARole"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"0..*\" -- \"1\"  Assignment : TaAssignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  TARole : has\n@enduml"
+    },
+    {
+      "q_num": 6,
+      "question": "In the context of a assignment, is it always association with at least one course, or can it exist without any?\nFor example:\n1. An assignment can exist without any course.\n2. An assignment must have at least one course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An assignment can exist without any course.",
+      "option_2": "Option 2: An assignment must have at least one course.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.61,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TaAssignments"
+      },
+      "selected": "Option 2: An assignment must have at least one course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "TaAssignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  TARole : has\nCourse \"1..*\" -- \"1\"  Assignment : TaAssignments\n@enduml"
+    },
+    {
+      "q_num": 7,
+      "question": "In the context of a course, is it always associated with at least one assignment, or can it exist without any?\nFor example:\n1. A course can exist without any assignment.\n2. A course must have at least one assignment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course can exist without any assignment.",
+      "option_2": "Option 2: A course must have at least one assignment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Assignment",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TaAssignments"
+      },
+      "selected": "Option 1: A course can exist without any assignment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "TaAssignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  TARole : has\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\n@enduml"
+    },
+    {
+      "q_num": 8,
+      "question": "We know that each ta role has a description. When we think about description, is it just a simple piece of information, like a line of text? \nOr is description made up of different parts that might be important?\nFor example:\n1. For each description, the detail information is saved separately, so users can filter ta role by detail.\n2. The description is a single piece of text. This works well when we just need to show the description.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the description details separately.",
+      "option_2": "Option 2: A single line of text for description is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.8,
+      "visiting_class": "TARole",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "attribute",
+        "description": "description"
+      },
+      "selected": "Option 2: A single line of text for description is enough.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "attribute"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nAssignment \"1\" -- \"1\"  TARole : has\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\n@enduml"
+    },
+    {
+      "q_num": 9,
+      "question": "Does a ta role always require an assignment to exist. \nIf an assignment is removed, would all the associated ta roles also need to be removed?\n\nFor example:\n1. A ta role belongs to an assignment and cannot exist on its own.\n2. A ta role is linked to an assignment but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A ta role always belongs to a assignment.",
+      "option_2": "Option 2: A ta role is linked to assignment but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.4,
+      "visiting_class": "TARole",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "association",
+        "description": "has"
+      },
+      "selected": "Option 2: A ta role is linked to assignment but can exist independently.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "association",
+        "description": {
+          "source": "Assignment",
+          "target": "TARole",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 10,
+      "question": "In the context of a ta role, is it always associated with at least one assignment, or can it exist without any?\nFor example:\n1. A ta role can exist without any assignment.\n2. A ta role must have at least one assignment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A ta role can exist without any assignment.",
+      "option_2": "Option 2: A ta role must have at least one assignment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "TARole",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 1: A ta role can exist without any assignment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Assignment",
+          "target": "TARole",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nTeachingAssistant \"0..*\" -- \"1\"  Assignment : Assignments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments : has\nAssignment \"0..1\" -- \"1\"  TARole\n@enduml"
+    },
+    {
+      "q_num": 11,
+      "question": "In the context of an assignment, is it always associated with at least one ta role, or can it exist without any?\nFor example:\n1. An assignment can exist without any ta role.\n2. An assignment must have at least one ta role.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An assignment can exist without any ta role.",
+      "option_2": "Option 2: An assignment must have at least one ta role.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "TARole",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 2: An assignment must have at least one ta role.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Assignment",
+          "target": "TARole",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "In the context of an assignment, can there be more than one ta role involved, or is it always associated with just one?\n\nFor example:\n1. An assignment is linked to a single ta role.\n2. An assignment is linked to multiple ta roles.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each assignment is always linked to a single ta role.",
+      "option_2": "Option 2: An assignment can be linked to multiple ta roles.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "TARole",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 1: Each assignment is always linked to a single ta role.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Assignment",
+          "target": "TARole",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 13,
+      "question": "In the context of a assignment, is it always association with at least one teaching assistant, or can it exist without any?\nFor example:\n1. An assignment can exist without any teaching assistant.\n2. An assignment must have at least one teaching assistant.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An assignment can exist without any teaching assistant.",
+      "option_2": "Option 2: An assignment must have at least one teaching assistant.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.62,
+      "visiting_class": "TeachingAssistant",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Assignments"
+      },
+      "selected": "Option 2: An assignment must have at least one teaching assistant.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "TeachingAssistant",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "Assignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"1\"  Assignment : Assignments\n@enduml"
+    },
+    {
+      "q_num": 14,
+      "question": "In the context of a teaching assistant, is it always associated with at least one assignment, or can it exist without any?\nFor example:\n1. A teaching assistant can exist without any assignment.\n2. A teaching assistant must have at least one assignment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A teaching assistant can exist without any assignment.",
+      "option_2": "Option 2: A teaching assistant must have at least one assignment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "TeachingAssistant",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Assignments"
+      },
+      "selected": "Option 1: A teaching assistant can exist without any assignment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "TeachingAssistant",
+          "target": "Assignment",
+          "type": "Association",
+          "name": "Assignments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"0..*\" -- \"1\"  Enrollment\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\n@enduml"
+    },
+    {
+      "q_num": 15,
+      "question": "In the context of a enrollment, is it always association with at least one course, or can it exist without any?\nFor example:\n1. An enrollment can exist without any course.\n2. An enrollment must have at least one course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An enrollment can exist without any course.",
+      "option_2": "Option 2: An enrollment must have at least one course.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.62,
+      "visiting_class": "Enrollment",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Enrollments"
+      },
+      "selected": "Option 2: An enrollment must have at least one course.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "Enrollments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\nCourse \"1..*\" -- \"1\"  Enrollment\n@enduml"
+    },
+    {
+      "q_num": 16,
+      "question": "In the context of a course, is it always associated with at least one enrollment, or can it exist without any?\nFor example:\n1. A course can exist without any enrollment.\n2. A course must have at least one enrollment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A course can exist without any enrollment.",
+      "option_2": "Option 2: A course must have at least one enrollment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Enrollment",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Enrollments"
+      },
+      "selected": "Option 1: A course can exist without any enrollment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "Enrollments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nStudent \"0..*\" -- \"1\"  Enrollment : Enrollments\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment\n@enduml"
+    },
+    {
+      "q_num": 17,
+      "question": "In the context of a enrollment, is it always association with at least one student, or can it exist without any?\nFor example:\n1. An enrollment can exist without any student.\n2. An enrollment must have at least one student.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: An enrollment can exist without any student.",
+      "option_2": "Option 2: An enrollment must have at least one student.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "Student",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Enrollments"
+      },
+      "selected": "Option 2: An enrollment must have at least one student.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Student",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "Enrollments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"1\"  Enrollment\n@enduml"
+    },
+    {
+      "q_num": 18,
+      "question": "In the context of a student, is it always associated with at least one enrollment, or can it exist without any?\nFor example:\n1. A student can exist without any enrollment.\n2. A student must have at least one enrollment.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A student can exist without any enrollment.",
+      "option_2": "Option 2: A student must have at least one enrollment.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Student",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Enrollments"
+      },
+      "selected": "Option 1: A student can exist without any enrollment.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Student",
+          "target": "Enrollment",
+          "type": "Association",
+          "name": "Enrollments",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nLabSection \"1\" *-- \"1\"  TimeSlot\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"0..1\"  Enrollment\n@enduml"
+    },
+    {
+      "q_num": 19,
+      "question": "Does a lab section always require a course to exist. \nIf a course is removed, would all the associated lab sections also need to be removed?\n\nFor example:\n1. A lab section belongs to a course and cannot exist on its own.\n2. A lab section is linked to a course but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A lab section always belongs to a course.",
+      "option_2": "Option 2: A lab section is linked to course but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.63,
+      "visiting_class": "LabSection",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "composition",
+        "description": "LabSections"
+      },
+      "selected": "Option 1: A lab section always belongs to a course.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Course",
+          "target": "LabSection",
+          "type": "Containment",
+          "name": "LabSections",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 20,
+      "question": "In the context of a lab section, is it always associated with at least one course, or can it exist without any?\nFor example:\n1. A lab section can exist without any course.\n2. A lab section must have at least one course.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A lab section can exist without any course.",
+      "option_2": "Option 2: A lab section must have at least one course.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "LabSection",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "LabSections"
+      },
+      "selected": "Option 2: A lab section must have at least one course.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Course",
+          "target": "LabSection",
+          "type": "Containment",
+          "name": "LabSections",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 21,
+      "question": "We know that each lab section has a time slot. When we think about time slot, is it just a simple piece of information, like a line of text? \nOr is time slot made up of different parts that might be important?\nFor example:\n1. For each time slot, the start time and end time information is saved separately, so users can filter lab sections by start time and end time.\n2. The time slot is a single piece of text. This works well when we just need to show the time slot.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: We need the time slot details separately.",
+      "option_2": "Option 2: A single line of text for time slot is enough.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.57,
+      "visiting_class": "TimeSlot",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "class",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 1: We need the time slot details separately.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "TimeSlot"
+      }
+    },
+    {
+      "q_num": 22,
+      "question": "Does a time slot always require a lab section to exist. \nIf a lab section is removed, would all the associated time slots also need to be removed?\n\nFor example:\n1. A time slot belongs to a lab section and cannot exist on its own.\n2. A time slot is linked to a lab section but can exist independently of it.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A time slot always belongs to a lab section.",
+      "option_2": "Option 2: A time slot is linked to lab section but can exist independently.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.59,
+      "visiting_class": "TimeSlot",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "composition",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 2: A time slot is linked to lab section but can exist independently.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "association",
+        "description": {
+          "source": "LabSection",
+          "target": "TimeSlot",
+          "type": "Association",
+          "name": "TimeSlot",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"0..1\"  Enrollment\nLabSection \"1\" -- \"1\"  TimeSlot : TimeSlot\n@enduml"
+    },
+    {
+      "q_num": 23,
+      "question": "In the context of a time slot, is it always associated with at least one lab section, or can it exist without any?\nFor example:\n1. A time slot can exist without any lab section.\n2. A time slot must have at least one lab section.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A time slot can exist without any lab section.",
+      "option_2": "Option 2: A time slot must have at least one lab section.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.59,
+      "visiting_class": "TimeSlot",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 1: A time slot can exist without any lab section.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "LabSection",
+          "target": "TimeSlot",
+          "type": "Association",
+          "name": "TimeSlot",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass Enrollment {\n    - date : Date\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string},{\n    - description : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\nCourse \"1..*\" -- \"0..1\"  Enrollment : Enrollments\nStudent \"1..*\" -- \"0..1\"  Enrollment\nLabSection \"0..1\" -- \"1\"  TimeSlot : TimeSlot\n@enduml"
+    },
+    {
+      "q_num": 24,
+      "question": "In the context of a lab section, is it always associated with at least one time slot, or can it exist without any?\nFor example:\n1. A lab section can exist without any time slot.\n2. A lab section must have at least one time slot.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: A lab section can exist without any time slot.",
+      "option_2": "Option 2: A lab section must have at least one time slot.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.59,
+      "visiting_class": "TimeSlot",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 2: A lab section must have at least one time slot.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "LabSection",
+          "target": "TimeSlot",
+          "type": "Association",
+          "name": "TimeSlot",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 25,
+      "question": "In the context of a lab section, can there be more than one time slot involved, or is it always associated with just one?\n\nFor example:\n1. A lab section is linked to a single time slot.\n2. A lab section is linked to multiple time slots.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Each lab section is always linked to a single time slot.",
+      "option_2": "Option 2: A lab section can be linked to multiple time slots.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.59,
+      "visiting_class": "TimeSlot",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TimeSlot"
+      },
+      "selected": "Option 1: Each lab section is always linked to a single time slot.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "LabSection",
+          "target": "TimeSlot",
+          "type": "Association",
+          "name": "TimeSlot",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 26,
+      "question": "The concept enrollment potentially represents a link between courses and students. How should we understand this connection?\n\nFor example:\n1. An enrollment is a concept and a link that connects a course and a student. \n2. An enrollment is a concept, but it does not represent a link between a course and a student.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The enrollment is a concept and a link between a course and a student.",
+      "option_2": "Option 2: The enrollment does not represent a link between a course and a student.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.95,
+      "visiting_class": "Unknown",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "class",
+        "description": "Enrollment"
+      },
+      "selected": "Option 1: The enrollment is a concept and a link between a course and a student.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Enrollment"
+      },
+      "updated_model": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string\n    - description : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\nLabSection \"0..1\" -- \"1\"  TimeSlot : TimeSlot\nCourse \"*\" -- \"*\"  Student : associates\nclass Enrollment {\n    - date : Date\n}\n(Course, Student) .. Enrollment\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Student {\n    - studentCode : String\n}\nclass Course {\n}\nclass TeachingAssistant {\n    - firstName : String\n    - lastName : String\n}\nclass LabSection {\n    - location : String\n}\nclass TimeSlot {\n    - startTime : Time\n    - endTime : Time\n}\nclass Assignment {\n    - responsibilities : String\n    - details : String\n}\nclass TARole {\n    - name : string\n    - description : string\n}\nCourse \"1\" *-- \"1\"  LabSection\nCourse \"1..*\" -- \"0..1\"  Assignment : TaAssignments\nAssignment \"0..1\" -- \"1\"  TARole : has\nTeachingAssistant \"1..*\" -- \"0..1\"  Assignment : Assignments\nLabSection \"0..1\" -- \"1\"  TimeSlot : TimeSlot\nCourse \"*\" -- \"*\"  Student : associates\nclass Enrollment {\n    - date : Date\n}\n(Course, Student) .. Enrollment\n@enduml"
+  },
+  "summary": {
+    "total_questions": 26,
+    "model_changes": 13,
+    "changes_by_pattern": {
+      "ConceptDecision(ClassVsAttribute)": 1,
+      "ConceptDecision(AttributeVsEnumeration)": 0,
+      "LowerboundCardinalityOneVsMany": 10,
+      "CompositionVsAssociation": 1,
+      "UpperboundCardinalityOneVsMany": 0,
+      "AssociationClassVsClass": 1
+    }
+  }
+}

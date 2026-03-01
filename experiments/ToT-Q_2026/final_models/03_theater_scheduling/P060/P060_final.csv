@@ -1,0 +1,23 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P060;theater_scheduling;model001;Class;Theater;1
+P060;theater_scheduling;model001;Attributes;Theater.location;1
+P060;theater_scheduling;model001;Attributes;Theater.name;1
+P060;theater_scheduling;model001;Class;Abstract Play;1
+P060;theater_scheduling;model001;Attributes;Play.name;1
+P060;theater_scheduling;model001;Class;Musical;1
+P060;theater_scheduling;model001;Class;Opera;1
+P060;theater_scheduling;model001;Class;Author;1
+P060;theater_scheduling;model001;Class;Participant;1
+P060;theater_scheduling;model001;Class;Abstract Person;1
+P060;theater_scheduling;model001;Attributes;Person.name;1
+P060;theater_scheduling;model001;Inheritance;Musical --|> Play;1
+P060;theater_scheduling;model001;Inheritance;Opera --|> Play;1
+P060;theater_scheduling;model001;Association;"Author ""0..*"" -- ""0..*"" Participant";1
+P060;theater_scheduling;model001;Association;"Play ""0..*"" -- ""1..*"" Author";1
+P060;theater_scheduling;model001;Association;"Play ""0..*"" -- ""0..*"" Participant";1
+P060;theater_scheduling;model001;Association;"Theater ""*"" -- ""*"" Play";1
+P060;theater_scheduling;model001;Class;Session;1
+P060;theater_scheduling;model001;Attributes;Session.scheduledDate;1
+P060;theater_scheduling;model001;Attributes;Session.startTime;1
+P060;theater_scheduling;model001;Attributes;Session.endTime;1
+P060;theater_scheduling;model001;Association Class;(Theater, Play) .. Session;1

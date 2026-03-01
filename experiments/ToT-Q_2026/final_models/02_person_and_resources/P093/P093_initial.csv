@@ -1,0 +1,24 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt5;case_12_person_and_resources;model012;Class;Person;1
+gpt5;case_12_person_and_resources;model012;Attributes;Person.name;1
+gpt5;case_12_person_and_resources;model012;Attributes;Person.identifier;1
+gpt5;case_12_person_and_resources;model012;Class;User;1
+gpt5;case_12_person_and_resources;model012;Attributes;User.password;1
+gpt5;case_12_person_and_resources;model012;Class;Abstract Resource;1
+gpt5;case_12_person_and_resources;model012;Attributes;Resource.name;1
+gpt5;case_12_person_and_resources;model012;Class;File;1
+gpt5;case_12_person_and_resources;model012;Class;Folder;1
+gpt5;case_12_person_and_resources;model012;Class;ResourceAccess;1
+gpt5;case_12_person_and_resources;model012;Attributes;ResourceAccess.canView;1
+gpt5;case_12_person_and_resources;model012;Attributes;ResourceAccess.canEdit;1
+gpt5;case_12_person_and_resources;model012;Class;AncestorRelation;1
+gpt5;case_12_person_and_resources;model012;Attributes;AncestorRelation.degree;1
+gpt5;case_12_person_and_resources;model012;Association;"Person ""0..*"" -- ""0..1"" Person";1
+gpt5;case_12_person_and_resources;model012;Association;"Person ""0..*"" -- ""1"" AncestorRelation";1
+gpt5;case_12_person_and_resources;model012;Association;"User ""0..*"" -- ""1"" ResourceAccess";1
+gpt5;case_12_person_and_resources;model012;Association;"ResourceAccess ""1"" -- ""0..*"" Resource";1
+gpt5;case_12_person_and_resources;model012;Composition;"Folder ""0..*"" *-- ""1"" File";1
+gpt5;case_12_person_and_resources;model012;Composition;"Folder ""0..*"" *-- ""0..1"" Folder";1
+gpt5;case_12_person_and_resources;model012;Inheritance;User --|> Person;1
+gpt5;case_12_person_and_resources;model012;Inheritance;File --|> Resource;1
+gpt5;case_12_person_and_resources;model012;Inheritance;Folder --|> Resource;1

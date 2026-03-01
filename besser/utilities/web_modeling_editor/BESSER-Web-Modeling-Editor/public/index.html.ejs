@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>BESSER Web Modeling Editor</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <style>
+    .besser-logo {
+      height: 35px;
+      width: auto;
+      margin-bottom: -13px;
+    }
+
+    .convert-button {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+
+    .convert-button:hover {
+      background-color: #45a049;
+    }
+
+    .delete-button {
+      padding: 8px 16px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+
+    .delete-button:hover {
+      background-color: #d32f2f;
+    }
+
+    #messageText {
+      white-space: pre-line;
+      text-align: left;
+      line-height: 1.5;
+      margin: 10px 0;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .error-message {
+      color: #f44336;
+      font-size: 0.8em;
+      margin-top: 5px;
+      display: none;
+    }
+  </style>
+  <script>
+    function preventSpaces(event) {
+      if (event.key === ' ') {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    function removeSpaces(element) {
+      element.value = element.value.replace(/\s/g, '_');
+    }
+
+    function validateNames() {
+      const projectName = document.getElementById('projectName').value;
+      const appName = document.getElementById('appName').value;
+      const errorMessage = document.getElementById('nameError');
+      const generateButton = document.querySelector('#djangoConfigPopup button[onclick*="generateDjangoProject"]');
+
+      if (projectName && appName && projectName === appName) {
+        errorMessage.style.display = 'block';
+        generateButton.disabled = true;
+        return false;
+      } else {
+        errorMessage.style.display = 'none';
+        generateButton.disabled = false;
+        return true;
+      }
+    }
+  </script>
+</head>
+
+
+<body>
+  <header class="navbar">
+    <a class="navbar-brand logo float-left">
+      <a href="https://besser.readthedocs.io/en/latest/#" target="_blank">
+        <img class="logo-img besser-logo" src="images/besser_logo_dark.png" />
+      </a>
+      <span>&nbsp;&nbsp;&nbsp;</span>
+      <span class="navbar-title">Web Modeling Editor</span>
+      <span>&nbsp;&nbsp;&nbsp;</span>
+      <span class="navbar-version">
+        <%=htmlWebpackPlugin.options.version%>
+      </span>
+    </a>
+  </header>
+  <div class="container">
+    <aside class="sidebar">
+      <section>
+        <h3 class="header">Diagram Type</h3>
+        <div class="dropdown">
+          <select name="type" data-cy="select-type" onchange="apollon.onChange(event)">
+            <option value="ClassDiagram">Class Diagram</option>
+            <option value="StateMachineDiagram">State Machine Diagram</option>
+            <!-- <option value="ActivityDiagram">Activity Diagram</option>
+            <option value="ObjectDiagram">Object Diagram</option>
+            <option value="UseCaseDiagram">Use Case Diagram</option>
+            <option value="CommunicationDiagram">Communication Diagram</option>
+            <option value="ComponentDiagram">Component Diagram</option>
+            <option value="DeploymentDiagram">Deployment Diagram</option>
+            <option value="PetriNet">Petri Net</option>
+            <option value="ReachabilityGraph">Reachability Graph</option>
+            <option value="SyntaxTree">Syntax Tree</option>
+            <option value="Flowchart">Flowchart</option>
+            <option value="BPMN">BPMN (beta)</option> -->
+          </select>
+        </div>
+      </section>
+      <!-- <section>
+        <h3 class="header">Language</h3>
+        <div class="dropdown">
+          <select name="locale" onchange="apollon.onChange(event)">
+            <option value="en">English</option>
+            <option value="de">German</option>
+          </select>
+        </div>
+      </section> -->
+      <!-- <section>
+        <h3 class="header">Mode</h3>
+        <div class="dropdown">
+          <select name="mode" onchange="apollon.onChange(event)">
+            <option value="Exporting">Exporting</option>
+            <option value="Modelling">Modelling</option>
+            <option value="Assessment">Assessment</option>
+          </select>
+        </div>
+        <label>
+          <input class="checkbox" type="checkbox" name="readonly" onchange="apollon.onSwitch(event)" />
+          read-only
+        </label>
+      </section> -->
+
+      <section id="codeGeneratorSection" style="display: none;">
+        <h3 class="header">BESSER Code Generator</h3>
+        <div class="dropdown">
+          <select id="generatorSelect">
+            <option value="python">Python Classes</option>
+            <option value="java">Java Classes</option>
+            <option value="pydantic">Pydantic Classes</option>
+            <option value="sqlalchemy">SQLAlchemy Models</option>
+            <option value="sql">SQL Models</option>
+            <option value="django">Django Project</option>
+            <option value="backend">Backend</option>
+          </select>
+        </div>
+        <div class="switch">
+          <button id="generateButton" class="generate-button">Generate/Download</button>
+        </div>
+      </section>
+      <section id="oclConstraintsSection" style="display: none;">
+        <h3 class="header">OCL Constraints</h3>
+        <div class="switch">
+          <button onclick="window.apollon.checkOclConstraints()">Check OCL</button>
+        </div>
+      </section>
+      <!-- <section id="oclConstraintsSection" style="display: none;">
+        <h3 class="header">OCL Constraints</h3>
+        <div class="switch">
+          <button onclick="window.apollon.openOclPopup()">Open OCL</button>
+        </div>
+      </section> -->
+      <section>
+        <h3 class="header">JSON Import/Export</h3>
+        <div class="switch">
+          <button onclick="window.apollon.exportDiagram()">Export JSON</button>
+          <div class="file-input-wrapper">
+            <input type="file" id="import-file" accept="application/json" onchange="window.apollon.importDiagram(this.files[0])">
+            <label for="import-file" class="file-input-label">Import JSON</label>
+          </div>
+        </div>
+      </section>
+      <section id="bumlSection">
+        <h3 class="header">B-UML Import/Export</h3>
+        <div class="switch">
+          <button onclick="if(window.apollon && window.apollon.exportBuml) window.apollon.exportBuml()">Export B&#8209;UML</button>
+          <div class="file-input-wrapper">
+            <input type="file" id="import-buml-file" accept=".buml,.py" onchange="window.apollon.convertBumlToJson(this.files[0])" style="display: none;">
+            <label for="import-buml-file" class="file-input-label">Import B&#8209;UML</label>
+          </div>
+        </div>
+      </section>
+      <!-- <section>
+        <h3 class="header">State</h3>
+        <div class="switch">
+          <button onclick="apollon.save(event)">Save</button>
+          <button onclick="apollon.clear(event)">Clear</button>
+        </div>
+      </section> -->
+      <section>
+        <h3 class="header">Theming</h3>
+        <div class="switch">
+          <button id="theming-light-mode-button" onclick="apollon.setTheming('light')" class="selected">Light</button>
+          <button id="theming-dark-mode-button" onclick="apollon.setTheming('dark')">Dark</button>
+        </div>
+      </section>
+      <!--<section>
+        <h3 class="header">BUML to JSON</h3>
+        <div class="switch">
+          <button id="convertButton" onclick="window.apollon.convertBumlToJson()">Convert BUML</button>
+        </div>
+      </section> -->
+      <section>
+        <h3 class="header">Export</h3>
+        <div class="switch">
+          <button 
+            onclick="apollon.draw()" 
+            title="Export diagram as SVG file"
+            class="tooltip-enabled">
+            To SVG
+          </button>
+          <!-- <button onclick="apollon.draw('include')">Include</button>
+          <button onclick="apollon.draw('exclude')">Exclude</button> -->
+        </div>
+      </section>
+      <section class="danger-zone">
+        <!-- <h3 class="header">Advanced Management</h3> -->
+        <div class="button-container">
+          <button 
+        id="resetDiagramBtn" 
+        onclick="apollon.deleteEverything()" 
+        class="delete-button"
+        title="This will permanently remove all diagram elements">
+        Reset Diagram
+          </button>
+        </div>
+      </section>
+      <section>
+        <small class="warning-text" style="color: #666; font-size: 0.8em; margin-top: 5px; display: block;">
+            Based on <a href="https://github.com/ls1intum/Apollon" target="_blank">Apollon Editor</a>
+        </small>
+      </section>
+    </aside>
+    <div class="apollon-container">
+      <main id="apollon"></main>
+    </div>
+  </div>
+
+  <div id="messagePopup" class="popup-overlay" style="display: none;">
+    <div class="popup-content">
+      <p id="messageText"></p>
+      <div class="popup-buttons">
+        <button onclick="document.getElementById('messagePopup').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="djangoConfigPopup" class="popup-overlay" style="display: none;">
+    <div class="popup-content">
+      <h3>Django Project Configuration</h3>
+      <div class="form-group">
+        <label for="projectName">Project Name:</label>
+        <input type="text" 
+               id="projectName" 
+               placeholder="my_django_project" 
+               pattern="[a-zA-Z0-9_-]+" 
+               onkeypress="return preventSpaces(event)"
+               oninput="removeSpaces(this); validateNames()"
+               title="Only letters, numbers, underscores, and hyphens allowed (no spaces)"
+               required>
+      </div>
+      <div class="form-group">
+        <label for="appName">App Name:</label>
+        <input type="text" 
+               id="appName" 
+               placeholder="my_app" 
+               pattern="[a-zA-Z0-9_-]+" 
+               onkeypress="return preventSpaces(event)"
+               oninput="removeSpaces(this); validateNames()"
+               title="Only letters, numbers, underscores, and hyphens allowed (no spaces)"
+               required>
+        <div id="nameError" class="error-message">Project name and app name cannot be the same</div>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="containerization">
+          Include Docker containerization
+        </label>
+      </div>
+      <div class="popup-buttons">
+        <button onclick="window.apollon.generateDjangoProject()">Generate</button>
+        <button onclick="document.getElementById('djangoConfigPopup').style.display='none'">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+</body>
+
+</html>

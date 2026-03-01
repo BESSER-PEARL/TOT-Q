@@ -1,0 +1,20 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt4.1;case_12_person_and_resources;model003;Class;Person;1
+gpt4.1;case_12_person_and_resources;model003;Attributes;Person.name;1
+gpt4.1;case_12_person_and_resources;model003;Attributes;Person.identifier;1
+gpt4.1;case_12_person_and_resources;model003;Class;Abstract Resource;1
+gpt4.1;case_12_person_and_resources;model003;Attributes;Resource.name;1
+gpt4.1;case_12_person_and_resources;model003;Class;File;1
+gpt4.1;case_12_person_and_resources;model003;Class;Folder;1
+gpt4.1;case_12_person_and_resources;model003;Class;User;1
+gpt4.1;case_12_person_and_resources;model003;Attributes;User.password;1
+gpt4.1;case_12_person_and_resources;model003;Class;AncestorDegree;1
+gpt4.1;case_12_person_and_resources;model003;Attributes;AncestorDegree.ancestor;1
+gpt4.1;case_12_person_and_resources;model003;Attributes;AncestorDegree.degree;1
+gpt4.1;case_12_person_and_resources;model003;Association;"Person ""0..1"" -- ""0..*"" Person";1
+gpt4.1;case_12_person_and_resources;model003;Association;"Person ""0..*"" -- ""1"" AncestorDegree";1
+gpt4.1;case_12_person_and_resources;model003;Association;"User ""0..*"" -- ""0..*"" Resource";1
+gpt4.1;case_12_person_and_resources;model003;Composition;"Folder ""0..*"" *-- ""1"" Resource";1
+gpt4.1;case_12_person_and_resources;model003;Inheritance;File --|> Resource;1
+gpt4.1;case_12_person_and_resources;model003;Inheritance;Folder --|> Resource;1
+gpt4.1;case_12_person_and_resources;model003;Inheritance;User --|> Person;1

@@ -1,0 +1,519 @@
+{
+  "session_id": "P093",
+  "domain": "A Person has a name and an identifier. Every Person is the child of another Person and can have an indeterminate number of children (however, there will be one Person who is not the child of any other Person). A Person has an indeterminate number of ancestors (the ancestors of a Person are their father and the ancestors of their father). We will be interested in knowing the degree of each ancestor of a Person (1 for the father, 2 for the father's father, etc.).\n\nA Resource has a name. There are two types of Resources, such as Files and Folders. Every resource belongs to a Folder and cannot exist outside of a Folder (however, there will be one Folder that does not follow that rule, the root Folder does not belong to any other Folder). Each Folder contains an indeterminate number of Resources.\n\nA User is a Person who, in addition to a name and an identifier, also has a password to access an indeterminate number of Resources, and each Resource can be accessed by an indeterminate number of Users. When a User can access a resource, we will be interested in knowing if they can view it and if they can edit it.",
+  "domain_name": "Person and resources",
+  "user_profile": "medium",
+  "llm_initial_model": "model012",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nPerson \"0..*\" -- \"1\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1\"  ResourceAccess : AccessAssignments\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..*\" *-- \"1\"  File\nFolder \"0..*\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Person",
+      "confidence": 0.99
+    },
+    {
+      "pos": 2,
+      "class": "AncestorRelation",
+      "confidence": 0.56
+    },
+    {
+      "pos": 3,
+      "class": "User",
+      "confidence": 0.98
+    },
+    {
+      "pos": 4,
+      "class": "ResourceAccess",
+      "confidence": 0.58
+    },
+    {
+      "pos": 5,
+      "class": "Resource",
+      "confidence": 0.95
+    },
+    {
+      "pos": 6,
+      "class": "File",
+      "confidence": 0.97
+    },
+    {
+      "pos": 7,
+      "class": "Folder",
+      "confidence": 0.97
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "Should ancestor relation be modeled as a separate class associated with Person, or as a simple representation within Person?\n\nFor example:\n1. Ancestor relation is a separate class with attributes: degree. This allows users to query and filter by individual ancestor relation properties.\n2. Ancestor relation is modeled as a simple represntation in Person. This is suitable when ancestor relation details are not needed.\nWhich option is better for you?\n",
+      "option_1": "Option 1: The AncestorRelation is a separate class with its own attributes.",
+      "option_2": "Option 2: The ancestor relation is a simple representation in Person.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.56,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "AncestorRelation"
+      },
+      "selected": "Option 1: The AncestorRelation is a separate class with its own attributes.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "AncestorRelation"
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "What is the minimum cardinality of Person in the relationship with AncestorRelation?\n\nFor example:\n1. Minimum cardinality of zero, an ancestor relation can exist without any associated person.\n2. Minimum cardinality of one, an ancestor relation must have at least one associated person.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, AncestorRelation can exist without Person.",
+      "option_2": "Option 2: One as minimum cardinality,AncestorRelation must have at least one Person.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.31,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, AncestorRelation can exist without Person.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 3,
+      "question": "What is the maximum cardinality of Person in the relationship with AncestorRelation?\n\nFor example:\n1. Maximum cardinality of one, an ancestor relation is associated with exactly one person.\n2. Maximum cardinality of many, an ancestor relation can be associated with multiple people.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each ancestor relation links to one person.",
+      "option_2": "Option 2: Many as maximun cardinality, each ancestor relation can link to multiple people.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.31,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each ancestor relation can link to multiple people.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "What is the minimum cardinality of AncestorRelation in the relationship with Person?\n\nFor example:\n1. Minimum cardinality of zero, a person can exist without any associated ancestor relation.\n2. Minimum cardinality of one, a person must have at least one associated ancestor relation.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Person can exist without AncestorRelation.",
+      "option_2": "Option 2: One as minimum cardinality,Person must have at least one AncestorRelation.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.32,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 2: One as minimum cardinality,Person must have at least one AncestorRelation.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 5,
+      "question": "What is the maximum cardinality of AncestorRelation in the relationship with Person?\n\nFor example:\n1. Maximum cardinality of one, a person is associated with exactly one ancestor relation.\n2. Maximum cardinality of many, a person can be associated with multiple ancestor relations.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each person links to one ancestor relation.",
+      "option_2": "Option 2: Many as maximun cardinality, each person can link to multiple ancestor relations.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.32,
+      "visiting_class": "AncestorRelation",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AncestorLinks"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each person can link to multiple ancestor relations.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Person",
+          "target": "AncestorRelation",
+          "type": "Association",
+          "name": "AncestorLinks",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nUser \"0..*\" -- \"1\"  ResourceAccess : AccessAssignments\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"0..*\" -- \"1..*\"  AncestorRelation : AncestorLinks\n@enduml"
+    },
+    {
+      "q_num": 6,
+      "question": "Should views be modeled as a subclass of resource access, or is it better to keep a simple boolean like resource access in view to distinguish them?\nConsider whether views have or will have distinct attributes or behavior.\n\nFor example:\n1. View is a subclass of resource access. This allows views to have their own specific attributes and methods.\n2. View is an attribute in class resource access. All instances share the same structure, with the attribute indicating the type.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Use inheritance, View as a subclass ofresource access.",
+      "option_2": "Option 2: Use view as a boolean attribute of  resource access.",
+      "pattern": "AttributeVsInheritance",
+      "confidence": 0.64,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "canView"
+      },
+      "selected": "Option 2: Use view as a boolean attribute of  resource access.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "canView"
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "Should edits be modeled as a subclass of resource access, or is it better to keep a simple boolean like resource access in edit to distinguish them?\nConsider whether edits have or will have distinct attributes or behavior.\n\nFor example:\n1. Edit is a subclass of resource access. This allows edits to have their own specific attributes and methods.\n2. Edit is an attribute in class resource access. All instances share the same structure, with the attribute indicating the type.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Use inheritance, Edit as a subclass ofresource access.",
+      "option_2": "Option 2: Use edit as a boolean attribute of  resource access.",
+      "pattern": "AttributeVsInheritance",
+      "confidence": 0.64,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "canEdit"
+      },
+      "selected": "Option 2: Use edit as a boolean attribute of  resource access.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "canEdit"
+      }
+    },
+    {
+      "q_num": 8,
+      "question": "What is the minimum cardinality of User in the relationship with ResourceAccess?\n\nFor example:\n1. Minimum cardinality of zero, a resource access can exist without any associated user.\n2. Minimum cardinality of one, a resource access must have at least one associated user.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, ResourceAccess can exist without User.",
+      "option_2": "Option 2: One as minimum cardinality,ResourceAccess must have at least one User.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AccessAssignments"
+      },
+      "selected": "Option 2: One as minimum cardinality,ResourceAccess must have at least one User.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "Accesses",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"0..*\" -- \"1..*\"  AncestorRelation : AncestorLinks\nUser \"1..*\" -- \"0..*\"  ResourceAccess : Accesses\n@enduml"
+    },
+    {
+      "q_num": 9,
+      "question": "What is the maximum cardinality of User in the relationship with ResourceAccess?\n\nFor example:\n1. Maximum cardinality of one, a resource access is associated with exactly one user.\n2. Maximum cardinality of many, a resource access can be associated with multiple users.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each resource access links to one user.",
+      "option_2": "Option 2: Many as maximun cardinality, each resource access can link to multiple users.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.0,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Accesses"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each resource access can link to multiple users.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "Accesses",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 10,
+      "question": "What is the minimum cardinality of ResourceAccess in the relationship with User?\n\nFor example:\n1. Minimum cardinality of zero, a user can exist without any associated resource access.\n2. Minimum cardinality of one, a user must have at least one associated resource access.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, User can exist without ResourceAccess.",
+      "option_2": "Option 2: One as minimum cardinality, User must have at least one ResourceAccess.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Accesses"
+      },
+      "selected": "Option 2: One as minimum cardinality, User must have at least one ResourceAccess.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "ResourcePermissions",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nResourceAccess \"1\" -- \"0..*\"  Resource : TargetResource\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"0..*\" -- \"1..*\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1..*\"  ResourceAccess : ResourcePermissions\n@enduml"
+    },
+    {
+      "q_num": 11,
+      "question": "What is the maximum cardinality of ResourceAccess in the relationship with User?\n\nFor example:\n1. Maximum cardinality of one, a user is associated with exactly one resource access.\n2. Maximum cardinality of many, a user can be associated with multiple resource accesses.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each user links to one resource access.",
+      "option_2": "Option 2: Many as maximun cardinality, each user can link to multiple resource accesses.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.0,
+      "visiting_class": "ResourceAccess",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ResourcePermissions"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each user can link to multiple resource accesses.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "ResourceAccess",
+          "type": "Association",
+          "name": "ResourcePermissions",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "What is the minimum cardinality of ResourceAccess in the relationship with Resource?\n\nFor example:\n1. Minimum cardinality of zero, a resource can exist without any associated resource access.\n2. Minimum cardinality of one, a resource must have at least one associated resource access.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Resource can exist without ResourceAccess.",
+      "option_2": "Option 2: One as minimum cardinality, Resource must have at least one ResourceAccess.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Resource",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TargetResource"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Resource can exist without ResourceAccess.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "ResourceAccess",
+          "target": "Resource",
+          "type": "Association",
+          "name": "TargetResource",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"0..*\" -- \"1..*\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1..*\"  ResourceAccess : ResourcePermissions\nResourceAccess \"0..1\" -- \"0..*\"  Resource : TargetResource\n@enduml"
+    },
+    {
+      "q_num": 13,
+      "question": "What is the minimum cardinality of Resource in the relationship with ResourceAccess?\n\nFor example:\n1. Minimum cardinality of zero, a resource access can exist without any associated resource.\n2. Minimum cardinality of one, a resource access must have at least one associated resource.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, ResourceAccess can exist without Resource.",
+      "option_2": "Option 2: One as minimum cardinality, ResourceAccess must have at least one Resource.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Resource",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "TargetResource"
+      },
+      "selected": "Option 2: One as minimum cardinality, ResourceAccess must have at least one Resource.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "ResourceAccess",
+          "target": "Resource",
+          "type": "Association",
+          "name": "TargetResource",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"1\"  File\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"0..*\" -- \"1..*\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1..*\"  ResourceAccess : ResourcePermissions\nResourceAccess \"0..1\" -- \"1..*\"  Resource : TargetResource\n@enduml"
+    },
+    {
+      "q_num": 14,
+      "question": "Should the relationship between Folder and Folder be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Folder would depend on Folder for its existence.\n2. Use association, Folder could exist independently of Folder, and can also be linked to multiple folders.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Folder depends on Folder.",
+      "option_2": "Option 2: Association is sufficient because class Folder exists independently of Folder.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.64,
+      "visiting_class": "Folder",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "composition",
+        "description": "ContainsFolders"
+      },
+      "selected": "Option 1: Composition is needed because class Folder depends on Folder.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Folder",
+          "target": "Folder",
+          "type": "Containment",
+          "name": "ContainsFolders",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..1"
+        }
+      }
+    },
+    {
+      "q_num": 15,
+      "question": "Should the relationship between Folder and File be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, File would depend on Folder for its existence.\n2. Use association, File could exist independently of Folder, and can also be linked to multiple folders.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class File depends on Folder.",
+      "option_2": "Option 2: Association is sufficient because class File exists independently of Folder.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.64,
+      "visiting_class": "Folder",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "composition",
+        "description": "ContainsFiles"
+      },
+      "selected": "Option 1: Composition is needed because class File depends on Folder.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Folder",
+          "target": "File",
+          "type": "Containment",
+          "name": "ContainsFiles",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 16,
+      "question": "What is the minimum cardinality of Folder in the relationship with File?\n\nFor example:\n1. Minimum cardinality of zero, a file can exist without any associated folder.\n2. Minimum cardinality of one, a file must have at least one associated folder.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, File can exist without Folder.",
+      "option_2": "Option 2: One as minimum cardinality,File must have at least one Folder.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Folder",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ContainsFiles"
+      },
+      "selected": "Option 2: One as minimum cardinality,File must have at least one Folder.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Folder",
+          "target": "File",
+          "type": "Containment",
+          "name": "ContainsFiles",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"0..*\" -- \"1..*\"  AncestorRelation : AncestorLinks\nUser \"0..*\" -- \"1..*\"  ResourceAccess : ResourcePermissions\nResourceAccess \"0..1\" -- \"1..*\"  Resource : TargetResource\nFolder \"1\" *-- \"1\"  File\n@enduml"
+    },
+    {
+      "q_num": 17,
+      "question": "Should ResourceAccess be modeled as an association class linking User and Resource, or as a regular class with two separate associations?\n\nFor example:\n1. Association class: ResourceAccess exists only as part of the relationship between User and Resource. A resource access cannot exist without the link between User and Resource.\n2. Regular class: ResourceAccess is a class that has links to User and Resource. In this case multiple resource accesses can exist for every User and Resource.\n\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Association class, ResourceAccess as association class linking User and Resource.",
+      "option_2": "Option 2: Regular class, ResourceAccess as separate class with two associations.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.58,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "ResourceAccess"
+      },
+      "selected": "Option 1: Association class, ResourceAccess as association class linking User and Resource.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "ResourceAccess"
+      },
+      "updated_model": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"0..*\" -- \"1..*\"  AncestorRelation : AncestorLinks\nFolder \"1\" *-- \"1\"  File\nUser \"*\" -- \"*\"  Resource : associates\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\n(User, Resource) .. ResourceAccess\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nclass User {\n    - password : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass AncestorRelation {\n    - degree : Integer\n}\nPerson \"0..*\" -- \"0..1\"  Person : ParentOf\nFolder \"0..1\" *-- \"0..1\"  Folder\nPerson <|-- User\nResource <|-- File\nResource <|-- Folder\nPerson \"0..*\" -- \"1..*\"  AncestorRelation : AncestorLinks\nFolder \"1\" *-- \"1\"  File\nUser \"*\" -- \"*\"  Resource : associates\nclass ResourceAccess {\n    - canView : Boolean\n    - canEdit : Boolean\n}\n(User, Resource) .. ResourceAccess\n@enduml"
+  },
+  "summary": {
+    "total_questions": 17,
+    "model_changes": 7,
+    "changes_by_pattern": {
+      "ConceptDecision(ClassVsAttribute)": 0,
+      "LowerboundCardinalityOneVsMany": 5,
+      "UpperboundCardinalityOneVsMany": 1,
+      "AttributeVsInheritance": 0,
+      "CompositionVsAssociation": 0,
+      "AssociationClassVsClass": 1
+    }
+  }
+}

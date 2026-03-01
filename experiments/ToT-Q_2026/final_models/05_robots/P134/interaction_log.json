@@ -1,0 +1,581 @@
+{
+  "session_id": "P134",
+  "domain": "In an automated facility, a fleet of robots is deployed, where each one is recognized by a unique identifier. These robots perform tasks based on their function, some are cleaning robots, while others serve as transport robots. In the facility, the robots are assigned to a set of tasks, each distinguished by a unique code. Throughout the operation, a robot may be assigned to perform various tasks. \n\nWhen a robot performs a task, the execution  is identified by a unique code and occurs at a specific starting time. Finally, each robot is assigned to a location within the facility, which can be either a corridor or a room.",
+  "domain_name": "Robots",
+  "user_profile": "medium",
+  "llm_initial_model": "model012",
+  "initial_model": {
+    "plantuml": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot \"0..*\" -- \"1\"  TaskExecution : Performs\nTask \"0..*\" -- \"1\"  TaskExecution : HasExecutions\nRobot \"0..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"0..*\" *-- \"1\"  Robot\nFacility \"0..*\" *-- \"1\"  Task\nFacility \"0..*\" *-- \"1\"  TaskExecution\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Robot",
+      "confidence": 0.95
+    },
+    {
+      "pos": 2,
+      "class": "Facility",
+      "confidence": 0.29
+    },
+    {
+      "pos": 3,
+      "class": "Task",
+      "confidence": 0.95
+    },
+    {
+      "pos": 4,
+      "class": "TaskExecution",
+      "confidence": 0.95
+    },
+    {
+      "pos": 5,
+      "class": "CleaningRobot",
+      "confidence": 0.61
+    },
+    {
+      "pos": 6,
+      "class": "TransportRobot",
+      "confidence": 0.61
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "Should id be modeled as a separate class associated with Facility, or remain as a simple representation?\n\nFor example:\n1. Id is a separate class with its own attributes. This allows users to query and filter by individual id properties.\n2. Id is modeled as a simple representation in Facility. This is suitable when id details are not needed.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Id is a separate class with its own attributes.",
+      "option_2": "Option 2: The id is a simple representation in Facility.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.83,
+      "visiting_class": "Facility",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "id"
+      },
+      "selected": "Option 2: The id is a simple representation in Facility.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "id"
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "Should the id in facility be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use id as string attribute in facility, which allows any text value.\n2. Use id as an enumeration which uses predefined values in literals: robot1, robot2, robot3, robot4 or robot5.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for id.",
+      "option_2": "Option 2: Enumeration id with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.83,
+      "visiting_class": "Facility",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "attribute",
+        "description": "id"
+      },
+      "selected": "Option 1: String attribute that allows any text value for id.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "id"
+      }
+    },
+    {
+      "q_num": 3,
+      "question": "Should the relationship between Facility and Robot be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Robot would depend on Facility for its existence.\n2. Use association, Robot could exist independently of Facility, and can also be linked to multiple facilities.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Robot depends on Facility.",
+      "option_2": "Option 2: Association is sufficient because class Robot exists independently of Facility.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.3,
+      "visiting_class": "Facility",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "composition",
+        "description": "ContainsRobots"
+      },
+      "selected": "Option 2: Association is sufficient because class Robot exists independently of Facility.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "association",
+        "description": {
+          "source": "Facility",
+          "target": "Robot",
+          "type": "Association",
+          "name": "ContainsRobots",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot \"0..*\" -- \"1\"  TaskExecution : Performs\nTask \"0..1\" -- \"1\"  TaskExecution : HasExecutions\nRobot \"0..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"0..1\" *-- \"1\"  Task\nFacility \"0..1\" *-- \"1\"  TaskExecution\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"1\"  Robot : ContainsRobots\n@enduml"
+    },
+    {
+      "q_num": 4,
+      "question": "What is the minimum cardinality of Facility in the relationship with Robot?\n\nFor example:\n1. Minimum cardinality of zero, a robot can exist without any associated facility.\n2. Minimum cardinality of one, a robot must have at least one associated facility.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Robot can exist without Facility.",
+      "option_2": "Option 2: One as minimum cardinality,Robot must have at least one Facility.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.28,
+      "visiting_class": "Facility",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ContainsRobots"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Robot can exist without Facility.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Facility",
+          "target": "Robot",
+          "type": "Association",
+          "name": "ContainsRobots",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 5,
+      "question": "What is the minimum cardinality of Robot in the relationship with Facility?\n\nFor example:\n1. Minimum cardinality of zero, a facility can exist without any associated robot.\n2. Minimum cardinality of one, a facility must have at least one associated robot.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Facility can exist without Robot.",
+      "option_2": "Option 2: One as minimum cardinality,Facility must have at least one Robot.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.27,
+      "visiting_class": "Facility",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ContainsRobots"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Facility can exist without Robot.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Facility",
+          "target": "Robot",
+          "type": "Association",
+          "name": "ContainsRobots",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot \"0..*\" -- \"1\"  TaskExecution : Performs\nTask \"0..1\" -- \"1\"  TaskExecution : HasExecutions\nRobot \"0..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"0..1\" *-- \"1\"  Task\nFacility \"0..1\" *-- \"1\"  TaskExecution\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\n@enduml"
+    },
+    {
+      "q_num": 6,
+      "question": "Should the relationship between Facility and Task be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Task would depend on Facility for its existence.\n2. Use association, Task could exist independently of Facility, and can also be linked to multiple facilities.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Task depends on Facility.",
+      "option_2": "Option 2: Association is sufficient because class Task exists independently of Facility.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.31,
+      "visiting_class": "Task",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "composition",
+        "description": "DefinesTasks"
+      },
+      "selected": "Option 1: Composition is needed because class Task depends on Facility.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Facility",
+          "target": "Task",
+          "type": "Containment",
+          "name": "DefinesTasks",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "What is the minimum cardinality of Facility in the relationship with Task?\n\nFor example:\n1. Minimum cardinality of zero, a task can exist without any associated facility.\n2. Minimum cardinality of one, a task must have at least one associated facility.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Task can exist without Facility.",
+      "option_2": "Option 2: One as minimum cardinality,Task must have at least one Facility.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.29,
+      "visiting_class": "Task",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "DefinesTasks"
+      },
+      "selected": "Option 2: One as minimum cardinality,Task must have at least one Facility.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Facility",
+          "target": "Task",
+          "type": "Containment",
+          "name": "DefinesTasks",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot \"0..*\" -- \"1\"  TaskExecution : Performs\nTask \"0..1\" -- \"1\"  TaskExecution : HasExecutions\nRobot \"0..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"0..1\" *-- \"1\"  TaskExecution\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\n@enduml"
+    },
+    {
+      "q_num": 8,
+      "question": "What is the minimum cardinality of Robot in the relationship with Task?\n\nFor example:\n1. Minimum cardinality of zero, a task can exist without any associated robot.\n2. Minimum cardinality of one, a task must have at least one associated robot.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Task can exist without Robot.",
+      "option_2": "Option 2: One as minimum cardinality,Task must have at least one Robot.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.76,
+      "visiting_class": "Task",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AssignedToPerform"
+      },
+      "selected": "Option 2: One as minimum cardinality,Task must have at least one Robot.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Robot",
+          "target": "Task",
+          "type": "Association",
+          "name": "AssignedToPerform",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot \"0..*\" -- \"1\"  TaskExecution : Performs\nTask \"0..1\" -- \"1\"  TaskExecution : HasExecutions\nFacility \"0..1\" *-- \"1\"  TaskExecution\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\n@enduml"
+    },
+    {
+      "q_num": 9,
+      "question": "What is the maximum cardinality of Robot in the relationship with Task?\n\nFor example:\n1. Maximum cardinality of one, a task is associated with exactly one robot.\n2. Maximum cardinality of many, a task can be associated with multiple robots.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each task links to one robot.",
+      "option_2": "Option 2: Many as maximun cardinality, each task can link to multiple robots.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.79,
+      "visiting_class": "Task",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AssignedToPerform"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each task can link to multiple robots.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Robot",
+          "target": "Task",
+          "type": "Association",
+          "name": "AssignedToPerform",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 10,
+      "question": "What is the minimum cardinality of Task in the relationship with Robot?\n\nFor example:\n1. Minimum cardinality of zero, a robot can exist without any associated task.\n2. Minimum cardinality of one, a robot must have at least one associated task.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Robot can exist without Task.",
+      "option_2": "Option 2: One as minimum cardinality, Robot must have at least one Task.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.76,
+      "visiting_class": "Task",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AssignedToPerform"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Robot can exist without Task.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Robot",
+          "target": "Task",
+          "type": "Association",
+          "name": "AssignedToPerform",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 11,
+      "question": "What is the maximum cardinality of Task in the relationship with Robot?\n\nFor example:\n1. Maximum cardinality of one, a robot is associated with exactly one task.\n2. Maximum cardinality of many, a robot can be associated with multiple tasks.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each robot links to one task.",
+      "option_2": "Option 2: Many as maximun cardinality, each robot can link to multiple tasks.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.76,
+      "visiting_class": "Task",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AssignedToPerform"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each robot can link to multiple tasks.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Robot",
+          "target": "Task",
+          "type": "Association",
+          "name": "AssignedToPerform",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "Should the relationship between Facility and TaskExecution be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, TaskExecution would depend on Facility for its existence.\n2. Use association, TaskExecution could exist independently of Facility, and can also be linked to multiple facilities.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class TaskExecution depends on Facility.",
+      "option_2": "Option 2: Association is sufficient because class TaskExecution exists independently of Facility.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.29,
+      "visiting_class": "TaskExecution",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "composition",
+        "description": "RecordsExecutions"
+      },
+      "selected": "Option 2: Association is sufficient because class TaskExecution exists independently of Facility.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "association",
+        "description": {
+          "source": "Facility",
+          "target": "TaskExecution",
+          "type": "Association",
+          "name": "RecordsExecutions",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot \"0..*\" -- \"1\"  TaskExecution : Performs\nTask \"0..1\" -- \"1\"  TaskExecution : HasExecutions\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"0..1\" -- \"1\"  TaskExecution : RecordsExecutions\n@enduml"
+    },
+    {
+      "q_num": 13,
+      "question": "What is the minimum cardinality of Facility in the relationship with TaskExecution?\n\nFor example:\n1. Minimum cardinality of zero, a task execution can exist without any associated facility.\n2. Minimum cardinality of one, a task execution must have at least one associated facility.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, TaskExecution can exist without Facility.",
+      "option_2": "Option 2: One as minimum cardinality,TaskExecution must have at least one Facility.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.28,
+      "visiting_class": "TaskExecution",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "RecordsExecutions"
+      },
+      "selected": "Option 2: One as minimum cardinality,TaskExecution must have at least one Facility.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Facility",
+          "target": "TaskExecution",
+          "type": "Association",
+          "name": "RecordsExecutions",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot \"0..*\" -- \"1\"  TaskExecution : Performs\nTask \"0..1\" -- \"1\"  TaskExecution : HasExecutions\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"1\" -- \"1\"  TaskExecution : RecordsExecutions\n@enduml"
+    },
+    {
+      "q_num": 14,
+      "question": "What is the minimum cardinality of TaskExecution in the relationship with Facility?\n\nFor example:\n1. Minimum cardinality of zero, a facility can exist without any associated task execution.\n2. Minimum cardinality of one, a facility must have at least one associated task execution.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Facility can exist without TaskExecution.",
+      "option_2": "Option 2: One as minimum cardinality,Facility must have at least one TaskExecution.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.28,
+      "visiting_class": "TaskExecution",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "RecordsExecutions"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Facility can exist without TaskExecution.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Facility",
+          "target": "TaskExecution",
+          "type": "Association",
+          "name": "RecordsExecutions",
+          "source_cardinality": "1",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot \"0..*\" -- \"1\"  TaskExecution : Performs\nTask \"0..1\" -- \"1\"  TaskExecution : HasExecutions\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"1\" -- \"0..1\"  TaskExecution : RecordsExecutions\n@enduml"
+    },
+    {
+      "q_num": 15,
+      "question": "What is the minimum cardinality of Robot in the relationship with TaskExecution?\n\nFor example:\n1. Minimum cardinality of zero, a task execution can exist without any associated robot.\n2. Minimum cardinality of one, a task execution must have at least one associated robot.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, TaskExecution can exist without Robot.",
+      "option_2": "Option 2: One as minimum cardinality,TaskExecution must have at least one Robot.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "TaskExecution",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Performs"
+      },
+      "selected": "Option 2: One as minimum cardinality,TaskExecution must have at least one Robot.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Robot",
+          "target": "TaskExecution",
+          "type": "Association",
+          "name": "Performs",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nTask \"0..1\" -- \"1\"  TaskExecution : HasExecutions\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"1\" -- \"0..1\"  TaskExecution : RecordsExecutions\nRobot \"1..*\" -- \"1\"  TaskExecution : Performs\n@enduml"
+    },
+    {
+      "q_num": 16,
+      "question": "What is the minimum cardinality of Task in the relationship with TaskExecution?\n\nFor example:\n1. Minimum cardinality of zero, a task execution can exist without any associated task.\n2. Minimum cardinality of one, a task execution must have at least one associated task.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, TaskExecution can exist without Task.",
+      "option_2": "Option 2: One as minimum cardinality,TaskExecution must have at least one Task.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "TaskExecution",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "HasExecutions"
+      },
+      "selected": "Option 2: One as minimum cardinality,TaskExecution must have at least one Task.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Task",
+          "target": "TaskExecution",
+          "type": "Association",
+          "name": "HasExecutions",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"1\" -- \"0..1\"  TaskExecution : RecordsExecutions\nRobot \"1..*\" -- \"1\"  TaskExecution : Performs\nTask \"1\" -- \"1\"  TaskExecution : HasExecutions\n@enduml"
+    },
+    {
+      "q_num": 17,
+      "question": "What is the minimum cardinality of TaskExecution in the relationship with Robot?\n\nFor example:\n1. Minimum cardinality of zero, a robot can exist without any associated task execution.\n2. Minimum cardinality of one, a robot must have at least one associated task execution.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Robot can exist without TaskExecution.",
+      "option_2": "Option 2: One as minimum cardinality,Robot must have at least one TaskExecution.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "TaskExecution",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Performs"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Robot can exist without TaskExecution.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Robot",
+          "target": "TaskExecution",
+          "type": "Association",
+          "name": "Performs",
+          "source_cardinality": "1..*",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"1\" -- \"0..1\"  TaskExecution : RecordsExecutions\nTask \"1\" -- \"1\"  TaskExecution : HasExecutions\nRobot \"1..*\" -- \"0..1\"  TaskExecution : Performs\n@enduml"
+    },
+    {
+      "q_num": 18,
+      "question": "What is the minimum cardinality of TaskExecution in the relationship with Task?\n\nFor example:\n1. Minimum cardinality of zero, a task can exist without any associated task execution.\n2. Minimum cardinality of one, a task must have at least one associated task execution.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Task can exist without TaskExecution.",
+      "option_2": "Option 2: One as minimum cardinality,Task must have at least one TaskExecution.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "TaskExecution",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "HasExecutions"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Task can exist without TaskExecution.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Task",
+          "target": "TaskExecution",
+          "type": "Association",
+          "name": "HasExecutions",
+          "source_cardinality": "1",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"1\" -- \"0..1\"  TaskExecution : RecordsExecutions\nRobot \"1..*\" -- \"0..1\"  TaskExecution : Performs\nTask \"1\" -- \"0..1\"  TaskExecution : HasExecutions\n@enduml"
+    },
+    {
+      "q_num": 19,
+      "question": "Should cleaning robot and transport robot be represented as separate subclasses of Robot, or as instances of Robot distinguished by an enumeration attribute?\nConsider whether these types have distinct attributes or behavior.\n\nFor example:\n1. CleaningRobot and TransportRobot are modeled as separate subclasses of Robot. Each subclass can have its own specific attributes and methods.\n2. A single Robot class with a Type enumeration attribute with literals: cleaning robot or transport robot. All types share the same structure.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Use inheritance, create separate subclasses for cleaning robot and transport robot.",
+      "option_2": "Option 2: Use enumeration Robot type with with literals: cleaning robot or transport robot.",
+      "pattern": "EnumerationVsInheritance",
+      "confidence": 0.61,
+      "visiting_class": "TransportRobot",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "subclass",
+        "description": "[class CleaningRobot, class TransportRobot]"
+      },
+      "selected": "Option 1: Use inheritance, create separate subclasses for cleaning robot and transport robot.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "subclass",
+        "description": "[CleaningRobot, TransportRobot]"
+      }
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nabstract class Robot {\n    - identifier : String\n}\nclass CleaningRobot {\n}\nclass TransportRobot {\n}\nclass Task {\n    - code : String\n}\nclass TaskExecution {\n    - referenceCode : String\n    - startTime : DateTime\n    - locationCategory : LocationCategory\n}\nclass Facility {\n    - id : String\n}\nenum LocationCategory {\n    Corridor\n    Room\n}\nRobot <|-- CleaningRobot\nRobot <|-- TransportRobot\nFacility \"0..1\" -- \"0..1\"  Robot : ContainsRobots\nFacility \"1\" *-- \"1\"  Task\nRobot \"1..*\" -- \"0..*\"  Task : AssignedToPerform\nFacility \"1\" -- \"0..1\"  TaskExecution : RecordsExecutions\nRobot \"1..*\" -- \"0..1\"  TaskExecution : Performs\nTask \"1\" -- \"0..1\"  TaskExecution : HasExecutions\n@enduml"
+  },
+  "summary": {
+    "total_questions": 19,
+    "model_changes": 11,
+    "changes_by_pattern": {
+      "ConceptDecision(ClassVsAttribute)": 0,
+      "ConceptDecision(AttributeVsEnumeration)": 0,
+      "CompositionVsAssociation": 2,
+      "LowerboundCardinalityOneVsMany": 9,
+      "UpperboundCardinalityOneVsMany": 0,
+      "EnumerationVsInheritance": 0
+    }
+  }
+}

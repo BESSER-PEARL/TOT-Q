@@ -1,0 +1,554 @@
+{
+  "session_id": "P017",
+  "domain": "A Person has a name and an identifier. Every Person is the child of another Person and can have an indeterminate number of children (however, there will be one Person who is not the child of any other Person). A Person has an indeterminate number of ancestors (the ancestors of a Person are their father and the ancestors of their father). We will be interested in knowing the degree of each ancestor of a Person (1 for the father, 2 for the father's father, etc.).\n\nA Resource has a name. There are two types of Resources, such as Files and Folders. Every resource belongs to a Folder and cannot exist outside of a Folder (however, there will be one Folder that does not follow that rule, the root Folder does not belong to any other Folder). Each Folder contains an indeterminate number of Resources.\n\nA User is a Person who, in addition to a name and an identifier, also has a password to access an indeterminate number of Resources, and each Resource can be accessed by an indeterminate number of Users. When a User can access a resource, we will be interested in knowing if they can view it and if they can edit it.",
+  "domain_name": "Person and resources",
+  "user_profile": "medium",
+  "llm_initial_model": "model001",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Person {\n    - name : String\n    - identifier : String\n}\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass AccessPermission {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass AncestorDegree {\n    - degree : Integer\n}\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nPerson \"0..*\" -- \"1\"  AncestorDegree : Ancestors\nUser \"0..*\" -- \"1\"  AccessPermission : AccessPermissions\nResource \"0..*\" -- \"1\"  AccessPermission\nFolder \"0..*\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Person",
+      "confidence": 1.0
+    },
+    {
+      "pos": 2,
+      "class": "AncestorDegree",
+      "confidence": 0.33
+    },
+    {
+      "pos": 3,
+      "class": "User",
+      "confidence": 1.0
+    },
+    {
+      "pos": 4,
+      "class": "AccessPermission",
+      "confidence": 0.33
+    },
+    {
+      "pos": 5,
+      "class": "Resource",
+      "confidence": 1.0
+    },
+    {
+      "pos": 6,
+      "class": "Folder",
+      "confidence": 1.0
+    },
+    {
+      "pos": 7,
+      "class": "File",
+      "confidence": 1.0
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "Is ancestor degree a relevant domain concept that should be included in the model?\n\nFor example:\n1. Ancestor degree is a relevant concept in this domain and should be represented in the model.\n2. Ancestor degree does not correspond to any relevant domain concept and should be removed from the model.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Keep ancestor degree, it is a relevant domain concept.",
+      "option_2": "Option 2: Remove ancestor degree, it is not relevant.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.33,
+      "visiting_class": "AncestorDegree",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "AncestorDegree"
+      },
+      "selected": "Option 1: Keep ancestor degree, it is a relevant domain concept.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "AncestorDegree"
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "Should ancestor degree be modeled as a separate class associated with Person, or as a simple representation within Person?\n\nFor example:\n1. Ancestor degree is a separate class with attributes: degree. This allows users to query and filter by individual ancestor degree properties.\n2. Ancestor degree is modeled as a simple represntation in Person. This is suitable when ancestor degree details are not needed.\nWhich option is better for you?\n",
+      "option_1": "Option 1: The AncestorDegree is a separate class with its own attributes.",
+      "option_2": "Option 2: The ancestor degree is a simple representation in Person.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.33,
+      "visiting_class": "AncestorDegree",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "AncestorDegree"
+      },
+      "selected": "Option 2: The ancestor degree is a simple representation in Person.",
+      "model_changed": true,
+      "answer_source": "llm",
+      "llm_raw_response": "Option 2: The ancestor degree is a simple representation in Person.\n\nThis option aligns with the domain description, which indicates that the degree of each ancestor is of interest but does not suggest the need for a separate class to manage this information.",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "AncestorDegree"
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass AccessPermission {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nUser \"0..*\" -- \"1\"  AccessPermission : AccessPermissions\nResource \"0..*\" -- \"1\"  AccessPermission\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\n@enduml"
+    },
+    {
+      "q_num": 3,
+      "question": "Should the ancestor degree in person be modeled as a an attribute which allows free text input, or as an enumeration with predefined literals?\n\nFor example:\n1. Use ancestor degree as string attribute in person, which allows any text value.\n2. Use ancestor degree as an enumeration which uses predefined values in literals: firstdegree, seconddegree, thirddegree, fourthdegree or fifthdegree.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: String attribute that allows any text value for AncestorDegree.",
+      "option_2": "Option 2: Enumeration AncestorDegree with predefined values: literal 1, literal 2 and literal 3.",
+      "pattern": "ConceptDecision(AttributeVsEnumeration)",
+      "confidence": 0.33,
+      "visiting_class": "User",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "class",
+        "description": "AncestorDegree"
+      },
+      "selected": "Option 1: String attribute that allows any text value for AncestorDegree.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "AncestorDegreeEnum"
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass AccessPermission {\n    - canView : Boolean\n    - canEdit : Boolean\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nUser \"0..*\" -- \"1\"  AccessPermission : AccessPermissions\nResource \"0..*\" -- \"1\"  AccessPermission\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\n@enduml"
+    },
+    {
+      "q_num": 4,
+      "question": "Is view a relevant attribute of access permission that should be included in the model?\n\nFor example:\n1. View captures important domain information about access permission.\n2. View does not represent important domain information for access permission.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Keep view, it is relevant information for access permission.",
+      "option_2": "Option 2: Remove view, it is not a relevant information.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.33,
+      "visiting_class": "AccessPermission",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "canView"
+      },
+      "selected": "Option 1: Keep view, it is relevant information for access permission.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "canView"
+      }
+    },
+    {
+      "q_num": 5,
+      "question": "Should views be modeled as a subclass of access permission, or is it better to keep a simple boolean like access permission in view to distinguish them?\nConsider whether views have or will have distinct attributes or behavior.\n\nFor example:\n1. View is a subclass of access permission. This allows views to have their own specific attributes and methods.\n2. View is an attribute in class access permission. All instances share the same structure, with the attribute indicating the type.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Use inheritance, View as a subclass ofaccess permission.",
+      "option_2": "Option 2: Use view as a boolean attribute of  access permission.",
+      "pattern": "AttributeVsInheritance",
+      "confidence": 0.33,
+      "visiting_class": "AccessPermission",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "canView"
+      },
+      "selected": "Option 1: Use inheritance, View as a subclass ofaccess permission.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "subclass",
+        "description": "[View]"
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass AccessPermission {\n    - canEdit : Boolean\n}\nclass View {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nUser \"0..*\" -- \"1\"  AccessPermission : AccessPermissions\nResource \"0..*\" -- \"1\"  AccessPermission\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\n@enduml"
+    },
+    {
+      "q_num": 6,
+      "question": "Is edit a relevant attribute of access permission that should be included in the model?\n\nFor example:\n1. Edit captures important domain information about access permission.\n2. Edit does not represent important domain information for access permission.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Keep edit, it is relevant information for access permission.",
+      "option_2": "Option 2: Remove edit, it is not a relevant information.",
+      "pattern": "ElementRelevance",
+      "confidence": 0.33,
+      "visiting_class": "AccessPermission",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "canEdit"
+      },
+      "selected": "Option 1: Keep edit, it is relevant information for access permission.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "attribute",
+        "description": "canEdit"
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "Should edits be modeled as a subclass of access permission, or is it better to keep a simple boolean like access permission in edit to distinguish them?\nConsider whether edits have or will have distinct attributes or behavior.\n\nFor example:\n1. Edit is a subclass of access permission. This allows edits to have their own specific attributes and methods.\n2. Edit is an attribute in class access permission. All instances share the same structure, with the attribute indicating the type.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Use inheritance, Edit as a subclass ofaccess permission.",
+      "option_2": "Option 2: Use edit as a boolean attribute of  access permission.",
+      "pattern": "AttributeVsInheritance",
+      "confidence": 0.33,
+      "visiting_class": "AccessPermission",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "attribute",
+        "description": "canEdit"
+      },
+      "selected": "Option 1: Use inheritance, Edit as a subclass ofaccess permission.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "subclass",
+        "description": "[Edit]"
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass AccessPermission {\n}\nclass Edit {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nUser \"0..*\" -- \"1\"  AccessPermission : AccessPermissions\nResource \"0..*\" -- \"1\"  AccessPermission\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\n@enduml"
+    },
+    {
+      "q_num": 8,
+      "question": "What is the minimum cardinality of User in the relationship with AccessPermission?\n\nFor example:\n1. Minimum cardinality of zero, an access permission can exist without any associated user.\n2. Minimum cardinality of one, an access permission must have at least one associated user.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, AccessPermission can exist without User.",
+      "option_2": "Option 2: One as minimum cardinality,AccessPermission must have at least one User.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "AccessPermission",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AccessPermissions"
+      },
+      "selected": "Option 2: One as minimum cardinality,AccessPermission must have at least one User.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "AccessPermission",
+          "type": "Association",
+          "name": "AccessPermissions",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass AccessPermission {\n}\nclass Edit {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nResource \"0..*\" -- \"1\"  AccessPermission : AccessPermissions\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\nUser \"1..*\" -- \"1\"  AccessPermission\n@enduml"
+    },
+    {
+      "q_num": 9,
+      "question": "What is the minimum cardinality of AccessPermission in the relationship with User?\n\nFor example:\n1. Minimum cardinality of zero, a user can exist without any associated access permission.\n2. Minimum cardinality of one, a user must have at least one associated access permission.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, User can exist without AccessPermission.",
+      "option_2": "Option 2: One as minimum cardinality,User must have at least one AccessPermission.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "AccessPermission",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AccessPermissions"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, User can exist without AccessPermission.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "AccessPermission",
+          "type": "Association",
+          "name": "Permissions",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass AccessPermission {\n}\nclass Edit {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nResource \"0..*\" -- \"1\"  AccessPermission : AccessPermissions\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\nUser \"0..*\" -- \"0..*\"  AccessPermission : Permissions\n@enduml"
+    },
+    {
+      "q_num": 10,
+      "question": "What is the maximum cardinality of User in the relationship with AccessPermission?\n\nFor example:\n1. Maximum cardinality of one, an access permission is associated with exactly one user.\n2. Maximum cardinality of many, an access permission can be associated with multiple users.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each access permission links to one user.",
+      "option_2": "Option 2: Many as maximun cardinality, each access permission can link to multiple users.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "AccessPermission",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Permissions"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each access permission can link to multiple users.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "AccessPermission",
+          "type": "Association",
+          "name": "Permissions",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 11,
+      "question": "What is the maximum cardinality of AccessPermission in the relationship with User?\n\nFor example:\n1. Maximum cardinality of one, a user is associated with exactly one access permission.\n2. Maximum cardinality of many, a user can be associated with multiple access permissions.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each user links to one access permission.",
+      "option_2": "Option 2: Many as maximun cardinality, each user can link to multiple access permissions.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "AccessPermission",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Permissions"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each user can link to multiple access permissions.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "User",
+          "target": "AccessPermission",
+          "type": "Association",
+          "name": "Permissions",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "What is the minimum cardinality of Resource in the relationship with AccessPermission?\n\nFor example:\n1. Minimum cardinality of zero, an access permission can exist without any associated resource.\n2. Minimum cardinality of one, an access permission must have at least one associated resource.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, AccessPermission can exist without Resource.",
+      "option_2": "Option 2: One as minimum cardinality,AccessPermission must have at least one Resource.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "Resource",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AccessPermissions"
+      },
+      "selected": "Option 2: One as minimum cardinality,AccessPermission must have at least one Resource.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Resource",
+          "target": "AccessPermission",
+          "type": "Association",
+          "name": "AccessPermissions",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass AccessPermission {\n}\nclass Edit {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\nUser \"0..*\" -- \"0..*\"  AccessPermission : Permissions\nResource \"1..*\" -- \"1\"  AccessPermission : AccessPermissions\n@enduml"
+    },
+    {
+      "q_num": 13,
+      "question": "What is the minimum cardinality of AccessPermission in the relationship with Resource?\n\nFor example:\n1. Minimum cardinality of zero, a resource can exist without any associated access permission.\n2. Minimum cardinality of one, a resource must have at least one associated access permission.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Resource can exist without AccessPermission.",
+      "option_2": "Option 2: One as minimum cardinality,Resource must have at least one AccessPermission.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "Resource",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AccessPermissions"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Resource can exist without AccessPermission.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Resource",
+          "target": "AccessPermission",
+          "type": "Association",
+          "name": "AccessedBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass AccessPermission {\n}\nclass Edit {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\nUser \"0..*\" -- \"0..*\"  AccessPermission : Permissions\nResource \"0..*\" -- \"0..*\"  AccessPermission : AccessedBy\n@enduml"
+    },
+    {
+      "q_num": 14,
+      "question": "What is the maximum cardinality of Resource in the relationship with AccessPermission?\n\nFor example:\n1. Maximum cardinality of one, an access permission is associated with exactly one resource.\n2. Maximum cardinality of many, an access permission can be associated with multiple resources.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each access permission links to one resource.",
+      "option_2": "Option 2: Many as maximun cardinality, each access permission can link to multiple resources.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "Resource",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AccessedBy"
+      },
+      "selected": "Option 1: One as maximun cardinality, each access permission links to one resource.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Resource",
+          "target": "AccessPermission",
+          "type": "Association",
+          "name": "AccessedBy",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass AccessPermission {\n}\nclass Edit {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nFolder \"0..1\" *-- \"0..*\"  Folder\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\nUser \"0..*\" -- \"0..*\"  AccessPermission : Permissions\nResource \"0..1\" -- \"0..*\"  AccessPermission : AccessedBy\n@enduml"
+    },
+    {
+      "q_num": 15,
+      "question": "What is the maximum cardinality of AccessPermission in the relationship with Resource?\n\nFor example:\n1. Maximum cardinality of one, a resource is associated with exactly one access permission.\n2. Maximum cardinality of many, a resource can be associated with multiple access permissions.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each resource links to one access permission.",
+      "option_2": "Option 2: Many as maximun cardinality, each resource can link to multiple access permissions.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "Resource",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "AccessedBy"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each resource can link to multiple access permissions.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Resource",
+          "target": "AccessPermission",
+          "type": "Association",
+          "name": "AccessedBy",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 16,
+      "question": "Should the relationship between Folder and Resource be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Resource would depend on Folder for its existence.\n2. Use association, Resource could exist independently of Folder, and can also be linked to multiple folders.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Resource depends on Folder.",
+      "option_2": "Option 2: Association is sufficient because class Resource exists independently of Folder.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.01,
+      "visiting_class": "Folder",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "composition",
+        "description": "Contains"
+      },
+      "selected": "Option 1: Composition is needed because class Resource depends on Folder.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Folder",
+          "target": "Resource",
+          "type": "Containment",
+          "name": "Contains",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 17,
+      "question": "Should the relationship between Folder and Folder be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Folder would depend on Folder for its existence.\n2. Use association, Folder could exist independently of Folder, and can also be linked to multiple folders.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Folder depends on Folder.",
+      "option_2": "Option 2: Association is sufficient because class Folder exists independently of Folder.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.33,
+      "visiting_class": "Folder",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "composition",
+        "description": "ParentFolder"
+      },
+      "selected": "Option 2: Association is sufficient because class Folder exists independently of Folder.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "association",
+        "description": {
+          "source": "Folder",
+          "target": "Folder",
+          "type": "Association",
+          "name": "ParentFolder",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass AccessPermission {\n}\nclass Edit {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nFolder \"0..1\" *-- \"1\"  Resource : Folder_Contains_Resource\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\nUser \"0..*\" -- \"0..*\"  AccessPermission : Permissions\nResource \"0..1\" -- \"0..*\"  AccessPermission : AccessedBy\nFolder \"0..1\" -- \"0..*\"  Folder : ParentFolder\n@enduml"
+    },
+    {
+      "q_num": 18,
+      "question": "What is the minimum cardinality of Folder in the relationship with Resource?\n\nFor example:\n1. Minimum cardinality of zero, a resource can exist without any associated folder.\n2. Minimum cardinality of one, a resource must have at least one associated folder.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Resource can exist without Folder.",
+      "option_2": "Option 2: One as minimum cardinality,Resource must have at least one Folder.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.33,
+      "visiting_class": "Folder",
+      "submodel_size": 8,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Contains"
+      },
+      "selected": "Option 2: One as minimum cardinality,Resource must have at least one Folder.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Folder",
+          "target": "Resource",
+          "type": "Containment",
+          "name": "Contains",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass AccessPermission {\n}\nclass Edit {\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\nUser \"0..*\" -- \"0..*\"  AccessPermission : Permissions\nResource \"0..1\" -- \"0..*\"  AccessPermission : AccessedBy\nFolder \"0..1\" -- \"0..*\"  Folder : ParentFolder\nFolder \"1\" *-- \"1\"  Resource : Folder_Contains_Resource\n@enduml"
+    },
+    {
+      "q_num": 19,
+      "question": "Should AccessPermission be modeled as an abstract class or as a concrete class?\nConsider whether AccessPermission can be instantiated directly, or only through its subclasses (View or Edit).\n\nFor example:\n1. Concrete class  AccessPermission ithat can be instantiated. Class accesspermissions can exist independently.\n2. Abstract class  AccessPermission that cannot be instantiated. Every accesspermission must be a specific type view or edit.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Concrete class AccessPermission that can be instantiated directly.",
+      "option_2": "Option 2: Abstract class AccessPermission, where only the subclasses can be instantiated.",
+      "pattern": "ConcreteVsAbstractClass",
+      "confidence": 0.33,
+      "visiting_class": "Unknown",
+      "submodel_size": 9,
+      "originated_from": {
+        "type": "superclass",
+        "description": "AccessPermission"
+      },
+      "selected": "Option 1: Concrete class AccessPermission that can be instantiated directly.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "superclass",
+        "description": "AccessPermission"
+      }
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nabstract class Resource {\n    - name : String\n}\nclass File {\n}\nclass Folder {\n}\nclass User {\n    - password : String\n}\nclass Person {\n    - name : String\n    - identifier : String\n    - AncestorDegree : string\n}\nclass View {\n}\nclass Edit {\n}\nclass AccessPermission {\n}\n\nPerson \"0..1\" -- \"0..*\"  Person : Parent\nPerson \"0..*\" -- \"0..1\"  Person : Children\nResource <|-- File\nResource <|-- Folder\nPerson <|-- User\nAccessPermission <|-- View\nAccessPermission <|-- Edit\nUser \"0..*\" -- \"0..*\"  AccessPermission : Permissions\nResource \"0..1\" -- \"0..*\"  AccessPermission : AccessedBy\nFolder \"0..1\" -- \"0..*\"  Folder : ParentFolder\nFolder \"1\" *-- \"1\"  Resource : Folder_Contains_Resource\n@enduml"
+  },
+  "summary": {
+    "total_questions": 19,
+    "model_changes": 12,
+    "changes_by_pattern": {
+      "ElementRelevance": 0,
+      "ConceptDecision(ClassVsAttribute)": 1,
+      "ConceptDecision(AttributeVsEnumeration)": 1,
+      "AttributeVsInheritance": 2,
+      "LowerboundCardinalityOneVsMany": 5,
+      "UpperboundCardinalityOneVsMany": 1,
+      "CompositionVsAssociation": 1,
+      "ConcreteVsAbstractClass": 1
+    }
+  }
+}

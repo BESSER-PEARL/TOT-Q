@@ -1,0 +1,24 @@
+@startuml
+class Task {
+    - code : String
+}
+class Robot {
+    - identifier : String
+    - RobotType : RobotType
+}
+enum LocationCategory {
+    Corridor
+    Room
+}
+enum RobotType {
+    CLEANING
+    TRANSPORT
+}
+Robot "0..1" -- "0..*"  Task : AssignedTo
+class TaskExecution {
+    - referenceCode : String
+    - startTime : DateTime
+    - locationCategory : LocationCategory
+}
+(Robot, Task) .. TaskExecution
+@enduml

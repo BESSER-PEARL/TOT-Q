@@ -4,13 +4,12 @@ import re
 from difflib import SequenceMatcher
 from typing import Optional
 import os
-from dotenv import load_dotenv
+from tot_rules_q.rule_agent_config import RELEVANCE_THRESHOLD, REFINEMENT_THRESHOLD, HIGH_CONFIDENCE, LOW_CONFIDENCE
 
-load_dotenv()
-
-confidence_threshold = float(os.getenv('CONFIDENCE_THRESHOLD', 0.8))
-high_confidence = float(os.getenv('HIGH_CONFIDENCE', confidence_threshold * 1.1))
-low_confidence = float(os.getenv('LOW_CONFIDENCE', confidence_threshold / 2))
+confidence_threshold = REFINEMENT_THRESHOLD
+very_low_confidence_threshold = RELEVANCE_THRESHOLD
+high_confidence = HIGH_CONFIDENCE
+low_confidence = LOW_CONFIDENCE
 
 def correct_article(article, word):
     return inflect.engine().a(word).split()[0]
@@ -19,7 +18,7 @@ def plural(word):
     return inflect.engine().plural(word)
 
 def split_camel_case(name):
-    name = re.sub(r'^(is|has|can|should|was|were|get)(?=[A-Z])', '', name, flags=re.IGNORECASE)
+    name = re.sub(r'^(is|has|can|should|was|were|get)(?=[A-Z][a-z])', '', name)
     name = name[0].upper() + name[1:] if name else name
     words = re.findall(r'[A-Z](?:[a-z]+|[A-Z]*(?=[A-Z]|$))', name)
     return ' '.join(words)
@@ -33,7 +32,6 @@ def name_format(str_name):
     for c in checklist:
         str_name = str_name.replace(c, "")
     str_name = str_name.strip()
-    #str_name = str_name.capitalize()
     str_name = str_name[0].upper() + str_name[1:] if str_name else str_name
     return str_name
 
@@ -43,7 +41,6 @@ class ConfigurationMetadata:
         self.alternative_2_score = alternative_2_score
         self.predicted = predicted
         self.order_score = alternative_1_score if predicted == "alternative_1" else alternative_2_score
-        #patch enum vs subclass order_score wrong scale
         if self.order_score > 1: self.order_score = self.order_score/100
         self.implemented = ""
 
@@ -71,11 +68,12 @@ class ConfigurationMetadata:
         return s
 
     def __repr__(self):
+        conf = f"Conf. score:{self.get_order_score()}"
         alt1 = f"{self.get_alternative_1_score()}" if self.alternative_1_score else f"None"
         alt2 = f"{self.get_alternative_2_score()}" if self.alternative_2_score else f"None"
         pred1 = f"Alt1:{alt1} (P)" if self.predicted == "alternative_1" else f"Alt1:{alt1}"
         pred2 = f"Alt2:{alt2} (P)" if self.predicted == "alternative_2" else f"Alt2:{alt2}"
-        return f"{pred1} :: {pred2}"
+        return f"{conf} :: {pred1} :: {pred2}"
     
 class MetadataMixin:
     def __init__(self, *args, **kwargs):
@@ -110,6 +108,8 @@ class Configuration(MetadataMixin):
         self.option_2 = option_2
         self.option_1_dm = None
         self.option_2_dm = None
+        self.originated_from = None
+        self.resulting_element = None
 
     def add_alternative_1(self, alternative_1, alternative_1_dm):
         self.alternative_1 = alternative_1
@@ -131,6 +131,9 @@ class Configuration(MetadataMixin):
     def set_confidence(self, configurations, alternative = True):
         raise NotImplementedError("Subclasses must implement the set confidence method")
 
+    def is_complete(self):
+       return True
+       
     def update_confidence_model_element(self, element, confidence):
         if hasattr(element, '_metadata') and element.get_metadata():
             if element.get_metadata().get_score() < confidence:
@@ -138,13 +141,20 @@ class Configuration(MetadataMixin):
         else: 
             element.set_metadata(confidence)
 
-    def __repr__(self):
+    def summary(self):
         text = f"Configuration(alternative_1={getattr(self.alternative_1, 'name', None)}, "
         text += f"alternative_2={getattr(self.alternative_2, 'name', None)})"
-        #if self.alternative_1_dm: model_alt1 = f"{self.alternative_1_dm.generate_plantuml()}"
-        #else: model_alt1 = f"No alternative found"
-        #if self.alternative_2_dm: model_alt2 = f"{self.alternative_2_dm.generate_plantuml()}"
-        #else: model_alt1 = f"No alternative found"
         model_alt1 = self.alternative_1_dm.generate_plantuml() if self.alternative_1_dm else "No alternative found"
         model_alt2 = self.alternative_2_dm.generate_plantuml() if self.alternative_2_dm else "No alternative found"
         return (f"Alternative 1:\n{model_alt1}\nAlternative2:\n{model_alt2}\n")
+
+    def get_question(self,domain, domain_model):
+          return (self.question, self.option_1, self.option_2)
+
+    def __repr__(self):
+        originated = getattr(self, "originated_from", None) or ()
+        element_type = originated[0] if len(originated) > 0 and originated[0] is not None else "unknown"
+        origin = str(originated[1]) if len(originated) > 1 and originated[1] is not None else "unknown"
+        origin_str = origin.replace("{", "(").replace("}", ")").replace("[", "(").replace("]", ")")
+
+        return (f"Pattern:{type(self).__name__}, Type:{element_type}, Origin:{origin_str}")

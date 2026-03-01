@@ -1,0 +1,618 @@
+{
+  "session_id": "P027",
+  "domain": "In the context of a theater organization, various plays are performed in one or more theaters, each identified by its own location, for example \"The Northwest Theater\". A play may have multiple scheduled sessions, and each session occurs on a scheduled date. Plays are identified by a unique name and is either a musical or an opera. Furthermore, each play may take place during the day or at night.\n\nEach play is written by one or more authors, who are uniquely identified by name. Plays involve participants each also identified by name, and the same participant may act in multiple plays. For each play session, the starting time and an ending time is recorded, and participants can act in one or more sessions. Both authors and participant can be the same person, who may write a play and participate in its performance.",
+  "domain_name": "Theater scheduling",
+  "user_profile": "medium",
+  "llm_initial_model": "model001",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Author : IsWrittenBy\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nParticipant \"0..*\" -- \"0..*\"  Session : ActsIn\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\n(Play , Participant) .. Session\n(Theater, Play) .. Session\n(Session, Participant) .. Play\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Play",
+      "confidence": 1.0
+    },
+    {
+      "pos": 2,
+      "class": "Author",
+      "confidence": 1.0
+    },
+    {
+      "pos": 3,
+      "class": "Participant",
+      "confidence": 1.0
+    },
+    {
+      "pos": 4,
+      "class": "Session",
+      "confidence": 1.0
+    },
+    {
+      "pos": 5,
+      "class": "Theater",
+      "confidence": 1.0
+    },
+    {
+      "pos": 6,
+      "class": "Musical",
+      "confidence": 1.0
+    },
+    {
+      "pos": 7,
+      "class": "Opera",
+      "confidence": 1.0
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "What is the minimum cardinality of Play in the relationship with Author?\n\nFor example:\n1. Minimum cardinality of zero, an author can exist without any associated play.\n2. Minimum cardinality of one, an author must have at least one associated play.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Author can exist without Play.",
+      "option_2": "Option 2: One as minimum cardinality, Author must have at least one Play.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.66,
+      "visiting_class": "Author",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsWrittenBy"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Author can exist without Play.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Author",
+          "type": "Association",
+          "name": "IsWrittenBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nAuthor \"0..*\" -- \"0..*\"  Participant : IsSamePersonAs\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\n@enduml"
+    },
+    {
+      "q_num": 2,
+      "question": "What is the maximum cardinality of Play in the relationship with Author?\n\nFor example:\n1. Maximum cardinality of one, an author is associated with exactly one play.\n2. Maximum cardinality of many, an author can be associated with multiple plays.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each author links to one play.",
+      "option_2": "Option 2: Many as maximun cardinality, each author can link to multiple plays.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.67,
+      "visiting_class": "Author",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsWrittenBy"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each author can link to multiple plays.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Author",
+          "type": "Association",
+          "name": "IsWrittenBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 3,
+      "question": "What is the minimum cardinality of Author in the relationship with Play?\n\nFor example:\n1. Minimum cardinality of zero, a play can exist without any associated author.\n2. Minimum cardinality of one, a play must have at least one associated author.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Play can exist without Author.",
+      "option_2": "Option 2: One as minimum cardinality,Play must have at least one Author.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "Author",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsWrittenBy"
+      },
+      "selected": "Option 2: One as minimum cardinality,Play must have at least one Author.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Author",
+          "type": "Association",
+          "name": "IsWrittenBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "What is the maximum cardinality of Author in the relationship with Play?\n\nFor example:\n1. Maximum cardinality of one, a play is associated with exactly one author.\n2. Maximum cardinality of many, a play can be associated with multiple authors.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each play links to one author.",
+      "option_2": "Option 2: Many as maximun cardinality, each play can link to multiple authors.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "Author",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsWrittenBy"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each play can link to multiple authors.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Author",
+          "type": "Association",
+          "name": "IsWrittenBy",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 5,
+      "question": "What is the minimum cardinality of Author in the relationship with Participant?\n\nFor example:\n1. Minimum cardinality of zero, a participant can exist without any associated author.\n2. Minimum cardinality of one, a participant must have at least one associated author.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Participant can exist without Author.",
+      "option_2": "Option 2: One as minimum cardinality,Participant must have at least one Author.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.53,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsSamePersonAs"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Participant can exist without Author.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Author",
+          "target": "Participant",
+          "type": "Association",
+          "name": "IsSamePersonAs",
+          "source_cardinality": "0..*",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 6,
+      "question": "What is the maximum cardinality of Author in the relationship with Participant?\n\nFor example:\n1. Maximum cardinality of one, a participant is associated with exactly one author.\n2. Maximum cardinality of many, a participant can be associated with multiple authors.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each participant links to one author.",
+      "option_2": "Option 2: Many as maximun cardinality, each participant can link to multiple authors.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.53,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsSamePersonAs"
+      },
+      "selected": "Option 1: One as maximun cardinality, each participant links to one author.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Author",
+          "target": "Participant",
+          "type": "Association",
+          "name": "IsSamePersonAs",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"0..*\"  Participant : IsSamePersonAs\n@enduml"
+    },
+    {
+      "q_num": 7,
+      "question": "What is the minimum cardinality of Participant in the relationship with Author?\n\nFor example:\n1. Minimum cardinality of zero, an author can exist without any associated participant.\n2. Minimum cardinality of one, an author must have at least one associated participant.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Author can exist without Participant.",
+      "option_2": "Option 2: One as minimum cardinality, Author must have at least one Participant.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.53,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsSamePersonAs"
+      },
+      "selected": "Option 2: One as minimum cardinality, Author must have at least one Participant.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Author",
+          "target": "Participant",
+          "type": "Association",
+          "name": "IsSamePersonAs",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1..*"
+        }
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"1..*\"  Participant : IsSamePersonAs\n@enduml"
+    },
+    {
+      "q_num": 8,
+      "question": "What is the minimum cardinality of Play in the relationship with Participant?\n\nFor example:\n1. Minimum cardinality of zero, a participant can exist without any associated play.\n2. Minimum cardinality of one, a participant must have at least one associated play.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Participant can exist without Play.",
+      "option_2": "Option 2: One as minimum cardinality, Participant must have at least one Play.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Involves"
+      },
+      "selected": "Option 2: One as minimum cardinality, Participant must have at least one Play.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Participant",
+          "type": "Association",
+          "name": "Involves",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 9,
+      "question": "What is the maximum cardinality of Play in the relationship with Participant?\n\nFor example:\n1. Maximum cardinality of one, a participant is associated with exactly one play.\n2. Maximum cardinality of many, a participant can be associated with multiple plays.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each participant links to one play.",
+      "option_2": "Option 2: Many as maximun cardinality, each participant can link to multiple plays.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Involves"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each participant can link to multiple plays.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Participant",
+          "type": "Association",
+          "name": "Involves",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 10,
+      "question": "What is the minimum cardinality of Participant in the relationship with Play?\n\nFor example:\n1. Minimum cardinality of zero, a play can exist without any associated participant.\n2. Minimum cardinality of one, a play must have at least one associated participant.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Play can exist without Participant.",
+      "option_2": "Option 2: One as minimum cardinality,Play must have at least one Participant.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.62,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Involves"
+      },
+      "selected": "Option 2: One as minimum cardinality,Play must have at least one Participant.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Participant",
+          "type": "Association",
+          "name": "Involves",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 11,
+      "question": "What is the maximum cardinality of Participant in the relationship with Play?\n\nFor example:\n1. Maximum cardinality of one, a play is associated with exactly one participant.\n2. Maximum cardinality of many, a play can be associated with multiple participants.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each play links to one participant.",
+      "option_2": "Option 2: Many as maximun cardinality, each play can link to multiple participants.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.62,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Involves"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each play can link to multiple participants.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Play",
+          "target": "Participant",
+          "type": "Association",
+          "name": "Involves",
+          "source_cardinality": "1..*",
+          "target_cardinality": "1..*"
+        }
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "What is the maximum cardinality of Participant in the relationship with Author?\n\nFor example:\n1. Maximum cardinality of one, an author is associated with exactly one participant.\n2. Maximum cardinality of many, an author can be associated with multiple participants.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each author links to one participant.",
+      "option_2": "Option 2: Many as maximun cardinality, each author can link to multiple participants.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.55,
+      "visiting_class": "Participant",
+      "submodel_size": 3,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IsSamePersonAs"
+      },
+      "selected": "Option 1: One as maximun cardinality, each author links to one participant.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Author",
+          "target": "Participant",
+          "type": "Association",
+          "name": "IsSamePersonAs",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nclass Theater {\n    - location : String\n    - name : String\n}\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"1\"  Participant : IsSamePersonAs\n@enduml"
+    },
+    {
+      "q_num": 13,
+      "question": "We know that each theater has a name. When we think about name, is it just a simple piece of information, like a line of text? \nOr is name made up of different parts that might be important?\nFor example:\n1. For each name, the detail information is saved separately, so users can filter theater by detail.\n2. The name is a single piece of text. This works well when we just need to show the name.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: The Name is a separate class with its own attributes.",
+      "option_2": "Option 2: Model name as a simple representation in Theater.",
+      "pattern": "ConceptDecision(ClassVsAttribute)",
+      "confidence": 0.6,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "attribute",
+        "description": "name"
+      },
+      "selected": "Option 1: We need the name details separately.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "class",
+        "description": "Author"
+      },
+      "updated_model": "@startuml\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nclass Theater {\n    - location : String\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"1\"  Participant : IsSamePersonAs\nTheater \"1\" -- \"1\"  Author : has\n@enduml"
+    },
+    {
+      "q_num": 14,
+      "question": "Should the relationship between Theater and Session be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Session would depend on Theater for its existence.\n2. Use association, Session could exist independently of Theater, and can also be linked to multiple theaters.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Session depends on Theater.",
+      "option_2": "Option 2: Association is sufficient because class Session exists independently of Theater.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.66,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "composition",
+        "description": "Schedules"
+      },
+      "selected": "Option 1: Composition is needed because class Session depends on Theater.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "composition",
+        "description": {
+          "source": "Theater",
+          "target": "Session",
+          "type": "Containment",
+          "name": "Schedules",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 15,
+      "question": "Should the relationship between Theater and Author be modeled as a composition or as an association?\n\nFor example:\n1. Use composition, Author would depend on Theater for its existence.\n2. Use association, Author could exist independently of Theater, and can also be linked to multiple theaters.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Composition is needed because class Author depends on Theater.",
+      "option_2": "Option 2: Association is sufficient because class Author exists independently of Theater.",
+      "pattern": "CompositionVsAssociation",
+      "confidence": 0.4,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "association",
+        "description": "has"
+      },
+      "selected": "Option 2: Association is sufficient because class Author exists independently of Theater.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "association",
+        "description": {
+          "source": "Theater",
+          "target": "Author",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "1",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 16,
+      "question": "What is the minimum cardinality of Theater in the relationship with Author?\n\nFor example:\n1. Minimum cardinality of zero, an author can exist without any associated theater.\n2. Minimum cardinality of one, an author must have at least one associated theater.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Author can exist without Theater.",
+      "option_2": "Option 2: One as minimum cardinality, Author must have at least one Theater.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Author can exist without Theater.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Theater",
+          "target": "Author",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nclass Theater {\n    - location : String\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"1\"  Participant : IsSamePersonAs\nTheater \"0..1\" -- \"1\"  Author : has\n@enduml"
+    },
+    {
+      "q_num": 17,
+      "question": "What is the minimum cardinality of Author in the relationship with Theater?\n\nFor example:\n1. Minimum cardinality of zero, a theater can exist without any associated author.\n2. Minimum cardinality of one, a theater must have at least one associated author.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Theater can exist without Author.",
+      "option_2": "Option 2: One as minimum cardinality,Theater must have at least one Author.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Theater can exist without Author.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Theater",
+          "target": "Author",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..1"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nclass Theater {\n    - location : String\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"1\"  Participant : IsSamePersonAs\nTheater \"0..1\" -- \"0..1\"  Author : has\n@enduml"
+    },
+    {
+      "q_num": 18,
+      "question": "What is the minimum cardinality of Theater in the relationship with Session?\n\nFor example:\n1. Minimum cardinality of zero, a session can exist without any associated theater.\n2. Minimum cardinality of one, a session must have at least one associated theater.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Session can exist without Theater.",
+      "option_2": "Option 2: One as minimum cardinality, Session must have at least one Theater.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.66,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Schedules"
+      },
+      "selected": "Option 2: One as minimum cardinality, Session must have at least one Theater.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Theater",
+          "target": "Session",
+          "type": "Containment",
+          "name": "Schedules",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 19,
+      "question": "What is the maximum cardinality of Author in the relationship with Theater?\n\nFor example:\n1. Maximum cardinality of one, a theater is associated with exactly one author.\n2. Maximum cardinality of many, a theater can be associated with multiple authors.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each theater links to one author.",
+      "option_2": "Option 2: Many as maximun cardinality, each theater can link to multiple authors.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.4,
+      "visiting_class": "Theater",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "has"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each theater can link to multiple authors.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Theater",
+          "target": "Author",
+          "type": "Association",
+          "name": "has",
+          "source_cardinality": "0..1",
+          "target_cardinality": "0..*"
+        }
+      },
+      "updated_model": "@startuml\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\nclass Theater {\n    - location : String\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nTheater \"1\" *-- \"0..*\"  Session\nPlay \"1\" *-- \"0..*\"  Session\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"1\"  Participant : IsSamePersonAs\nTheater \"0..1\" -- \"0..*\"  Author : has\n@enduml"
+    },
+    {
+      "q_num": 20,
+      "question": "Should Session be modeled as an association class linking Theater and Play, or as a regular class with two separate associations?\n\nFor example:\n1. Regular class: Session is a class that has links to Theater and Play. In this case multiple sessions can exist for every Theater and Play.\n2. Association class: Session exists only as part of the relationship between Theater and Play. A session cannot exist without the link between Theater and Play.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Association class, Session as association class linking Theater and Play.",
+      "option_2": "Option 2: Regular class, Session as separate class with two associations.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 1.0,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "Session"
+      },
+      "selected": "Option 1: Association class, Session as association class linking Theater and Play.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Session"
+      },
+      "updated_model": "@startuml\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Theater {\n    - location : String\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"1\"  Participant : IsSamePersonAs\nTheater \"0..1\" -- \"0..*\"  Author : has\nTheater \"*\" -- \"*\"  Play : associates\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\n(Theater, Play) .. Session\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nabstract class Play {\n    - name : String\n    - timeOfDay : TimeOfDay\n}\nclass Musical {\n}\nclass Opera {\n}\nclass Author {\n    - name : String\n}\nclass Participant {\n    - name : String\n}\nclass Theater {\n    - location : String\n}\nenum TimeOfDay {\n    Day\n    Night\n}\nPlay \"1..*\" -- \"1..*\"  Participant : Involves\nPlay <|-- Musical\nPlay <|-- Opera\nPlay \"0..*\" -- \"1..*\"  Author : IsWrittenBy\nAuthor \"0..1\" -- \"1\"  Participant : IsSamePersonAs\nTheater \"0..1\" -- \"0..*\"  Author : has\nTheater \"*\" -- \"*\"  Play : associates\nclass Session {\n    - scheduledDate : Date\n    - startTime : Time\n    - endTime : Time\n}\n(Theater, Play) .. Session\n@enduml"
+  },
+  "summary": {
+    "total_questions": 20,
+    "model_changes": 9,
+    "changes_by_pattern": {
+      "LowerboundCardinalityOneVsMany": 4,
+      "UpperboundCardinalityOneVsMany": 3,
+      "ConceptDecision(ClassVsAttribute)": 1,
+      "CompositionVsAssociation": 0,
+      "AssociationClassVsClass": 1
+    }
+  }
+}

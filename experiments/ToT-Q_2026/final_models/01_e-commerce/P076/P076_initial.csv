@@ -1,0 +1,24 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt5;case_11_e-commerce;model011;Class;Customer;1
+gpt5;case_11_e-commerce;model011;Attributes;Customer.id;1
+gpt5;case_11_e-commerce;model011;Class;Order;1
+gpt5;case_11_e-commerce;model011;Attributes;Order.id;1
+gpt5;case_11_e-commerce;model011;Class;Product;1
+gpt5;case_11_e-commerce;model011;Attributes;Product.name;1
+gpt5;case_11_e-commerce;model011;Attributes;Product.description;1
+gpt5;case_11_e-commerce;model011;Class;OrderItem;1
+gpt5;case_11_e-commerce;model011;Attributes;OrderItem.quantityRequested;1
+gpt5;case_11_e-commerce;model011;Attributes;OrderItem.agreedPrice;1
+gpt5;case_11_e-commerce;model011;Class;Review;1
+gpt5;case_11_e-commerce;model011;Attributes;Review.reviewDate;1
+gpt5;case_11_e-commerce;model011;Attributes;Review.ratingScore;1
+gpt5;case_11_e-commerce;model011;Class;Promotion;1
+gpt5;case_11_e-commerce;model011;Class;Offer;1
+gpt5;case_11_e-commerce;model011;Attributes;Offer.discountRate;1
+gpt5;case_11_e-commerce;model011;Attributes;Offer.startDate;1
+gpt5;case_11_e-commerce;model011;Attributes;Offer.endDate;1
+gpt5;case_11_e-commerce;model011;Association;"Customer ""0..*"" -- ""1"" Order";1
+gpt5;case_11_e-commerce;model011;Association;"Offer ""1"" -- ""0..*"" Product";1
+gpt5;case_11_e-commerce;model011;Composition;"Promotion ""0..*"" *-- ""1"" Offer";1
+gpt5;case_11_e-commerce;model011;Association Class;(Product, Order) .. OrderItem;1
+gpt5;case_11_e-commerce;model011;Association Class;(Customer, Product) .. Review;1

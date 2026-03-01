@@ -1,0 +1,547 @@
+{
+  "session_id": "P034",
+  "domain": "In a e-commerce retail organization, customers are registered with unique ids to place orders that includes multiple products. An order also has a unique identifier and consists of one or more products, which are described by their name and description. When the customer completes the order, it is necessary to specify the quantity requested and the price for the item is updated.\n\nThe retailer also ask customers to provide feedback by writing reviews for specific products. These reviews capture the opinion of a customer regarding a product, including the date it was written and a rating score. Finally, the marketing department organizes promotional campaigns. A product may be included in various promotions over time. Whenever a product is part of a campaign, specific terms are established for that offer, such as the applicable discount rate and a validity period defined by a start and end date.",
+  "domain_name": "E-commerce",
+  "user_profile": "medium",
+  "llm_initial_model": "model012",
+  "initial_model": {
+    "plantuml": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Order : Places\nOrder \"1\" *-- \"1..*\"  OrderItem\n(Customer, Product) .. Review\n(Product, PromotionalCampaign) .. ProductPromotion\n@enduml"
+  },
+  "bfs_traversal": [
+    {
+      "pos": 1,
+      "class": "Product",
+      "confidence": 0.98
+    },
+    {
+      "pos": 2,
+      "class": "OrderItem",
+      "confidence": 0.92
+    },
+    {
+      "pos": 3,
+      "class": "Order",
+      "confidence": 0.98
+    },
+    {
+      "pos": 4,
+      "class": "Customer",
+      "confidence": 0.98
+    },
+    {
+      "pos": 5,
+      "class": "ProductPromotion",
+      "confidence": 0.91
+    },
+    {
+      "pos": 6,
+      "class": "PromotionalCampaign",
+      "confidence": 0.92
+    },
+    {
+      "pos": 7,
+      "class": "Review",
+      "confidence": 0.96
+    }
+  ],
+  "questions": [
+    {
+      "q_num": 1,
+      "question": "What is the minimum cardinality of OrderItem in the relationship with Product?\n\nFor example:\n1. Minimum cardinality of zero, a product can exist without any associated order item.\n2. Minimum cardinality of one, a product must have at least one associated order item.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Product can exist without OrderItem.",
+      "option_2": "Option 2: One as minimum cardinality,Product must have at least one OrderItem.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "OrderItem",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ForProduct"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Product can exist without OrderItem.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "OrderItem",
+          "target": "Product",
+          "type": "Association",
+          "name": "ForProduct",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 2,
+      "question": "What is the maximum cardinality of OrderItem in the relationship with Product?\n\nFor example:\n1. Maximum cardinality of one, a product is associated with exactly one order item.\n2. Maximum cardinality of many, a product can be associated with multiple order items.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each product links to one order item.",
+      "option_2": "Option 2: Many as maximun cardinality, each product can link to multiple order items.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "OrderItem",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ForProduct"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each product can link to multiple order items.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "OrderItem",
+          "target": "Product",
+          "type": "Association",
+          "name": "ForProduct",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 3,
+      "question": "What is the minimum cardinality of Product in the relationship with OrderItem?\n\nFor example:\n1. Minimum cardinality of zero, an order item can exist without any associated product.\n2. Minimum cardinality of one, an order item must have at least one associated product.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, OrderItem can exist without Product.",
+      "option_2": "Option 2: One as minimum cardinality,OrderItem must have at least one Product.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "OrderItem",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ForProduct"
+      },
+      "selected": "Option 2: One as minimum cardinality,OrderItem must have at least one Product.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "OrderItem",
+          "target": "Product",
+          "type": "Association",
+          "name": "ForProduct",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 4,
+      "question": "What is the maximum cardinality of Product in the relationship with OrderItem?\n\nFor example:\n1. Maximum cardinality of one, an order item is associated with exactly one product.\n2. Maximum cardinality of many, an order item can be associated with multiple products.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each order item links to one product.",
+      "option_2": "Option 2: Many as maximun cardinality, each order item can link to multiple products.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "OrderItem",
+      "submodel_size": 2,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ForProduct"
+      },
+      "selected": "Option 1: One as maximun cardinality, each order item links to one product.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "OrderItem",
+          "target": "Product",
+          "type": "Association",
+          "name": "ForProduct",
+          "source_cardinality": "0..*",
+          "target_cardinality": "1"
+        }
+      }
+    },
+    {
+      "q_num": 5,
+      "question": "What is the minimum cardinality of Customer in the relationship with Order?\n\nFor example:\n1. Minimum cardinality of zero, an order can exist without any associated customer.\n2. Minimum cardinality of one, an order must have at least one associated customer.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Order can exist without Customer.",
+      "option_2": "Option 2: One as minimum cardinality, Order must have at least one Customer.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Customer",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Places"
+      },
+      "selected": "Option 2: One as minimum cardinality, Order must have at least one Customer.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Order",
+          "type": "Association",
+          "name": "Places",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 6,
+      "question": "What is the maximum cardinality of Customer in the relationship with Order?\n\nFor example:\n1. Maximum cardinality of one, an order is associated with exactly one customer.\n2. Maximum cardinality of many, an order can be associated with multiple customers.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each order links to one customer.",
+      "option_2": "Option 2: Many as maximun cardinality, each order can link to multiple customers.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Customer",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Places"
+      },
+      "selected": "Option 1: One as maximun cardinality, each order links to one customer.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Order",
+          "type": "Association",
+          "name": "Places",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 7,
+      "question": "What is the minimum cardinality of Order in the relationship with Customer?\n\nFor example:\n1. Minimum cardinality of zero, a customer can exist without any associated order.\n2. Minimum cardinality of one, a customer must have at least one associated order.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Customer can exist without Order.",
+      "option_2": "Option 2: One as minimum cardinality, Customer must have at least one Order.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Customer",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Places"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Customer can exist without Order.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Order",
+          "type": "Association",
+          "name": "Places",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 8,
+      "question": "What is the maximum cardinality of Order in the relationship with Customer?\n\nFor example:\n1. Maximum cardinality of one, a customer is associated with exactly one order.\n2. Maximum cardinality of many, a customer can be associated with multiple orders.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each customer links to one order.",
+      "option_2": "Option 2: Many as maximun cardinality, each customer can link to multiple orders.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Customer",
+      "submodel_size": 4,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Places"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each customer can link to multiple orders.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Order",
+          "type": "Association",
+          "name": "Places",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 9,
+      "question": "What is the minimum cardinality of Product in the relationship with ProductPromotion?\n\nFor example:\n1. Minimum cardinality of zero, a product promotion can exist without any associated product.\n2. Minimum cardinality of one, a product promotion must have at least one associated product.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, ProductPromotion can exist without Product.",
+      "option_2": "Option 2: One as minimum cardinality, ProductPromotion must have at least one Product.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "ProductPromotion",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ParticipatesIn"
+      },
+      "selected": "Option 2: One as minimum cardinality, ProductPromotion must have at least one Product.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Product",
+          "target": "ProductPromotion",
+          "type": "Association",
+          "name": "ParticipatesIn",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 10,
+      "question": "What is the minimum cardinality of ProductPromotion in the relationship with Product?\n\nFor example:\n1. Minimum cardinality of zero, a product can exist without any associated product promotion.\n2. Minimum cardinality of one, a product must have at least one associated product promotion.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Product can exist without ProductPromotion.",
+      "option_2": "Option 2: One as minimum cardinality, Product must have at least one ProductPromotion.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "ProductPromotion",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ParticipatesIn"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Product can exist without ProductPromotion.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Product",
+          "target": "ProductPromotion",
+          "type": "Association",
+          "name": "ParticipatesIn",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 11,
+      "question": "What is the maximum cardinality of ProductPromotion in the relationship with Product?\n\nFor example:\n1. Maximum cardinality of one, a product is associated with exactly one product promotion.\n2. Maximum cardinality of many, a product can be associated with multiple product promotions.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each product links to one product promotion.",
+      "option_2": "Option 2: Many as maximun cardinality, each product can link to multiple product promotions.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.63,
+      "visiting_class": "ProductPromotion",
+      "submodel_size": 5,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "ParticipatesIn"
+      },
+      "selected": "Option 2: Many as maximun cardinality, each product can link to multiple product promotions.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Product",
+          "target": "ProductPromotion",
+          "type": "Association",
+          "name": "ParticipatesIn",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 12,
+      "question": "What is the minimum cardinality of PromotionalCampaign in the relationship with ProductPromotion?\n\nFor example:\n1. Minimum cardinality of zero, a product promotion can exist without any associated promotional campaign.\n2. Minimum cardinality of one, a product promotion must have at least one associated promotional campaign.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, ProductPromotion can exist without PromotionalCampaign.",
+      "option_2": "Option 2: One as minimum cardinality, ProductPromotion must have at least one PromotionalCampaign.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "PromotionalCampaign",
+      "submodel_size": 6,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "IncludesProductPromotions"
+      },
+      "selected": "Option 2: One as minimum cardinality, ProductPromotion must have at least one PromotionalCampaign.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "PromotionalCampaign",
+          "target": "ProductPromotion",
+          "type": "Containment",
+          "name": "IncludesProductPromotions",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 13,
+      "question": "What is the minimum cardinality of Customer in the relationship with Review?\n\nFor example:\n1. Minimum cardinality of zero, a review can exist without any associated customer.\n2. Minimum cardinality of one, a review must have at least one associated customer.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Review can exist without Customer.",
+      "option_2": "Option 2: One as minimum cardinality, Review must have at least one Customer.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Review",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Writes"
+      },
+      "selected": "Option 2: One as minimum cardinality, Review must have at least one Customer.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Review",
+          "type": "Association",
+          "name": "Writes",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 14,
+      "question": "What is the maximum cardinality of Customer in the relationship with Review?\n\nFor example:\n1. Maximum cardinality of one, a review is associated with exactly one customer.\n2. Maximum cardinality of many, a review can be associated with multiple customers.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: One as maximun cardinality, each review links to one customer.",
+      "option_2": "Option 2: Many as maximun cardinality, each review can link to multiple customers.",
+      "pattern": "UpperboundCardinalityOneVsMany",
+      "confidence": 0.65,
+      "visiting_class": "Review",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Writes"
+      },
+      "selected": "Option 1: One as maximun cardinality, each review links to one customer.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "upperbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Review",
+          "type": "Association",
+          "name": "Writes",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 15,
+      "question": "What is the minimum cardinality of Review in the relationship with Customer?\n\nFor example:\n1. Minimum cardinality of zero, a customer can exist without any associated review.\n2. Minimum cardinality of one, a customer must have at least one associated review.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Zero as minimum cardinality, Customer can exist without Review.",
+      "option_2": "Option 2: One as minimum cardinality, Customer must have at least one Review.",
+      "pattern": "LowerboundCardinalityOneVsMany",
+      "confidence": 0.64,
+      "visiting_class": "Review",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "cardinality",
+        "description": "Writes"
+      },
+      "selected": "Option 1: Zero as minimum cardinality, Customer can exist without Review.",
+      "model_changed": false,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "lowerbound_cardinality",
+        "description": {
+          "source": "Customer",
+          "target": "Review",
+          "type": "Association",
+          "name": "Writes",
+          "source_cardinality": "1",
+          "target_cardinality": "0..*"
+        }
+      }
+    },
+    {
+      "q_num": 16,
+      "question": "Should OrderItem be modeled as an association class linking Product and Order, or as a regular class with two separate associations?\n\nFor example:\n1. Regular class: OrderItem is a class that has links to Product and Order. In this case multiple order items can exist for every Product and Order.\n2. Association class: OrderItem exists only as part of the relationship between Product and Order. A order item cannot exist without the link between Product and Order.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Association class, OrderItem as association class linking Product and Order.",
+      "option_2": "Option 2: Regular class, OrderItem as separate class with two associations.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.92,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "OrderItem"
+      },
+      "selected": "Option 1: Association class, OrderItem as association class linking Product and Order.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "OrderItem"
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Order : Places\nCustomer \"1\" -- \"0..*\"  Review : Writes\nProduct \"1\" -- \"0..*\"  Review : ReceivesReviews\nProduct \"1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nPromotionalCampaign \"1\" *-- \"0..*\"  ProductPromotion\nProduct \"*\" -- \"*\"  Order : associates\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Product, Order) .. OrderItem\n@enduml"
+    },
+    {
+      "q_num": 17,
+      "question": "Should Review be modeled as an association class linking Customer and Product, or as a regular class with two separate associations?\n\nFor example:\n1. Regular class: Review is a class that has links to Customer and Product. In this case multiple reviews can exist for every Customer and Product.\n2. Association class: Review exists only as part of the relationship between Customer and Product. A review cannot exist without the link between Customer and Product.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Association class, Review as association class linking Customer and Product.",
+      "option_2": "Option 2: Regular class, Review as separate class with two associations.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.96,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "Review"
+      },
+      "selected": "Option 1: Association class, Review as association class linking Customer and Product.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "Review"
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass PromotionalCampaign {\n}\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\nCustomer \"1\" -- \"0..*\"  Order : Places\nProduct \"1\" -- \"0..*\"  ProductPromotion : ParticipatesIn\nPromotionalCampaign \"1\" *-- \"0..*\"  ProductPromotion\nProduct \"*\" -- \"*\"  Order : associates\nCustomer \"*\" -- \"*\"  Product\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Product, Order) .. OrderItem\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\n(Customer, Product) .. Review\n@enduml"
+    },
+    {
+      "q_num": 18,
+      "question": "Should ProductPromotion be modeled as an association class linking Product and PromotionalCampaign, or as a regular class with two separate associations?\n\nFor example:\n1. Regular class: ProductPromotion is a class that has links to Product and PromotionalCampaign. In this case multiple product promotions can exist for every Product and PromotionalCampaign.\n2. Association class: ProductPromotion exists only as part of the relationship between Product and PromotionalCampaign. A product promotion cannot exist without the link between Product and PromotionalCampaign.\n\nWhich option is better for you?\n",
+      "option_1": "Option 1: Association class, ProductPromotion as association class linking Product and PromotionalCampaign.",
+      "option_2": "Option 2: Regular class, ProductPromotion as separate class with two associations.",
+      "pattern": "AssociationClassVsClass",
+      "confidence": 0.91,
+      "visiting_class": "Unknown",
+      "submodel_size": 7,
+      "originated_from": {
+        "type": "class",
+        "description": "ProductPromotion"
+      },
+      "selected": "Option 1: Association class, ProductPromotion as association class linking Product and PromotionalCampaign.",
+      "model_changed": true,
+      "answer_source": "user",
+      "resulting_element": {
+        "type": "associationclass",
+        "description": "ProductPromotion"
+      },
+      "updated_model": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass PromotionalCampaign {\n}\nCustomer \"1\" -- \"0..*\"  Order : Places\nProduct \"*\" -- \"*\"  Order : associates\nCustomer \"*\" -- \"*\"  Product\nProduct \"*\" -- \"*\"  PromotionalCampaign\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Product, Order) .. OrderItem\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\n(Customer, Product) .. Review\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\n(Product, PromotionalCampaign) .. ProductPromotion\n@enduml"
+    }
+  ],
+  "final_model": {
+    "plantuml": "@startuml\nclass Customer {\n    - customerId : String\n}\nclass Order {\n    - orderId : String\n}\nclass Product {\n    - name : String\n    - description : String\n}\nclass PromotionalCampaign {\n}\nCustomer \"1\" -- \"0..*\"  Order : Places\nProduct \"*\" -- \"*\"  Order : associates\nCustomer \"*\" -- \"*\"  Product\nProduct \"*\" -- \"*\"  PromotionalCampaign\nclass OrderItem {\n    - quantityRequested : Integer\n    - agreedPrice : Decimal\n}\n(Product, Order) .. OrderItem\nclass Review {\n    - dateWritten : Date\n    - ratingScore : Integer\n}\n(Customer, Product) .. Review\nclass ProductPromotion {\n    - discountRate : Decimal\n    - startDate : Date\n    - endDate : Date\n}\n(Product, PromotionalCampaign) .. ProductPromotion\n@enduml"
+  },
+  "summary": {
+    "total_questions": 18,
+    "model_changes": 3,
+    "changes_by_pattern": {
+      "LowerboundCardinalityOneVsMany": 0,
+      "UpperboundCardinalityOneVsMany": 0,
+      "AssociationClassVsClass": 3
+    }
+  }
+}

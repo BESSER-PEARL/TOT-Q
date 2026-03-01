@@ -1,0 +1,31 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt4.1;case_13_theater_scheduling;model001;Class;Theater;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Theater.location;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Theater.name;1
+gpt4.1;case_13_theater_scheduling;model001;Class;Abstract Play;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Play.name;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Play.timeOfDay;1
+gpt4.1;case_13_theater_scheduling;model001;Class;Musical;1
+gpt4.1;case_13_theater_scheduling;model001;Class;Opera;1
+gpt4.1;case_13_theater_scheduling;model001;Class;Author;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Author.name;1
+gpt4.1;case_13_theater_scheduling;model001;Class;Participant;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Participant.name;1
+gpt4.1;case_13_theater_scheduling;model001;Class;Session;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Session.scheduledDate;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Session.startTime;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;Session.endTime;1
+gpt4.1;case_13_theater_scheduling;model001;Class;Enumeration TimeOfDay;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;TimeOfDay.Day;1
+gpt4.1;case_13_theater_scheduling;model001;Attributes;TimeOfDay.Night;1
+gpt4.1;case_13_theater_scheduling;model001;Association;"Play ""1..*"" -- ""1..*"" Author";1
+gpt4.1;case_13_theater_scheduling;model001;Association;"Play ""1..*"" -- ""1..*"" Participant";1
+gpt4.1;case_13_theater_scheduling;model001;Association;"Participant ""0..*"" -- ""0..*"" Session";1
+gpt4.1;case_13_theater_scheduling;model001;Association;"Author ""0..*"" -- ""0..*"" Participant";1
+gpt4.1;case_13_theater_scheduling;model001;Composition;"Theater ""1"" *-- ""0..*"" Session";1
+gpt4.1;case_13_theater_scheduling;model001;Composition;"Play ""1"" *-- ""0..*"" Session";1
+gpt4.1;case_13_theater_scheduling;model001;Inheritance;Musical --|> Play;1
+gpt4.1;case_13_theater_scheduling;model001;Inheritance;Opera --|> Play;1
+gpt4.1;case_13_theater_scheduling;model001;Association Class;(Play , Participant) .. Session;1
+gpt4.1;case_13_theater_scheduling;model001;Association Class;(Theater, Play) .. Session;1
+gpt4.1;case_13_theater_scheduling;model001;Association Class;(Session, Participant) .. Play;1

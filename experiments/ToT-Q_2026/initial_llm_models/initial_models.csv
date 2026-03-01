@@ -1,0 +1,793 @@
+﻿Exercise;Element;reference_plantuml;reference;exercise_name;model_number;elem_type;plantuml;predicted;correct;llm
+case_11_e-commerce;Class;Customer;1;case_11_e-commerce;model001;Class;Customer;1;1;gpt4.1
+case_11_e-commerce;Class;Product;1;case_11_e-commerce;model001;Class;Product;1;1;gpt4.1
+case_11_e-commerce;Class;Order;1;case_11_e-commerce;model001;Class;Order;1;1;gpt4.1
+case_11_e-commerce;Class;OrderDetails;1;case_11_e-commerce;model001;Class;OrderItem;1;1;gpt4.1
+case_11_e-commerce;Class;Review;1;case_11_e-commerce;model001;Class;Review;1;1;gpt4.1
+case_11_e-commerce;Class;Promotion;1;case_11_e-commerce;model001;Class;Promotion;1;1;gpt4.1
+case_11_e-commerce;Class;PromotionDetails;1;case_11_e-commerce;model001;Class;ProductPromotion;1;1;gpt4.1
+case_11_e-commerce;Attributes;Customer.ID;1;case_11_e-commerce;model001;Attributes;Customer.customerId;1;1;gpt4.1
+case_11_e-commerce;Attributes;Product.Name;1;case_11_e-commerce;model001;Attributes;Product.name;1;1;gpt4.1
+case_11_e-commerce;Attributes;Product.Description;1;case_11_e-commerce;model001;Attributes;Product.description;1;1;gpt4.1
+case_11_e-commerce;Attributes;Order.ID;1;case_11_e-commerce;model001;Attributes;Order.orderId;1;1;gpt4.1
+case_11_e-commerce;Attributes;OrderDetails.Quantity;1;case_11_e-commerce;model001;Attributes;OrderItem.quantity;1;1;gpt4.1
+case_11_e-commerce;Attributes;OrderDetails.Price;1;case_11_e-commerce;model001;Attributes;OrderItem.agreedPrice;1;1;gpt4.1
+case_11_e-commerce;Attributes;Review.Date;1;case_11_e-commerce;model001;Attributes;Review.dateWritten;1;1;gpt4.1
+case_11_e-commerce;Attributes;Review.Rating;1;case_11_e-commerce;model001;Attributes;Review.ratingScore;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.DiscountRate;1;case_11_e-commerce;model001;Attributes;ProductPromotion.discountRate;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.StartPeriod;1;case_11_e-commerce;model001;Attributes;ProductPromotion.startDate;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.EndPeriod;1;case_11_e-commerce;model001;Attributes;ProductPromotion.endDate;1;1;gpt4.1
+case_11_e-commerce;Association;"Customer ""1"" -- ""0..*"" Order";1;case_11_e-commerce;model001;Association;"Customer ""1"" -- ""0..*"" Order";1;1;gpt4.1
+case_11_e-commerce;Association;"Customer ""*"" -- ""0..*"" Product";1;case_11_e-commerce;model001;;;;;gpt4.1
+case_11_e-commerce;Association;"Order ""*"" -- ""*"" Product ";1;case_11_e-commerce;model001;;;;;gpt4.1
+case_11_e-commerce;Association;"Product ""1"" -- ""0..*"" Promotion";1;case_11_e-commerce;model001;;;;;gpt4.1
+case_11_e-commerce;Association Class;(Order, Product) .. OrderDetails;1;case_11_e-commerce;model001;;;;;gpt4.1
+case_11_e-commerce;Association Class;(Product, Customer) .. Review;1;case_11_e-commerce;model001;Association Class;(Customer, Product) .. Review;1;1;gpt4.1
+case_11_e-commerce;Association Class;(Product, Promotion) .. PromotionDetails;1;case_11_e-commerce;model001;Association Class;(Product, Promotion) .. ProductPromotion;1;1;gpt4.1
+case_11_e-commerce;Attributes;;;case_11_e-commerce;model001;Attributes;Promotion.promotionId;1;0;gpt4.1
+case_11_e-commerce;Association;;;case_11_e-commerce;model001;Association;"Product ""1"" -- ""0..*"" ProductPromotion";1;0;gpt4.1
+case_11_e-commerce;Association;;;case_11_e-commerce;model001;Association;"Promotion ""1"" -- ""0..*"" ProductPromotion";1;0;gpt4.1
+case_11_e-commerce;Composition;;;case_11_e-commerce;model001;Composition;"Order ""1"" *-- ""1..*"" OrderItem";1;0;gpt4.1
+case_11_e-commerce;Composition;;;case_11_e-commerce;model001;Composition;"OrderItem ""1"" *-- ""1"" Product";1;0;gpt4.1
+case_11_e-commerce;Class;Customer;1;case_11_e-commerce;model002;Class;Customer;1;1;gpt4.1
+case_11_e-commerce;Class;Product;1;case_11_e-commerce;model002;Class;Product;1;1;gpt4.1
+case_11_e-commerce;Class;Order;1;case_11_e-commerce;model002;Class;Order;1;1;gpt4.1
+case_11_e-commerce;Class;OrderDetails;1;case_11_e-commerce;model002;Class;OrderItem;1;1;gpt4.1
+case_11_e-commerce;Class;Review;1;case_11_e-commerce;model002;Class;Review;1;1;gpt4.1
+case_11_e-commerce;Class;Promotion;1;case_11_e-commerce;model002;Class;Promotion;1;1;gpt4.1
+case_11_e-commerce;Class;PromotionDetails;1;case_11_e-commerce;model002;Class;ProductPromotion;1;1;gpt4.1
+case_11_e-commerce;Attributes;Customer.ID;1;case_11_e-commerce;model002;Attributes;Customer.customerId;1;1;gpt4.1
+case_11_e-commerce;Attributes;Product.Name;1;case_11_e-commerce;model002;Attributes;Product.name;1;1;gpt4.1
+case_11_e-commerce;Attributes;Product.Description;1;case_11_e-commerce;model002;Attributes;Product.description;1;1;gpt4.1
+case_11_e-commerce;Attributes;Order.ID;1;case_11_e-commerce;model002;Attributes;Order.orderId;1;1;gpt4.1
+case_11_e-commerce;Attributes;OrderDetails.Quantity;1;case_11_e-commerce;model002;Attributes;OrderItem.quantity;1;1;gpt4.1
+case_11_e-commerce;Attributes;OrderDetails.Price;1;case_11_e-commerce;model002;Attributes;OrderItem.agreedPrice;1;1;gpt4.1
+case_11_e-commerce;Attributes;Review.Date;1;case_11_e-commerce;model002;Attributes;Review.reviewDate;1;1;gpt4.1
+case_11_e-commerce;Attributes;Review.Rating;1;case_11_e-commerce;model002;Attributes;Review.ratingScore;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.DiscountRate;1;case_11_e-commerce;model002;Attributes;ProductPromotion.discountRate;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.StartPeriod;1;case_11_e-commerce;model002;Attributes;ProductPromotion.startDate;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.EndPeriod;1;case_11_e-commerce;model002;Attributes;ProductPromotion.endDate;1;1;gpt4.1
+case_11_e-commerce;Association;"Customer ""1"" -- ""0..*"" Order";1;case_11_e-commerce;model002;Association;"Customer ""1"" -- ""0..*"" Order";1;1;gpt4.1
+case_11_e-commerce;Association;"Customer ""*"" -- ""0..*"" Product";1;case_11_e-commerce;model002;;;;;gpt4.1
+case_11_e-commerce;Association;"Order ""*"" -- ""*"" Product ";1;case_11_e-commerce;model002;;;;;gpt4.1
+case_11_e-commerce;Association;"Product ""1"" -- ""0..*"" Promotion";1;case_11_e-commerce;model002;;;;;gpt4.1
+case_11_e-commerce;Association Class;(Order, Product) .. OrderDetails;1;case_11_e-commerce;model002;;;;;gpt4.1
+case_11_e-commerce;Association Class;(Product, Customer) .. Review;1;case_11_e-commerce;model002;Association Class;(Customer, Product) .. Review;1;1;gpt4.1
+case_11_e-commerce;Association Class;(Product, Promotion) .. PromotionDetails;1;case_11_e-commerce;model002;;;;;gpt4.1
+case_11_e-commerce;Attributes;;;case_11_e-commerce;model002;Attributes;Promotion.promotionId;1;0;gpt4.1
+case_11_e-commerce;Association;;;case_11_e-commerce;model002;Association;"Product ""1"" -- ""0..*"" ProductPromotion";1;0;gpt4.1
+case_11_e-commerce;Association;;;case_11_e-commerce;model002;Association;"Promotion ""1"" -- ""0..*"" ProductPromotion";1;0;gpt4.1
+case_11_e-commerce;Association;;;case_11_e-commerce;model002;Association;"OrderItem ""1"" -- ""1"" Product";1;0;gpt4.1
+case_11_e-commerce;Composition;;;case_11_e-commerce;model002;Composition;"Order ""1"" *-- ""1..*"" OrderItem";1;0;gpt4.1
+case_11_e-commerce;Class;Customer;1;case_11_e-commerce;model003;Class;Customer;1;1;gpt4.1
+case_11_e-commerce;Class;Product;1;case_11_e-commerce;model003;Class;Product;1;1;gpt4.1
+case_11_e-commerce;Class;Order;1;case_11_e-commerce;model003;Class;Order;1;1;gpt4.1
+case_11_e-commerce;Class;OrderDetails;1;case_11_e-commerce;model003;Class;OrderItem;1;1;gpt4.1
+case_11_e-commerce;Class;Review;1;case_11_e-commerce;model003;Class;Review;1;1;gpt4.1
+case_11_e-commerce;Class;Promotion;1;case_11_e-commerce;model003;Class;Promotion;1;1;gpt4.1
+case_11_e-commerce;Class;PromotionDetails;1;case_11_e-commerce;model003;Class;ProductPromotion;1;1;gpt4.1
+case_11_e-commerce;Attributes;Customer.ID;1;case_11_e-commerce;model003;Attributes;Customer.customerId;1;1;gpt4.1
+case_11_e-commerce;Attributes;Product.Name;1;case_11_e-commerce;model003;Attributes;Product.name;1;1;gpt4.1
+case_11_e-commerce;Attributes;Product.Description;1;case_11_e-commerce;model003;Attributes;Product.description;1;1;gpt4.1
+case_11_e-commerce;Attributes;Order.ID;1;case_11_e-commerce;model003;Attributes;Order.orderId;1;1;gpt4.1
+case_11_e-commerce;Attributes;OrderDetails.Quantity;1;case_11_e-commerce;model003;Attributes;OrderItem.quantity;1;1;gpt4.1
+case_11_e-commerce;Attributes;OrderDetails.Price;1;case_11_e-commerce;model003;Attributes;OrderItem.agreedPrice;1;1;gpt4.1
+case_11_e-commerce;Attributes;Review.Date;1;case_11_e-commerce;model003;Attributes;Review.dateWritten;1;1;gpt4.1
+case_11_e-commerce;Attributes;Review.Rating;1;case_11_e-commerce;model003;Attributes;Review.ratingScore;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.DiscountRate;1;case_11_e-commerce;model003;Attributes;ProductPromotion.discountRate;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.StartPeriod;1;case_11_e-commerce;model003;Attributes;ProductPromotion.startDate;1;1;gpt4.1
+case_11_e-commerce;Attributes;PromotionDetails.EndPeriod;1;case_11_e-commerce;model003;Attributes;ProductPromotion.endDate;1;1;gpt4.1
+case_11_e-commerce;Association;"Customer ""1"" -- ""0..*"" Order";1;case_11_e-commerce;model003;Association;"Customer ""1"" -- ""0..*"" Order";1;1;gpt4.1
+case_11_e-commerce;Association;"Customer ""*"" -- ""0..*"" Product";1;case_11_e-commerce;model003;;;;;gpt4.1
+case_11_e-commerce;Association;"Order ""*"" -- ""*"" Product ";1;case_11_e-commerce;model003;;;;;gpt4.1
+case_11_e-commerce;Association;"Product ""1"" -- ""0..*"" Promotion";1;case_11_e-commerce;model003;;;;;gpt4.1
+case_11_e-commerce;Association Class;(Order, Product) .. OrderDetails;1;case_11_e-commerce;model003;;;;;gpt4.1
+case_11_e-commerce;Association Class;(Product, Customer) .. Review;1;case_11_e-commerce;model003;Association Class;(Customer, Product) .. Review;1;1;gpt4.1
+case_11_e-commerce;Association Class;(Product, Promotion) .. PromotionDetails;1;case_11_e-commerce;model003;;;;;gpt4.1
+case_11_e-commerce;Attributes;;;case_11_e-commerce;model003;Attributes;Promotion.promotionId;1;0;gpt4.1
+case_11_e-commerce;Association;;;case_11_e-commerce;model003;Association;"Product ""1"" -- ""0..*"" ProductPromotion";1;0;gpt4.1
+case_11_e-commerce;Association;;;case_11_e-commerce;model003;Association;"Promotion ""1"" -- ""0..*"" ProductPromotion";1;0;gpt4.1
+case_11_e-commerce;Composition;;;case_11_e-commerce;model003;Composition;"Order ""1"" *-- ""1..*"" OrderItem";1;0;gpt4.1
+case_11_e-commerce;Composition;;;case_11_e-commerce;model003;Composition;"OrderItem ""1"" *-- ""1"" Product";1;0;gpt4.1
+case_11_e-commerce;Class;Customer;1;case_11_e-commerce;model011;Class;Customer;1;1;gpt5
+case_11_e-commerce;Class;Product;1;case_11_e-commerce;model011;Class;Product;1;1;gpt5
+case_11_e-commerce;Class;Order;1;case_11_e-commerce;model011;Class;Order;1;1;gpt5
+case_11_e-commerce;Class;OrderDetails;1;case_11_e-commerce;model011;Class;OrderItem;1;1;gpt5
+case_11_e-commerce;Class;Review;1;case_11_e-commerce;model011;Class;Review;1;1;gpt5
+case_11_e-commerce;Class;Promotion;1;case_11_e-commerce;model011;Class;Promotion;1;1;gpt5
+case_11_e-commerce;Class;PromotionDetails;1;case_11_e-commerce;model011;Class;Offer;1;1;gpt5
+case_11_e-commerce;Attributes;Customer.ID;1;case_11_e-commerce;model011;Attributes;Customer.id;1;1;gpt5
+case_11_e-commerce;Attributes;Product.Name;1;case_11_e-commerce;model011;Attributes;Product.name;1;1;gpt5
+case_11_e-commerce;Attributes;Product.Description;1;case_11_e-commerce;model011;Attributes;Product.description;1;1;gpt5
+case_11_e-commerce;Attributes;Order.ID;1;case_11_e-commerce;model011;Attributes;Order.id;1;1;gpt5
+case_11_e-commerce;Attributes;OrderDetails.Quantity;1;case_11_e-commerce;model011;Attributes;OrderItem.quantityRequested;1;1;gpt5
+case_11_e-commerce;Attributes;OrderDetails.Price;1;case_11_e-commerce;model011;Attributes;OrderItem.agreedPrice;1;1;gpt5
+case_11_e-commerce;Attributes;Review.Date;1;case_11_e-commerce;model011;Attributes;Review.reviewDate;1;1;gpt5
+case_11_e-commerce;Attributes;Review.Rating;1;case_11_e-commerce;model011;Attributes;Review.ratingScore;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.DiscountRate;1;case_11_e-commerce;model011;Attributes;Offer.discountRate;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.StartPeriod;1;case_11_e-commerce;model011;Attributes;Offer.startDate;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.EndPeriod;1;case_11_e-commerce;model011;Attributes;Offer.endDate;1;1;gpt5
+case_11_e-commerce;Association;"Customer ""1"" -- ""0..*"" Order";1;case_11_e-commerce;model011;Association;"Customer ""0..*"" -- ""1"" Order";1;0;gpt5
+case_11_e-commerce;Association;"Customer ""*"" -- ""0..*"" Product";1;case_11_e-commerce;model011;;;;;gpt5
+case_11_e-commerce;Association;"Order ""*"" -- ""*"" Product ";1;case_11_e-commerce;model011;;;;;gpt5
+case_11_e-commerce;Association;"Product ""1"" -- ""0..*"" Promotion";1;case_11_e-commerce;model011;;;;;gpt5
+case_11_e-commerce;Association Class;(Order, Product) .. OrderDetails;1;case_11_e-commerce;model011;Association Class;(Product, Order) .. OrderItem;1;1;gpt5
+case_11_e-commerce;Association Class;(Product, Customer) .. Review;1;case_11_e-commerce;model011;Association Class;(Customer, Product) .. Review;1;1;gpt5
+case_11_e-commerce;Association Class;(Product, Promotion) .. PromotionDetails;1;case_11_e-commerce;model011;;;;;gpt5
+case_11_e-commerce;Association;;;case_11_e-commerce;model011;Association;"Offer ""1"" -- ""0..*"" Product";1;0;gpt5
+case_11_e-commerce;Composition;;;case_11_e-commerce;model011;Composition;"Promotion ""0..*"" *-- ""1"" Offer";1;0;gpt5
+case_11_e-commerce;Class;Customer;1;case_11_e-commerce;model012;Class;Customer;1;1;gpt5
+case_11_e-commerce;Class;Product;1;case_11_e-commerce;model012;Class;Product;1;1;gpt5
+case_11_e-commerce;Class;Order;1;case_11_e-commerce;model012;Class;Order;1;1;gpt5
+case_11_e-commerce;Class;OrderDetails;1;case_11_e-commerce;model012;Class;OrderItem;1;1;gpt5
+case_11_e-commerce;Class;Review;1;case_11_e-commerce;model012;Class;Review;1;1;gpt5
+case_11_e-commerce;Class;Promotion;1;case_11_e-commerce;model012;Class;PromotionalCampaign;1;1;gpt5
+case_11_e-commerce;Class;PromotionDetails;1;case_11_e-commerce;model012;Class;ProductPromotion;1;1;gpt5
+case_11_e-commerce;Attributes;Customer.ID;1;case_11_e-commerce;model012;Attributes;Customer.customerId;1;1;gpt5
+case_11_e-commerce;Attributes;Product.Name;1;case_11_e-commerce;model012;Attributes;Product.name;1;1;gpt5
+case_11_e-commerce;Attributes;Product.Description;1;case_11_e-commerce;model012;Attributes;Product.description;1;1;gpt5
+case_11_e-commerce;Attributes;Order.ID;1;case_11_e-commerce;model012;Attributes;Order.orderId;1;1;gpt5
+case_11_e-commerce;Attributes;OrderDetails.Quantity;1;case_11_e-commerce;model012;Attributes;OrderItem.quantityRequested;1;1;gpt5
+case_11_e-commerce;Attributes;OrderDetails.Price;1;case_11_e-commerce;model012;Attributes;OrderItem.agreedPrice;1;1;gpt5
+case_11_e-commerce;Attributes;Review.Date;1;case_11_e-commerce;model012;Attributes;Review.dateWritten;1;1;gpt5
+case_11_e-commerce;Attributes;Review.Rating;1;case_11_e-commerce;model012;Attributes;Review.ratingScore;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.DiscountRate;1;case_11_e-commerce;model012;Attributes;ProductPromotion.discountRate;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.StartPeriod;1;case_11_e-commerce;model012;Attributes;ProductPromotion.startDate;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.EndPeriod;1;case_11_e-commerce;model012;Attributes;ProductPromotion.endDate;1;1;gpt5
+case_11_e-commerce;Association;"Customer ""1"" -- ""0..*"" Order";1;case_11_e-commerce;model012;Association;"Customer ""1"" -- ""0..*"" Order";1;1;gpt5
+case_11_e-commerce;Association;"Customer ""*"" -- ""0..*"" Product";1;case_11_e-commerce;model012;;;;;gpt5
+case_11_e-commerce;Association;"Order ""*"" -- ""*"" Product ";1;case_11_e-commerce;model012;;;;;gpt5
+case_11_e-commerce;Association;"Product ""1"" -- ""0..*"" Promotion";1;case_11_e-commerce;model012;;;;;gpt5
+case_11_e-commerce;Association Class;(Order, Product) .. OrderDetails;1;case_11_e-commerce;model012;;;;;gpt5
+case_11_e-commerce;Association Class;(Product, Customer) .. Review;1;case_11_e-commerce;model012;Association Class;(Customer, Product) .. Review;1;1;gpt5
+case_11_e-commerce;Association Class;(Product, Promotion) .. PromotionDetails;1;case_11_e-commerce;model012;Association Class;(Product, PromotionalCampaign) .. ProductPromotion;1;1;gpt5
+case_11_e-commerce;Composition;;;case_11_e-commerce;model012;Composition;"Order ""1"" *-- ""1..*"" OrderItem";1;0;gpt5
+case_11_e-commerce;Class;Customer;1;case_11_e-commerce;model013;Class;Customer;1;1;gpt5
+case_11_e-commerce;Class;Product;1;case_11_e-commerce;model013;Class;Product;1;1;gpt5
+case_11_e-commerce;Class;Order;1;case_11_e-commerce;model013;Class;Order;1;1;gpt5
+case_11_e-commerce;Class;OrderDetails;1;case_11_e-commerce;model013;Class;OrderItem;1;1;gpt5
+case_11_e-commerce;Class;Review;1;case_11_e-commerce;model013;Class;Review;1;1;gpt5
+case_11_e-commerce;Class;Promotion;1;case_11_e-commerce;model013;Class;Promotion;1;1;gpt5
+case_11_e-commerce;Class;PromotionDetails;1;case_11_e-commerce;model013;Class;ProductPromotion;1;1;gpt5
+case_11_e-commerce;Attributes;Customer.ID;1;case_11_e-commerce;model013;Attributes;Customer.id;1;1;gpt5
+case_11_e-commerce;Attributes;Product.Name;1;case_11_e-commerce;model013;Attributes;Product.name;1;1;gpt5
+case_11_e-commerce;Attributes;Product.Description;1;case_11_e-commerce;model013;Attributes;Product.description;1;1;gpt5
+case_11_e-commerce;Attributes;Order.ID;1;case_11_e-commerce;model013;Attributes;Order.id;1;1;gpt5
+case_11_e-commerce;Attributes;OrderDetails.Quantity;1;case_11_e-commerce;model013;Attributes;OrderItem.quantityRequested;1;1;gpt5
+case_11_e-commerce;Attributes;OrderDetails.Price;1;case_11_e-commerce;model013;Attributes;OrderItem.agreedPrice;1;1;gpt5
+case_11_e-commerce;Attributes;Review.Date;1;case_11_e-commerce;model013;Attributes;Review.reviewDate;1;1;gpt5
+case_11_e-commerce;Attributes;Review.Rating;1;case_11_e-commerce;model013;Attributes;Review.ratingScore;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.DiscountRate;1;case_11_e-commerce;model013;Attributes;ProductPromotion.discountRate;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.StartPeriod;1;case_11_e-commerce;model013;Attributes;ProductPromotion.startDate;1;1;gpt5
+case_11_e-commerce;Attributes;PromotionDetails.EndPeriod;1;case_11_e-commerce;model013;Attributes;ProductPromotion.endDate;1;1;gpt5
+case_11_e-commerce;Association;"Customer ""1"" -- ""0..*"" Order";1;case_11_e-commerce;model013;Association;"Customer ""1"" -- ""0..*"" Order";1;1;gpt5
+case_11_e-commerce;Association;"Customer ""*"" -- ""0..*"" Product";1;case_11_e-commerce;model013;;;;;gpt5
+case_11_e-commerce;Association;"Order ""*"" -- ""*"" Product ";1;case_11_e-commerce;model013;;;;;gpt5
+case_11_e-commerce;Association;"Product ""1"" -- ""0..*"" Promotion";1;case_11_e-commerce;model013;;;;;gpt5
+case_11_e-commerce;Association Class;(Order, Product) .. OrderDetails;1;case_11_e-commerce;model013;;;;;gpt5
+case_11_e-commerce;Association Class;(Product, Customer) .. Review;1;case_11_e-commerce;model013;Association Class;(Customer, Product) .. Review;1;1;gpt5
+case_11_e-commerce;Association Class;(Product, Promotion) .. PromotionDetails;1;case_11_e-commerce;model013;;;;;gpt5
+case_11_e-commerce;Association;;;case_11_e-commerce;model013;Association;"OrderItem ""1"" -- ""0..*"" Product";1;0;gpt5
+case_11_e-commerce;Association;;;case_11_e-commerce;model013;Association;"Product ""1"" -- ""0..*"" ProductPromotion";1;0;gpt5
+case_11_e-commerce;Composition;;;case_11_e-commerce;model013;Composition;"Order ""1"" *-- ""1..*"" OrderItem";1;0;gpt5
+case_11_e-commerce;Composition;;;case_11_e-commerce;model013;Composition;"Promotion ""1"" *-- ""0..*"" ProductPromotion";1;0;gpt5
+case_12_person_and_resources;Class;Person;1;case_12_person_and_resources;model001;Class;Person;1;1;gpt4.1
+case_12_person_and_resources;Class;Ancestor;1;case_12_person_and_resources;model001;Class;AncestorDegree;1;1;gpt4.1
+case_12_person_and_resources;Class;User;1;case_12_person_and_resources;model001;Class;User;1;1;gpt4.1
+case_12_person_and_resources;Class;Abstract Resource;1;case_12_person_and_resources;model001;Class;Abstract Resource;1;1;gpt4.1
+case_12_person_and_resources;Class;File;1;case_12_person_and_resources;model001;Class;File;1;1;gpt4.1
+case_12_person_and_resources;Class;Folder;1;case_12_person_and_resources;model001;Class;Folder;1;1;gpt4.1
+case_12_person_and_resources;Class;Access;1;case_12_person_and_resources;model001;Class;AccessPermission;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Person.name;1;case_12_person_and_resources;model001;Attributes;Person.name;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Person.identifier;1;case_12_person_and_resources;model001;Attributes;Person.identifier;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Ancestor.degree;1;case_12_person_and_resources;model001;Attributes;AncestorDegree.degree;1;1;gpt4.1
+case_12_person_and_resources;Attributes;User.password;1;case_12_person_and_resources;model001;Attributes;User.password;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Resource.name;1;case_12_person_and_resources;model001;Attributes;Resource.name;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Access.canEdit;1;case_12_person_and_resources;model001;Attributes;AccessPermission.canEdit;1;1;gpt4.1
+case_12_person_and_resources;Association;"Person ""0..1"" -- ""*"" Person : isChildOf";1;case_12_person_and_resources;model001;Association;"Person ""0..1"" -- ""0..*"" Person";1;1;gpt4.1
+case_12_person_and_resources;Association;"Person ""*"" -- ""*"" Person : ancestor";1;case_12_person_and_resources;model001;Association;"Person ""0..*"" -- ""0..1"" Person";1;1;gpt4.1
+case_12_person_and_resources;Inheritance;Person <|-- User;1;case_12_person_and_resources;model001;Inheritance;User --|> Person;1;1;gpt4.1
+case_12_person_and_resources;Composition;"User ""*"" *-- ""*"" Resource";1;case_12_person_and_resources;model001;;;;;gpt4.1
+case_12_person_and_resources;Composition;"Folder ""0..1"" *-- ""*"" Resource: belongsTo";1;case_12_person_and_resources;model001;Composition;"Folder ""0..*"" *-- ""1"" Resource";1;0;gpt4.1
+case_12_person_and_resources;Inheritance;Resource <|-- File;1;case_12_person_and_resources;model001;Inheritance;File --|> Resource;1;1;gpt4.1
+case_12_person_and_resources;Inheritance;Resource <|-- Folder;1;case_12_person_and_resources;model001;Inheritance;Folder --|> Resource;1;1;gpt4.1
+case_12_person_and_resources;Association Class;(User, Resource) .. Access;1;case_12_person_and_resources;model001;;;;;gpt4.1
+case_12_person_and_resources;Association Class;(Person, Person) .. Ancestor;1;case_12_person_and_resources;model001;;;;;gpt4.1
+case_12_person_and_resources;Attributes;;;case_12_person_and_resources;model001;Attributes;AccessPermission.canView;1;0;gpt4.1
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model001;Association;"Person ""0..*"" -- ""1"" AncestorDegree";1;0;gpt4.1
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model001;Association;"User ""0..*"" -- ""1"" AccessPermission";1;0;gpt4.1
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model001;Association;"Resource ""0..*"" -- ""1"" AccessPermission";1;0;gpt4.1
+case_12_person_and_resources;Composition;;;case_12_person_and_resources;model001;Composition;"Folder ""0..1"" *-- ""0..*"" Folder";1;0;gpt4.1
+case_12_person_and_resources;Class;Person;1;case_12_person_and_resources;model002;Class;Person;1;1;gpt4.1
+case_12_person_and_resources;Class;Ancestor;1;case_12_person_and_resources;model002;Class;Ancestor;1;1;gpt4.1
+case_12_person_and_resources;Class;User;1;case_12_person_and_resources;model002;Class;User;1;1;gpt4.1
+case_12_person_and_resources;Class;Abstract Resource;1;case_12_person_and_resources;model002;Class;Abstract Resource;1;1;gpt4.1
+case_12_person_and_resources;Class;File;1;case_12_person_and_resources;model002;Class;File;1;1;gpt4.1
+case_12_person_and_resources;Class;Folder;1;case_12_person_and_resources;model002;Class;Folder;1;1;gpt4.1
+case_12_person_and_resources;Class;Access;1;case_12_person_and_resources;model002;Class;Access;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Person.name;1;case_12_person_and_resources;model002;Attributes;Person.name;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Person.identifier;1;case_12_person_and_resources;model002;Attributes;Person.identifier;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Ancestor.degree;1;case_12_person_and_resources;model002;Attributes;Ancestor.degree;1;1;gpt4.1
+case_12_person_and_resources;Attributes;User.password;1;case_12_person_and_resources;model002;Attributes;User.password;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Resource.name;1;case_12_person_and_resources;model002;Attributes;Resource.name;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Access.canEdit;1;case_12_person_and_resources;model002;Attributes;Access.canEdit;1;1;gpt4.1
+case_12_person_and_resources;Association;"Person ""0..1"" -- ""*"" Person : isChildOf";1;case_12_person_and_resources;model002;Association;"Person ""0..1"" -- ""0..1"" Person";1;0;gpt4.1
+case_12_person_and_resources;Association;"Person ""*"" -- ""*"" Person : ancestor";1;case_12_person_and_resources;model002;;;;;gpt4.1
+case_12_person_and_resources;Inheritance;Person <|-- User;1;case_12_person_and_resources;model002;Inheritance;User --|> Person;1;1;gpt4.1
+case_12_person_and_resources;Composition;"User ""*"" *-- ""*"" Resource";1;case_12_person_and_resources;model002;;;;;gpt4.1
+case_12_person_and_resources;Composition;"Folder ""0..1"" *-- ""*"" Resource: belongsTo";1;case_12_person_and_resources;model002;Composition;"Folder ""1"" *-- ""0..*"" Resource";1;0;gpt4.1
+case_12_person_and_resources;Inheritance;Resource <|-- File;1;case_12_person_and_resources;model002;Inheritance;File --|> Resource;1;1;gpt4.1
+case_12_person_and_resources;Inheritance;Resource <|-- Folder;1;case_12_person_and_resources;model002;Inheritance;Folder --|> Resource;1;1;gpt4.1
+case_12_person_and_resources;Association Class;(User, Resource) .. Access;1;case_12_person_and_resources;model002;;;;;gpt4.1
+case_12_person_and_resources;Association Class;(Person, Person) .. Ancestor;1;case_12_person_and_resources;model002;;;;;gpt4.1
+case_12_person_and_resources;Attributes;;;case_12_person_and_resources;model002;Attributes;Access.canView;1;0;gpt4.1
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model002;Association;"Person ""0..*"" -- ""1"" Ancestor";1;0;gpt4.1
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model002;Association;"User ""0..*"" -- ""0..*"" Access";1;0;gpt4.1
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model002;Association;"Access ""1"" -- ""1"" Resource";1;0;gpt4.1
+case_12_person_and_resources;Class;Person;1;case_12_person_and_resources;model003;Class;Person;1;1;gpt4.1
+case_12_person_and_resources;Class;Ancestor;1;case_12_person_and_resources;model003;Class;AncestorDegree;1;1;gpt4.1
+case_12_person_and_resources;Class;User;1;case_12_person_and_resources;model003;Class;User;1;1;gpt4.1
+case_12_person_and_resources;Class;Abstract Resource;1;case_12_person_and_resources;model003;Class;Abstract Resource;1;1;gpt4.1
+case_12_person_and_resources;Class;File;1;case_12_person_and_resources;model003;Class;File;1;1;gpt4.1
+case_12_person_and_resources;Class;Folder;1;case_12_person_and_resources;model003;Class;Folder;1;1;gpt4.1
+case_12_person_and_resources;Class;Access;1;case_12_person_and_resources;model003;;;;;gpt4.1
+case_12_person_and_resources;Attributes;Person.name;1;case_12_person_and_resources;model003;Attributes;Person.name;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Person.identifier;1;case_12_person_and_resources;model003;Attributes;Person.identifier;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Ancestor.degree;1;case_12_person_and_resources;model003;Attributes;AncestorDegree.degree;1;1;gpt4.1
+case_12_person_and_resources;Attributes;User.password;1;case_12_person_and_resources;model003;Attributes;User.password;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Resource.name;1;case_12_person_and_resources;model003;Attributes;Resource.name;1;1;gpt4.1
+case_12_person_and_resources;Attributes;Access.canEdit;1;case_12_person_and_resources;model003;;;;;gpt4.1
+case_12_person_and_resources;Association;"Person ""0..1"" -- ""*"" Person : isChildOf";1;case_12_person_and_resources;model003;Association;"Person ""0..1"" -- ""0..*"" Person";1;1;gpt4.1
+case_12_person_and_resources;Association;"Person ""*"" -- ""*"" Person : ancestor";1;case_12_person_and_resources;model003;;;;;gpt4.1
+case_12_person_and_resources;Inheritance;Person <|-- User;1;case_12_person_and_resources;model003;Inheritance;User --|> Person;1;1;gpt4.1
+case_12_person_and_resources;Composition;"User ""*"" *-- ""*"" Resource";1;case_12_person_and_resources;model003;Association;"User ""0..*"" -- ""0..*"" Resource";1;0;gpt4.1
+case_12_person_and_resources;Composition;"Folder ""0..1"" *-- ""*"" Resource: belongsTo";1;case_12_person_and_resources;model003;Composition;"Folder ""0..*"" *-- ""1"" Resource";1;0;gpt4.1
+case_12_person_and_resources;Inheritance;Resource <|-- File;1;case_12_person_and_resources;model003;Inheritance;File --|> Resource;1;1;gpt4.1
+case_12_person_and_resources;Inheritance;Resource <|-- Folder;1;case_12_person_and_resources;model003;Inheritance;Folder --|> Resource;1;1;gpt4.1
+case_12_person_and_resources;Association Class;(User, Resource) .. Access;1;case_12_person_and_resources;model003;;;;;gpt4.1
+case_12_person_and_resources;Association Class;(Person, Person) .. Ancestor;1;case_12_person_and_resources;model003;;;;;gpt4.1
+case_12_person_and_resources;Attributes;;;case_12_person_and_resources;model003;Attributes;AncestorDegree.ancestor;1;0;gpt4.1
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model003;Association;"Person ""0..*"" -- ""1"" AncestorDegree";1;0;gpt4.1
+case_12_person_and_resources;Class;Person;1;case_12_person_and_resources;model011;Class;Person;1;1;gpt5
+case_12_person_and_resources;Class;Ancestor;1;case_12_person_and_resources;model011;Class;AncestorLink;1;1;gpt5
+case_12_person_and_resources;Class;User;1;case_12_person_and_resources;model011;Class;User;1;1;gpt5
+case_12_person_and_resources;Class;Abstract Resource;1;case_12_person_and_resources;model011;Class;Abstract Resource;1;1;gpt5
+case_12_person_and_resources;Class;File;1;case_12_person_and_resources;model011;Class;File;1;1;gpt5
+case_12_person_and_resources;Class;Folder;1;case_12_person_and_resources;model011;Class;Folder;1;1;gpt5
+case_12_person_and_resources;Class;Access;1;case_12_person_and_resources;model011;Class;Access;1;1;gpt5
+case_12_person_and_resources;Attributes;Person.name;1;case_12_person_and_resources;model011;Attributes;Person.name;1;1;gpt5
+case_12_person_and_resources;Attributes;Person.identifier;1;case_12_person_and_resources;model011;Attributes;Person.identifier;1;1;gpt5
+case_12_person_and_resources;Attributes;Ancestor.degree;1;case_12_person_and_resources;model011;Attributes;AncestorLink.degree;1;1;gpt5
+case_12_person_and_resources;Attributes;User.password;1;case_12_person_and_resources;model011;Attributes;User.password;1;1;gpt5
+case_12_person_and_resources;Attributes;Resource.name;1;case_12_person_and_resources;model011;Attributes;Resource.name;1;1;gpt5
+case_12_person_and_resources;Attributes;Access.canEdit;1;case_12_person_and_resources;model011;Attributes;Access.canEdit;1;1;gpt5
+case_12_person_and_resources;Association;"Person ""0..1"" -- ""*"" Person : isChildOf";1;case_12_person_and_resources;model011;Association;"Person ""0..*"" -- ""0..1"" Person";1;1;gpt5
+case_12_person_and_resources;Association;"Person ""*"" -- ""*"" Person : ancestor";1;case_12_person_and_resources;model011;;;;;gpt5
+case_12_person_and_resources;Inheritance;Person <|-- User;1;case_12_person_and_resources;model011;Inheritance;User --|> Person;1;1;gpt5
+case_12_person_and_resources;Composition;"User ""*"" *-- ""*"" Resource";1;case_12_person_and_resources;model011;;;;;gpt5
+case_12_person_and_resources;Composition;"Folder ""0..1"" *-- ""*"" Resource: belongsTo";1;case_12_person_and_resources;model011;Composition;"Folder ""0..*"" *-- ""0..1"" Resource";1;0;gpt5
+case_12_person_and_resources;Inheritance;Resource <|-- File;1;case_12_person_and_resources;model011;Inheritance;File --|> Resource;1;1;gpt5
+case_12_person_and_resources;Inheritance;Resource <|-- Folder;1;case_12_person_and_resources;model011;Inheritance;Folder --|> Resource;1;1;gpt5
+case_12_person_and_resources;Association Class;(User, Resource) .. Access;1;case_12_person_and_resources;model011;;;;;gpt5
+case_12_person_and_resources;Association Class;(Person, Person) .. Ancestor;1;case_12_person_and_resources;model011;;;;;gpt5
+case_12_person_and_resources;Attributes;;;case_12_person_and_resources;model011;Attributes;Access.canView;1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model011;Association;"Person ""0..*"" -- ""1"" AncestorLink";1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model011;Association;"User ""0..*"" -- ""1"" Access";1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model011;Association;"Resource ""0..*"" -- ""1"" Access";1;0;gpt5
+case_12_person_and_resources;Class;Person;1;case_12_person_and_resources;model012;Class;Person;1;1;gpt5
+case_12_person_and_resources;Class;Ancestor;1;case_12_person_and_resources;model012;Class;AncestorRelation;1;1;gpt5
+case_12_person_and_resources;Class;User;1;case_12_person_and_resources;model012;Class;User;1;1;gpt5
+case_12_person_and_resources;Class;Abstract Resource;1;case_12_person_and_resources;model012;Class;Abstract Resource;1;1;gpt5
+case_12_person_and_resources;Class;File;1;case_12_person_and_resources;model012;Class;File;1;1;gpt5
+case_12_person_and_resources;Class;Folder;1;case_12_person_and_resources;model012;Class;Folder;1;1;gpt5
+case_12_person_and_resources;Class;Access;1;case_12_person_and_resources;model012;Class;ResourceAccess;1;1;gpt5
+case_12_person_and_resources;Attributes;Person.name;1;case_12_person_and_resources;model012;Attributes;Person.name;1;1;gpt5
+case_12_person_and_resources;Attributes;Person.identifier;1;case_12_person_and_resources;model012;Attributes;Person.identifier;1;1;gpt5
+case_12_person_and_resources;Attributes;Ancestor.degree;1;case_12_person_and_resources;model012;Attributes;AncestorRelation.degree;1;1;gpt5
+case_12_person_and_resources;Attributes;User.password;1;case_12_person_and_resources;model012;Attributes;User.password;1;1;gpt5
+case_12_person_and_resources;Attributes;Resource.name;1;case_12_person_and_resources;model012;Attributes;Resource.name;1;1;gpt5
+case_12_person_and_resources;Attributes;Access.canEdit;1;case_12_person_and_resources;model012;Attributes;ResourceAccess.canEdit;1;1;gpt5
+case_12_person_and_resources;Association;"Person ""0..1"" -- ""*"" Person : isChildOf";1;case_12_person_and_resources;model012;Association;"Person ""0..*"" -- ""0..1"" Person";1;1;gpt5
+case_12_person_and_resources;Association;"Person ""*"" -- ""*"" Person : ancestor";1;case_12_person_and_resources;model012;;;;;gpt5
+case_12_person_and_resources;Inheritance;Person <|-- User;1;case_12_person_and_resources;model012;Inheritance;User --|> Person;1;1;gpt5
+case_12_person_and_resources;Composition;"User ""*"" *-- ""*"" Resource";1;case_12_person_and_resources;model012;;;;;gpt5
+case_12_person_and_resources;Composition;"Folder ""0..1"" *-- ""*"" Resource: belongsTo";1;case_12_person_and_resources;model012;;;;;gpt5
+case_12_person_and_resources;Inheritance;Resource <|-- File;1;case_12_person_and_resources;model012;Inheritance;File --|> Resource;1;1;gpt5
+case_12_person_and_resources;Inheritance;Resource <|-- Folder;1;case_12_person_and_resources;model012;Inheritance;Folder --|> Resource;1;1;gpt5
+case_12_person_and_resources;Association Class;(User, Resource) .. Access;1;case_12_person_and_resources;model012;;;;;gpt5
+case_12_person_and_resources;Association Class;(Person, Person) .. Ancestor;1;case_12_person_and_resources;model012;;;;;gpt5
+case_12_person_and_resources;Attributes;;;case_12_person_and_resources;model012;Attributes;ResourceAccess.canView;1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model012;Association;"Person ""0..*"" -- ""1"" AncestorRelation";1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model012;Association;"User ""0..*"" -- ""1"" ResourceAccess";1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model012;Association;"ResourceAccess ""1"" -- ""0..*"" Resource";1;0;gpt5
+case_12_person_and_resources;Composition;;;case_12_person_and_resources;model012;Composition;"Folder ""0..*"" *-- ""1"" File";1;0;gpt5
+case_12_person_and_resources;Composition;;;case_12_person_and_resources;model012;Composition;"Folder ""0..*"" *-- ""0..1"" Folder";1;0;gpt5
+case_12_person_and_resources;Class;Person;1;case_12_person_and_resources;model013;Class;Person;1;1;gpt5
+case_12_person_and_resources;Class;Ancestor;1;case_12_person_and_resources;model013;Class;AncestorLink;1;1;gpt5
+case_12_person_and_resources;Class;User;1;case_12_person_and_resources;model013;Class;User;1;1;gpt5
+case_12_person_and_resources;Class;Abstract Resource;1;case_12_person_and_resources;model013;Class;Abstract Resource;1;1;gpt5
+case_12_person_and_resources;Class;File;1;case_12_person_and_resources;model013;Class;File;1;1;gpt5
+case_12_person_and_resources;Class;Folder;1;case_12_person_and_resources;model013;Class;Folder;1;1;gpt5
+case_12_person_and_resources;Class;Access;1;case_12_person_and_resources;model013;Class;Access;1;1;gpt5
+case_12_person_and_resources;Attributes;Person.name;1;case_12_person_and_resources;model013;Attributes;Person.name;1;1;gpt5
+case_12_person_and_resources;Attributes;Person.identifier;1;case_12_person_and_resources;model013;Attributes;Person.identifier;1;1;gpt5
+case_12_person_and_resources;Attributes;Ancestor.degree;1;case_12_person_and_resources;model013;Attributes;AncestorLink.degree;1;1;gpt5
+case_12_person_and_resources;Attributes;User.password;1;case_12_person_and_resources;model013;Attributes;User.password;1;1;gpt5
+case_12_person_and_resources;Attributes;Resource.name;1;case_12_person_and_resources;model013;Attributes;Resource.name;1;1;gpt5
+case_12_person_and_resources;Attributes;Access.canEdit;1;case_12_person_and_resources;model013;Attributes;Access.canEdit;1;1;gpt5
+case_12_person_and_resources;Association;"Person ""0..1"" -- ""*"" Person : isChildOf";1;case_12_person_and_resources;model013;Association;"Person ""0..1"" -- ""0..*"" Person";1;1;gpt5
+case_12_person_and_resources;Association;"Person ""*"" -- ""*"" Person : ancestor";1;case_12_person_and_resources;model013;;;;;gpt5
+case_12_person_and_resources;Inheritance;Person <|-- User;1;case_12_person_and_resources;model013;Inheritance;User --|> Person;1;1;gpt5
+case_12_person_and_resources;Composition;"User ""*"" *-- ""*"" Resource";1;case_12_person_and_resources;model013;;;;;gpt5
+case_12_person_and_resources;Composition;"Folder ""0..1"" *-- ""*"" Resource: belongsTo";1;case_12_person_and_resources;model013;;;;;gpt5
+case_12_person_and_resources;Inheritance;Resource <|-- File;1;case_12_person_and_resources;model013;Inheritance;File --|> Resource;1;1;gpt5
+case_12_person_and_resources;Inheritance;Resource <|-- Folder;1;case_12_person_and_resources;model013;Inheritance;Folder --|> Resource;1;1;gpt5
+case_12_person_and_resources;Association Class;(User, Resource) .. Access;1;case_12_person_and_resources;model013;;;;;gpt5
+case_12_person_and_resources;Association Class;(Person, Person) .. Ancestor;1;case_12_person_and_resources;model013;;;;;gpt5
+case_12_person_and_resources;Attributes;;;case_12_person_and_resources;model013;Attributes;Access.canView;1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model013;Association;"AncestorLink ""1"" -- ""0..*"" Person";1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model013;Association;"User ""0..*"" -- ""1"" Access";1;0;gpt5
+case_12_person_and_resources;Association;;;case_12_person_and_resources;model013;Association;"Access ""1"" -- ""0..*"" Resource";1;0;gpt5
+case_12_person_and_resources;Composition;;;case_12_person_and_resources;model013;Composition;"Folder ""0..*"" *-- ""1"" File";1;0;gpt5
+case_12_person_and_resources;Composition;;;case_12_person_and_resources;model013;Composition;"Folder ""0..*"" *-- ""0..1"" Folder";1;0;gpt5
+case_13_theater_scheduling;Class;Enumeration Time;1;case_13_theater_scheduling;model001;Class;Enumeration TimeOfDay;1;1;gpt4.1
+case_13_theater_scheduling;Class;Abstract Person;1;case_13_theater_scheduling;model001;;;;;gpt4.1
+case_13_theater_scheduling;Class;Author;1;case_13_theater_scheduling;model001;Class;Author;1;1;gpt4.1
+case_13_theater_scheduling;Class;Participant;1;case_13_theater_scheduling;model001;Class;Participant;1;1;gpt4.1
+case_13_theater_scheduling;Class;Session;1;case_13_theater_scheduling;model001;Class;Session;1;1;gpt4.1
+case_13_theater_scheduling;Class;Theater;1;case_13_theater_scheduling;model001;Class;Theater;1;1;gpt4.1
+case_13_theater_scheduling;Class;Abstract Play;1;case_13_theater_scheduling;model001;Class;Abstract Play;1;1;gpt4.1
+case_13_theater_scheduling;Class;Musical;1;case_13_theater_scheduling;model001;Class;Musical;1;1;gpt4.1
+case_13_theater_scheduling;Class;Opera;1;case_13_theater_scheduling;model001;Class;Opera;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Time.Day;1;case_13_theater_scheduling;model001;Attributes;TimeOfDay.Day;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Time.Night;1;case_13_theater_scheduling;model001;Attributes;TimeOfDay.Night;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Person.name;1;case_13_theater_scheduling;model001;;;;;gpt4.1
+case_13_theater_scheduling;Attributes;Session.date;1;case_13_theater_scheduling;model001;Attributes;Session.scheduledDate;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Session.timeBegin;1;case_13_theater_scheduling;model001;Attributes;Session.startTime;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Session.timeEnd;1;case_13_theater_scheduling;model001;Attributes;Session.endTime;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Theater.Location;1;case_13_theater_scheduling;model001;Attributes;Theater.location;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Play.name;1;case_13_theater_scheduling;model001;Attributes;Play.name;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Play.Time;1;case_13_theater_scheduling;model001;Attributes;Play.timeOfDay;1;1;gpt4.1
+case_13_theater_scheduling;Association;"Play ""*"" -- ""*"" Theater : plays";1;case_13_theater_scheduling;model001;;;;;gpt4.1
+case_13_theater_scheduling;Association;"Author ""1..*""  -- ""*"" Play : writes";1;case_13_theater_scheduling;model001;Association;"Play ""1..*"" -- ""1..*"" Author";1;0;gpt4.1
+case_13_theater_scheduling;Association;"Participant ""*"" -- ""*"" Play : acts";1;case_13_theater_scheduling;model001;Association;"Play ""1..*"" -- ""1..*"" Participant";1;0;gpt4.1
+case_13_theater_scheduling;Inheritance;Person <|-- Author;1;case_13_theater_scheduling;model001;;;;;gpt4.1
+case_13_theater_scheduling;Inheritance;Person <|-- Participant;1;case_13_theater_scheduling;model001;;;;;gpt4.1
+case_13_theater_scheduling;Inheritance;Play <|-- Musical;1;case_13_theater_scheduling;model001;Inheritance;Musical --|> Play;1;1;gpt4.1
+case_13_theater_scheduling;Inheritance;Play <|-- Opera;1;case_13_theater_scheduling;model001;Inheritance;Opera --|> Play;1;1;gpt4.1
+case_13_theater_scheduling;Association Class;(Play , Participant) .. Session;1;case_13_theater_scheduling;model001;Association Class;Session;1;1;gpt4.1
+case_13_theater_scheduling;Composition;;;case_13_theater_scheduling;model001;Composition;"Play ""1"" *-- ""0..*"" Session";1;0;gpt4.1
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model001;Association;"Participant ""0..*"" -- ""0..*"" Session";1;0;gpt4.1
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model001;Attributes;Theater.name;1;0;gpt4.1
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model001;Attributes;Author.name;1;0;gpt4.1
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model001;Attributes;Participant.name;1;0;gpt4.1
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model001;Association;"Author ""0..*"" -- ""0..*"" Participant";1;0;gpt4.1
+case_13_theater_scheduling;Composition;;;case_13_theater_scheduling;model001;Composition;"Theater ""1"" *-- ""0..*"" Session";1;0;gpt4.1
+case_13_theater_scheduling;Association Class;;;case_13_theater_scheduling;model001;Association Class;(Theater, Play) .. Session;1;0;gpt4.1
+case_13_theater_scheduling;Association Class;;;case_13_theater_scheduling;model001;Association Class;(Session, Participant) .. Play;1;0;gpt4.1
+case_13_theater_scheduling;Class;Enumeration Time;1;case_13_theater_scheduling;model002;Class;Enumeration TimeOfDay;1;1;gpt4.1
+case_13_theater_scheduling;Class;Abstract Person;1;case_13_theater_scheduling;model002;Class;AuthorParticipant;1;0;gpt4.1
+case_13_theater_scheduling;Class;Author;1;case_13_theater_scheduling;model002;;;;;gpt4.1
+case_13_theater_scheduling;Class;Participant;1;case_13_theater_scheduling;model002;;;;;gpt4.1
+case_13_theater_scheduling;Class;Session;1;case_13_theater_scheduling;model002;Class;Session;1;1;gpt4.1
+case_13_theater_scheduling;Class;Theater;1;case_13_theater_scheduling;model002;Class;Theater;1;1;gpt4.1
+case_13_theater_scheduling;Class;Abstract Play;1;case_13_theater_scheduling;model002;Class;Abstract Play;1;1;gpt4.1
+case_13_theater_scheduling;Class;Musical;1;case_13_theater_scheduling;model002;Class;Musical;1;1;gpt4.1
+case_13_theater_scheduling;Class;Opera;1;case_13_theater_scheduling;model002;Class;Opera;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Time.Day;1;case_13_theater_scheduling;model002;Attributes;TimeOfDay.DAY;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Time.Night;1;case_13_theater_scheduling;model002;Attributes;TimeOfDay.NIGHT;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Person.name;1;case_13_theater_scheduling;model002;Attributes;AuthorParticipant.name;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Session.date;1;case_13_theater_scheduling;model002;Attributes;Session.scheduledDate;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Session.timeBegin;1;case_13_theater_scheduling;model002;Attributes;Session.startTime;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Session.timeEnd;1;case_13_theater_scheduling;model002;Attributes;Session.endTime;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Theater.Location;1;case_13_theater_scheduling;model002;Attributes;Theater.location;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Play.name;1;case_13_theater_scheduling;model002;Attributes;Play.name;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Play.Time;1;case_13_theater_scheduling;model002;Attributes;Play.timeOfDay;1;1;gpt4.1
+case_13_theater_scheduling;Association;"Play ""*"" -- ""*"" Theater : plays";1;case_13_theater_scheduling;model002;;;;;gpt4.1
+case_13_theater_scheduling;Association;"Author ""1..*""  -- ""*"" Play : writes";1;case_13_theater_scheduling;model002;;;;;gpt4.1
+case_13_theater_scheduling;Association;"Participant ""*"" -- ""*"" Play : acts";1;case_13_theater_scheduling;model002;;;;;gpt4.1
+case_13_theater_scheduling;Inheritance;Person <|-- Author;1;case_13_theater_scheduling;model002;;;;;gpt4.1
+case_13_theater_scheduling;Inheritance;Person <|-- Participant;1;case_13_theater_scheduling;model002;;;;;gpt4.1
+case_13_theater_scheduling;Inheritance;Play <|-- Musical;1;case_13_theater_scheduling;model002;Inheritance;Musical --|> Play;1;1;gpt4.1
+case_13_theater_scheduling;Inheritance;Play <|-- Opera;1;case_13_theater_scheduling;model002;Inheritance;Opera --|> Play;1;1;gpt4.1
+case_13_theater_scheduling;Association Class;(Play , Participant) .. Session;1;case_13_theater_scheduling;model002;;;;;gpt4.1
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model002;Attributes;Theater.name;1;0;gpt4.1
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model002;Association;"Theater ""1..*"" -- ""0..*"" Session";1;0;gpt4.1
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model002;Association;"Play ""1"" -- ""1..*"" AuthorParticipant";1;0;gpt4.1
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model002;Association;"Play ""1"" -- ""1..*"" AuthorParticipant";1;0;gpt4.1
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model002;Association;"Session ""1"" -- ""0..*"" AuthorParticipant";1;0;gpt4.1
+case_13_theater_scheduling;Composition;;;case_13_theater_scheduling;model002;Composition;"Play ""1"" *-- ""0..*"" Session";1;0;gpt4.1
+case_13_theater_scheduling;Association Class;;;case_13_theater_scheduling;model002;Association Class;(Play, Session) .. AuthorParticipant;1;0;gpt4.1
+case_13_theater_scheduling;Association Class;;;case_13_theater_scheduling;model002;Association Class;(Play, Theater) .. Session;1;0;gpt4.1
+case_13_theater_scheduling;Class;Enumeration Time;1;case_13_theater_scheduling;model003;Class;Enumeration TimeOfDay;1;1;gpt4.1
+case_13_theater_scheduling;Class;Abstract Person;1;case_13_theater_scheduling;model003;;;;;gpt4.1
+case_13_theater_scheduling;Class;Author;1;case_13_theater_scheduling;model003;Class;Author;1;1;gpt4.1
+case_13_theater_scheduling;Class;Participant;1;case_13_theater_scheduling;model003;Class;Participant;1;1;gpt4.1
+case_13_theater_scheduling;Class;Session;1;case_13_theater_scheduling;model003;Class;Session;1;1;gpt4.1
+case_13_theater_scheduling;Class;Theater;1;case_13_theater_scheduling;model003;Class;Theater;1;1;gpt4.1
+case_13_theater_scheduling;Class;Abstract Play;1;case_13_theater_scheduling;model003;Class;Abstract Play;1;1;gpt4.1
+case_13_theater_scheduling;Class;Musical;1;case_13_theater_scheduling;model003;Class;Musical;1;1;gpt4.1
+case_13_theater_scheduling;Class;Opera;1;case_13_theater_scheduling;model003;Class;Opera;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Time.Day;1;case_13_theater_scheduling;model003;Attributes;TimeOfDay.Day;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Time.Night;1;case_13_theater_scheduling;model003;Attributes;TimeOfDay.Night;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Person.name;1;case_13_theater_scheduling;model003;;;;;gpt4.1
+case_13_theater_scheduling;Attributes;Session.date;1;case_13_theater_scheduling;model003;Attributes;Session.scheduledDate;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Session.timeBegin;1;case_13_theater_scheduling;model003;Attributes;Session.startTime;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Session.timeEnd;1;case_13_theater_scheduling;model003;Attributes;Session.endTime;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Theater.Location;1;case_13_theater_scheduling;model003;Attributes;Theater.location;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Play.name;1;case_13_theater_scheduling;model003;Attributes;Play.name;1;1;gpt4.1
+case_13_theater_scheduling;Attributes;Play.Time;1;case_13_theater_scheduling;model003;Attributes;Play.timeOfDay;1;1;gpt4.1
+case_13_theater_scheduling;Association;"Play ""*"" -- ""*"" Theater : plays";1;case_13_theater_scheduling;model003;;;;;gpt4.1
+case_13_theater_scheduling;Association;"Author ""1..*""  -- ""*"" Play : writes";1;case_13_theater_scheduling;model003;Association;"Play ""1..*"" -- ""1..*"" Author";1;0;gpt4.1
+case_13_theater_scheduling;Association;"Participant ""*"" -- ""*"" Play : acts";1;case_13_theater_scheduling;model003;Association;"Play ""1..*"" -- ""1..*"" Participant";1;0;gpt4.1
+case_13_theater_scheduling;Inheritance;Person <|-- Author;1;case_13_theater_scheduling;model003;;;;;gpt4.1
+case_13_theater_scheduling;Inheritance;Person <|-- Participant;1;case_13_theater_scheduling;model003;;;;;gpt4.1
+case_13_theater_scheduling;Inheritance;Play <|-- Musical;1;case_13_theater_scheduling;model003;Inheritance;Musical --|> Play;1;1;gpt4.1
+case_13_theater_scheduling;Inheritance;Play <|-- Opera;1;case_13_theater_scheduling;model003;Inheritance;Opera --|> Play;1;1;gpt4.1
+case_13_theater_scheduling;Association Class;(Play , Participant) .. Session;1;case_13_theater_scheduling;model003;;;;;gpt4.1
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model003;Attributes;Theater.name;1;0;gpt4.1
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model003;Attributes;Author.name;1;0;gpt4.1
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model003;Attributes;Participant.name;1;0;gpt4.1
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model003;Association;"Session ""1..*"" -- ""0..*"" Participant";1;0;gpt4.1
+case_13_theater_scheduling;Composition;;;case_13_theater_scheduling;model003;Composition;"Theater ""1"" *-- ""1..*"" Session";1;0;gpt4.1
+case_13_theater_scheduling;Composition;;;case_13_theater_scheduling;model003;Composition;"Play ""1"" *-- ""1..*"" Session";1;0;gpt4.1
+case_13_theater_scheduling;Association Class;;;case_13_theater_scheduling;model003;Association Class;(Theater, Participant) .. Session;1;0;gpt4.1
+case_13_theater_scheduling;Class;Enumeration Time;1;case_13_theater_scheduling;model011;Class;Enumeration TimeOfDay;1;1;gpt5
+case_13_theater_scheduling;Class;Abstract Person;1;case_13_theater_scheduling;model011;;;;;gpt5
+case_13_theater_scheduling;Class;Author;1;case_13_theater_scheduling;model011;Class;Author;1;1;gpt5
+case_13_theater_scheduling;Class;Participant;1;case_13_theater_scheduling;model011;Class;Participant;1;1;gpt5
+case_13_theater_scheduling;Class;Session;1;case_13_theater_scheduling;model011;Class;Session;1;1;gpt5
+case_13_theater_scheduling;Class;Theater;1;case_13_theater_scheduling;model011;Class;Theater;1;1;gpt5
+case_13_theater_scheduling;Class;Abstract Play;1;case_13_theater_scheduling;model011;Class;Abstract Play;1;1;gpt5
+case_13_theater_scheduling;Class;Musical;1;case_13_theater_scheduling;model011;Class;Musical;1;1;gpt5
+case_13_theater_scheduling;Class;Opera;1;case_13_theater_scheduling;model011;Class;Opera;1;1;gpt5
+case_13_theater_scheduling;Attributes;Time.Day;1;case_13_theater_scheduling;model011;Attributes;TimeOfDay.Day;1;1;gpt5
+case_13_theater_scheduling;Attributes;Time.Night;1;case_13_theater_scheduling;model011;Attributes;TimeOfDay.Night;1;1;gpt5
+case_13_theater_scheduling;Attributes;Person.name;1;case_13_theater_scheduling;model011;;;;;gpt5
+case_13_theater_scheduling;Attributes;Session.date;1;case_13_theater_scheduling;model011;Attributes;Session.scheduledDate;1;1;gpt5
+case_13_theater_scheduling;Attributes;Session.timeBegin;1;case_13_theater_scheduling;model011;Attributes;Session.startTime;1;1;gpt5
+case_13_theater_scheduling;Attributes;Session.timeEnd;1;case_13_theater_scheduling;model011;Attributes;Session.endTime;1;1;gpt5
+case_13_theater_scheduling;Attributes;Theater.Location;1;case_13_theater_scheduling;model011;Attributes;Theater.location;1;1;gpt5
+case_13_theater_scheduling;Attributes;Play.name;1;case_13_theater_scheduling;model011;Attributes;Play.name;1;1;gpt5
+case_13_theater_scheduling;Attributes;Play.Time;1;case_13_theater_scheduling;model011;Attributes;Play.timeOfDay;1;1;gpt5
+case_13_theater_scheduling;Association;"Play ""*"" -- ""*"" Theater : plays";1;case_13_theater_scheduling;model011;Association;"Play ""1..*"" -- ""0..*"" Theater";1;0;gpt5
+case_13_theater_scheduling;Association;"Author ""1..*""  -- ""*"" Play : writes";1;case_13_theater_scheduling;model011;Association;"Play ""1..*"" -- ""1..*"" Author";1;0;gpt5
+case_13_theater_scheduling;Association;"Participant ""*"" -- ""*"" Play : acts";1;case_13_theater_scheduling;model011;Association;"Play ""1..*"" -- ""1..*"" Participant";1;0;gpt5
+case_13_theater_scheduling;Inheritance;Person <|-- Author;1;case_13_theater_scheduling;model011;;;;;gpt5
+case_13_theater_scheduling;Inheritance;Person <|-- Participant;1;case_13_theater_scheduling;model011;;;;;gpt5
+case_13_theater_scheduling;Inheritance;Play <|-- Musical;1;case_13_theater_scheduling;model011;Inheritance;Musical --|> Play;1;1;gpt5
+case_13_theater_scheduling;Inheritance;Play <|-- Opera;1;case_13_theater_scheduling;model011;Inheritance;Opera --|> Play;1;1;gpt5
+case_13_theater_scheduling;Association Class;(Play , Participant) .. Session;1;case_13_theater_scheduling;model011;;;;;gpt5
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model011;Attributes;Author.name;1;0;gpt5
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model011;Attributes;Participant.name;1;0;gpt5
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model011;Association;"Session ""1"" -- ""0..*"" Theater";1;0;gpt5
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model011;Association;"Session ""1..*"" -- ""0..*"" Participant";1;0;gpt5
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model011;Association;"Author ""0..1"" -- ""0..1"" Participant";1;0;gpt5
+case_13_theater_scheduling;Composition;;;case_13_theater_scheduling;model011;Composition;"Play ""0..*"" *-- ""1"" Session";1;0;gpt5
+case_13_theater_scheduling;Association Class;;;case_13_theater_scheduling;model011;Association Class;(Play, Theater) .. Session;1;0;gpt5
+case_13_theater_scheduling;Class;Enumeration Time;1;case_13_theater_scheduling;model012;Class;Enumeration TimeOfDay;1;1;gpt5
+case_13_theater_scheduling;Class;Abstract Person;1;case_13_theater_scheduling;model012;Class;Person;1;0;gpt5
+case_13_theater_scheduling;Class;Author;1;case_13_theater_scheduling;model012;Class;Author;1;1;gpt5
+case_13_theater_scheduling;Class;Participant;1;case_13_theater_scheduling;model012;Class;Participant;1;1;gpt5
+case_13_theater_scheduling;Class;Session;1;case_13_theater_scheduling;model012;Class;Session;1;1;gpt5
+case_13_theater_scheduling;Class;Theater;1;case_13_theater_scheduling;model012;Class;Theater;1;1;gpt5
+case_13_theater_scheduling;Class;Abstract Play;1;case_13_theater_scheduling;model012;Class;Abstract Play;1;1;gpt5
+case_13_theater_scheduling;Class;Musical;1;case_13_theater_scheduling;model012;Class;Musical;1;1;gpt5
+case_13_theater_scheduling;Class;Opera;1;case_13_theater_scheduling;model012;Class;Opera;1;1;gpt5
+case_13_theater_scheduling;Attributes;Time.Day;1;case_13_theater_scheduling;model012;Attributes;TimeOfDay.Day;1;1;gpt5
+case_13_theater_scheduling;Attributes;Time.Night;1;case_13_theater_scheduling;model012;Attributes;TimeOfDay.Night;1;1;gpt5
+case_13_theater_scheduling;Attributes;Person.name;1;case_13_theater_scheduling;model012;Attributes;Person.name;1;1;gpt5
+case_13_theater_scheduling;Attributes;Session.date;1;case_13_theater_scheduling;model012;Attributes;Session.scheduledDate;1;1;gpt5
+case_13_theater_scheduling;Attributes;Session.timeBegin;1;case_13_theater_scheduling;model012;Attributes;Session.startTime;1;1;gpt5
+case_13_theater_scheduling;Attributes;Session.timeEnd;1;case_13_theater_scheduling;model012;Attributes;Session.endTime;1;1;gpt5
+case_13_theater_scheduling;Attributes;Theater.Location;1;case_13_theater_scheduling;model012;Attributes;Theater.location;1;1;gpt5
+case_13_theater_scheduling;Attributes;Play.name;1;case_13_theater_scheduling;model012;Attributes;Play.name;1;1;gpt5
+case_13_theater_scheduling;Attributes;Play.Time;1;case_13_theater_scheduling;model012;Attributes;Play.timeOfDay;1;1;gpt5
+case_13_theater_scheduling;Association;"Play ""*"" -- ""*"" Theater : plays";1;case_13_theater_scheduling;model012;Association;"Play ""1..*"" -- ""0..*"" Theater";1;0;gpt5
+case_13_theater_scheduling;Association;"Author ""1..*""  -- ""*"" Play : writes";1;case_13_theater_scheduling;model012;Association;"Play ""1..*"" -- ""0..*"" Author";1;0;gpt5
+case_13_theater_scheduling;Association;"Participant ""*"" -- ""*"" Play : acts";1;case_13_theater_scheduling;model012;Association;"Play ""1..*"" -- ""0..*"" Participant";1;0;gpt5
+case_13_theater_scheduling;Inheritance;Person <|-- Author;1;case_13_theater_scheduling;model012;Inheritance;Author --|> Person;1;1;gpt5
+case_13_theater_scheduling;Inheritance;Person <|-- Participant;1;case_13_theater_scheduling;model012;Inheritance;Participant --|> Person;1;1;gpt5
+case_13_theater_scheduling;Inheritance;Play <|-- Musical;1;case_13_theater_scheduling;model012;Inheritance;Musical --|> Play;1;1;gpt5
+case_13_theater_scheduling;Inheritance;Play <|-- Opera;1;case_13_theater_scheduling;model012;Inheritance;Opera --|> Play;1;1;gpt5
+case_13_theater_scheduling;Association Class;(Play , Participant) .. Session;1;case_13_theater_scheduling;model012;;;;;gpt5
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model012;Association;"Session ""1"" -- ""0..*"" Theater";1;0;gpt5
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model012;Association;"Session ""1..*"" -- ""0..*"" Participant";1;0;gpt5
+case_13_theater_scheduling;Composition;;;case_13_theater_scheduling;model012;Composition;"Play ""0..*"" *-- ""1"" Session";1;0;gpt5
+case_13_theater_scheduling;Association Class;;;case_13_theater_scheduling;model012;Association Class;(Play, Theater) .. Session;1;0;gpt5
+case_13_theater_scheduling;Class;Enumeration Time;1;case_13_theater_scheduling;model013;Class;Enumeration TimeOfDay;1;1;gpt5
+case_13_theater_scheduling;Class;Abstract Person;1;case_13_theater_scheduling;model013;;;;;gpt5
+case_13_theater_scheduling;Class;Author;1;case_13_theater_scheduling;model013;Class;Author;1;1;gpt5
+case_13_theater_scheduling;Class;Participant;1;case_13_theater_scheduling;model013;Class;Participant;1;1;gpt5
+case_13_theater_scheduling;Class;Session;1;case_13_theater_scheduling;model013;Class;PlaySession;1;1;gpt5
+case_13_theater_scheduling;Class;Theater;1;case_13_theater_scheduling;model013;Class;Theater;1;1;gpt5
+case_13_theater_scheduling;Class;Abstract Play;1;case_13_theater_scheduling;model013;Class;Abstract Play;1;1;gpt5
+case_13_theater_scheduling;Class;Musical;1;case_13_theater_scheduling;model013;Class;Musical;1;1;gpt5
+case_13_theater_scheduling;Class;Opera;1;case_13_theater_scheduling;model013;Class;Opera;1;1;gpt5
+case_13_theater_scheduling;Attributes;Time.Day;1;case_13_theater_scheduling;model013;Attributes;TimeOfDay.Day;1;1;gpt5
+case_13_theater_scheduling;Attributes;Time.Night;1;case_13_theater_scheduling;model013;Attributes;TimeOfDay.Night;1;1;gpt5
+case_13_theater_scheduling;Attributes;Person.name;1;case_13_theater_scheduling;model013;;;;;gpt5
+case_13_theater_scheduling;Attributes;Session.date;1;case_13_theater_scheduling;model013;Attributes;PlaySession.scheduledDate;1;1;gpt5
+case_13_theater_scheduling;Attributes;Session.timeBegin;1;case_13_theater_scheduling;model013;Attributes;PlaySession.startTime;1;1;gpt5
+case_13_theater_scheduling;Attributes;Session.timeEnd;1;case_13_theater_scheduling;model013;Attributes;PlaySession.endTime;1;1;gpt5
+case_13_theater_scheduling;Attributes;Theater.Location;1;case_13_theater_scheduling;model013;Attributes;Theater.location;1;1;gpt5
+case_13_theater_scheduling;Attributes;Play.name;1;case_13_theater_scheduling;model013;Attributes;Play.name;1;1;gpt5
+case_13_theater_scheduling;Attributes;Play.Time;1;case_13_theater_scheduling;model013;Attributes;Play.timeOfDay;1;1;gpt5
+case_13_theater_scheduling;Association;"Play ""*"" -- ""*"" Theater : plays";1;case_13_theater_scheduling;model013;Association;"Play ""1..*"" -- ""0..*"" Theater";1;0;gpt5
+case_13_theater_scheduling;Association;"Author ""1..*""  -- ""*"" Play : writes";1;case_13_theater_scheduling;model013;Association;"Play ""1..*"" -- ""0..*"" Author";1;0;gpt5
+case_13_theater_scheduling;Association;"Participant ""*"" -- ""*"" Play : acts";1;case_13_theater_scheduling;model013;Association;"Play ""1..*"" -- ""0..*"" Participant";1;0;gpt5
+case_13_theater_scheduling;Inheritance;Person <|-- Author;1;case_13_theater_scheduling;model013;;;;;gpt5
+case_13_theater_scheduling;Inheritance;Person <|-- Participant;1;case_13_theater_scheduling;model013;;;;;gpt5
+case_13_theater_scheduling;Inheritance;Play <|-- Musical;1;case_13_theater_scheduling;model013;Inheritance;Musical --|> Play;1;1;gpt5
+case_13_theater_scheduling;Inheritance;Play <|-- Opera;1;case_13_theater_scheduling;model013;Inheritance;Opera --|> Play;1;1;gpt5
+case_13_theater_scheduling;Association Class;(Play , Participant) .. Session;1;case_13_theater_scheduling;model013;;;;;gpt5
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model013;Attributes;Author.name;1;0;gpt5
+case_13_theater_scheduling;Attributes;;;case_13_theater_scheduling;model013;Attributes;Participant.name;1;0;gpt5
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model013;Association;"PlaySession ""1..1"" -- ""0..*"" Theater";1;0;gpt5
+case_13_theater_scheduling;Association;;;case_13_theater_scheduling;model013;Association;"Author ""0..1"" -- ""0..1"" Participant";1;0;gpt5
+case_13_theater_scheduling;Association Class;;;case_13_theater_scheduling;model013;Association Class;(Play, Theater) .. PlaySession;1;0;gpt5
+case_14_university_courses;Class;Student;1;case_14_university_courses;model001;Class;Student;1;1;gpt4.1
+case_14_university_courses;Class;Course;1;case_14_university_courses;model001;Class;Course;1;1;gpt4.1
+case_14_university_courses;Class;TeachingAssistant;1;case_14_university_courses;model001;Class;TeachingAssistant;1;1;gpt4.1
+case_14_university_courses;Class;LabSection;1;case_14_university_courses;model001;Class;LabSection;1;1;gpt4.1
+case_14_university_courses;Class;CourseRegistration;1;case_14_university_courses;model001;Class;Enrollment;1;1;gpt4.1
+case_14_university_courses;Class;Assignment;1;case_14_university_courses;model001;Class;Assignment;1;1;gpt4.1
+case_14_university_courses;Attributes;Student.ID;1;case_14_university_courses;model001;Attributes;Student.studentCode;1;1;gpt4.1
+case_14_university_courses;Attributes;TeachingAssistant.FirstName;1;case_14_university_courses;model001;Attributes;TeachingAssistant.firstName;1;1;gpt4.1
+case_14_university_courses;Attributes;TeachingAssistant.LastName;1;case_14_university_courses;model001;Attributes;TeachingAssistant.lastName;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.StartTime;1;case_14_university_courses;model001;Attributes;LabSection.startTime;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.EndTime;1;case_14_university_courses;model001;Attributes;LabSection.endTime;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.Location;1;case_14_university_courses;model001;Attributes;LabSection.location;1;1;gpt4.1
+case_14_university_courses;Attributes;CourseRegistration.dateRegistered;1;case_14_university_courses;model001;Attributes;Enrollment.enrollmentDate;1;1;gpt4.1
+case_14_university_courses;Attributes;Assignment.details;1;case_14_university_courses;model001;Attributes;Assignment.details;1;1;gpt4.1
+case_14_university_courses;Attributes;Assignment.responsibilities;1;case_14_university_courses;model001;Attributes;Assignment.responsibilities;1;1;gpt4.1
+case_14_university_courses;Association;"Student ""*"" -- ""*"" Course";1;case_14_university_courses;model001;;;;;gpt4.1
+case_14_university_courses;Association;"TeachingAssistant ""*"" -- ""*"" Course";1;case_14_university_courses;model001;;;;;gpt4.1
+case_14_university_courses;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;case_14_university_courses;model001;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;1;gpt4.1
+case_14_university_courses;Association Class;(Student, Course) .. CourseRegistration;1;case_14_university_courses;model001;;;;;gpt4.1
+case_14_university_courses;Association Class;(Course, TeachingAssistant) .. Assignment;1;case_14_university_courses;model001;;;;;gpt4.1
+case_14_university_courses;Attributes;;;case_14_university_courses;model001;Attributes;Course.courseName;1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model001;Association;"Student ""1"" -- ""0..*"" Enrollment";1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model001;Association;"Enrollment ""1"" -- ""1"" Course";1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model001;Association;"TeachingAssistant ""1"" -- ""0..*"" Assignment";1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model001;Association;"Assignment ""1"" -- ""1"" Course";1;0;gpt4.1
+case_14_university_courses;Class;Student;1;case_14_university_courses;model002;Class;Student;1;1;gpt4.1
+case_14_university_courses;Class;Course;1;case_14_university_courses;model002;Class;Course;1;1;gpt4.1
+case_14_university_courses;Class;TeachingAssistant;1;case_14_university_courses;model002;Class;TeachingAssistant;1;1;gpt4.1
+case_14_university_courses;Class;LabSection;1;case_14_university_courses;model002;Class;LabSection;1;1;gpt4.1
+case_14_university_courses;Class;CourseRegistration;1;case_14_university_courses;model002;Class;Enrollment;1;1;gpt4.1
+case_14_university_courses;Class;Assignment;1;case_14_university_courses;model002;Class;Assignment;1;1;gpt4.1
+case_14_university_courses;Attributes;Student.ID;1;case_14_university_courses;model002;Attributes;Student.studentCode;1;1;gpt4.1
+case_14_university_courses;Attributes;TeachingAssistant.FirstName;1;case_14_university_courses;model002;Attributes;TeachingAssistant.firstName;1;1;gpt4.1
+case_14_university_courses;Attributes;TeachingAssistant.LastName;1;case_14_university_courses;model002;Attributes;TeachingAssistant.lastName;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.StartTime;1;case_14_university_courses;model002;Attributes;LabSection.startTime;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.EndTime;1;case_14_university_courses;model002;Attributes;LabSection.endTime;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.Location;1;case_14_university_courses;model002;Attributes;LabSection.location;1;1;gpt4.1
+case_14_university_courses;Attributes;CourseRegistration.dateRegistered;1;case_14_university_courses;model002;Attributes;Enrollment.enrollmentDate;1;1;gpt4.1
+case_14_university_courses;Attributes;Assignment.details;1;case_14_university_courses;model002;Attributes;Assignment.details;1;1;gpt4.1
+case_14_university_courses;Attributes;Assignment.responsibilities;1;case_14_university_courses;model002;Attributes;Assignment.responsibilities;1;1;gpt4.1
+case_14_university_courses;Association;"Student ""*"" -- ""*"" Course";1;case_14_university_courses;model002;;;;;gpt4.1
+case_14_university_courses;Association;"TeachingAssistant ""*"" -- ""*"" Course";1;case_14_university_courses;model002;;;;;gpt4.1
+case_14_university_courses;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;case_14_university_courses;model002;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;1;gpt4.1
+case_14_university_courses;Association Class;(Student, Course) .. CourseRegistration;1;case_14_university_courses;model002;Association Class;CourseRegistration;1;1;gpt4.1
+case_14_university_courses;Association Class;(Course, TeachingAssistant) .. Assignment;1;case_14_university_courses;model002;Association Class;(Course, TeachingAssistant) .. Assignment;1;1;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model002;Association;"Student ""1"" -- ""0..*"" Enrollment";1;1;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model002;Association;"Course ""1"" -- ""0..*"" Enrollment";0;0;gpt4.1
+case_14_university_courses;Attributes;;;case_14_university_courses;model002;Attributes;Course.courseName;1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model002;Association;"LabSection ""0..*"" -- ""0..*"" TeachingAssistant";1;0;gpt4.1
+case_14_university_courses;Association Class;;;case_14_university_courses;model002;Association Class;(TeachingAssistant, LabSection) .. LabSectionSupport;1;0;gpt4.1
+case_14_university_courses;Class;Student;1;case_14_university_courses;model003;Class;Student;1;1;gpt4.1
+case_14_university_courses;Class;Course;1;case_14_university_courses;model003;Class;Course;1;1;gpt4.1
+case_14_university_courses;Class;TeachingAssistant;1;case_14_university_courses;model003;Class;TeachingAssistant;1;1;gpt4.1
+case_14_university_courses;Class;LabSection;1;case_14_university_courses;model003;Class;LabSection;1;1;gpt4.1
+case_14_university_courses;Class;CourseRegistration;1;case_14_university_courses;model003;Class;Enrollment;1;1;gpt4.1
+case_14_university_courses;Class;Assignment;1;case_14_university_courses;model003;Class;Assignment;1;1;gpt4.1
+case_14_university_courses;Attributes;Student.ID;1;case_14_university_courses;model003;Attributes;Student.studentCode;1;1;gpt4.1
+case_14_university_courses;Attributes;TeachingAssistant.FirstName;1;case_14_university_courses;model003;Attributes;TeachingAssistant.firstName;1;1;gpt4.1
+case_14_university_courses;Attributes;TeachingAssistant.LastName;1;case_14_university_courses;model003;Attributes;TeachingAssistant.lastName;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.StartTime;1;case_14_university_courses;model003;Attributes;LabSection.startTime;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.EndTime;1;case_14_university_courses;model003;Attributes;LabSection.endTime;1;1;gpt4.1
+case_14_university_courses;Attributes;LabSection.Location;1;case_14_university_courses;model003;Attributes;LabSection.location;1;1;gpt4.1
+case_14_university_courses;Attributes;CourseRegistration.dateRegistered;1;case_14_university_courses;model003;Attributes;Enrollment.enrollmentDate;1;1;gpt4.1
+case_14_university_courses;Attributes;Assignment.details;1;case_14_university_courses;model003;Attributes;Assignment.details;1;1;gpt4.1
+case_14_university_courses;Attributes;Assignment.responsibilities;1;case_14_university_courses;model003;Attributes;Assignment.responsibilities;1;1;gpt4.1
+case_14_university_courses;Association;"Student ""*"" -- ""*"" Course";1;case_14_university_courses;model003;;;;;gpt4.1
+case_14_university_courses;Association;"TeachingAssistant ""*"" -- ""*"" Course";1;case_14_university_courses;model003;;;;;gpt4.1
+case_14_university_courses;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;case_14_university_courses;model003;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;1;gpt4.1
+case_14_university_courses;Association Class;(Student, Course) .. CourseRegistration;1;case_14_university_courses;model003;;;;;gpt4.1
+case_14_university_courses;Association Class;(Course, TeachingAssistant) .. Assignment;1;case_14_university_courses;model003;;;;;gpt4.1
+case_14_university_courses;Attributes;;;case_14_university_courses;model003;Attributes;Course.courseName;1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model003;Association;"Student ""1"" -- ""0..*"" Enrollment";1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model003;Association;"Enrollment ""1"" -- ""1"" Course";1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model003;Association;"TeachingAssistant ""1"" -- ""0..*"" Assignment";1;0;gpt4.1
+case_14_university_courses;Association;;;case_14_university_courses;model003;Association;"Assignment ""1"" -- ""1"" Course";1;0;gpt4.1
+case_14_university_courses;Class;Student;1;case_14_university_courses;model011;Class;Student;1;1;gpt5
+case_14_university_courses;Class;Course;1;case_14_university_courses;model011;Class;Course;1;1;gpt5
+case_14_university_courses;Class;TeachingAssistant;1;case_14_university_courses;model011;Class;TeachingAssistant;1;1;gpt5
+case_14_university_courses;Class;LabSection;1;case_14_university_courses;model011;Class;LabSection;1;1;gpt5
+case_14_university_courses;Class;CourseRegistration;1;case_14_university_courses;model011;Class;Enrollment;1;1;gpt5
+case_14_university_courses;Class;Assignment;1;case_14_university_courses;model011;Class;Assignment;1;1;gpt5
+case_14_university_courses;Attributes;Student.ID;1;case_14_university_courses;model011;Attributes;Student.studentCode;1;1;gpt5
+case_14_university_courses;Attributes;TeachingAssistant.FirstName;1;case_14_university_courses;model011;Attributes;TeachingAssistant.firstName;1;1;gpt5
+case_14_university_courses;Attributes;TeachingAssistant.LastName;1;case_14_university_courses;model011;Attributes;TeachingAssistant.lastName;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.StartTime;1;case_14_university_courses;model011;Attributes;TimeSlot.startTime;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.EndTime;1;case_14_university_courses;model011;Attributes;TimeSlot.endTime;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.Location;1;case_14_university_courses;model011;Attributes;LabSection.location;1;1;gpt5
+case_14_university_courses;Attributes;CourseRegistration.dateRegistered;1;case_14_university_courses;model011;Attributes;Enrollment.date;1;1;gpt5
+case_14_university_courses;Attributes;Assignment.details;1;case_14_university_courses;model011;Attributes;Assignment.details;1;1;gpt5
+case_14_university_courses;Attributes;Assignment.responsibilities;1;case_14_university_courses;model011;Attributes;Assignment.responsibilities;1;1;gpt5
+case_14_university_courses;Association;"Student ""*"" -- ""*"" Course";1;case_14_university_courses;model011;;;;;gpt5
+case_14_university_courses;Association;"TeachingAssistant ""*"" -- ""*"" Course";1;case_14_university_courses;model011;;;;;gpt5
+case_14_university_courses;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;case_14_university_courses;model011;Composition;"Course ""1..*"" *-- ""1"" LabSection";1;0;gpt5
+case_14_university_courses;Association Class;(Student, Course) .. CourseRegistration;1;case_14_university_courses;model011;Association Class;(Student, Course) .. Enrollment;1;1;gpt5
+case_14_university_courses;Association Class;(Course, TeachingAssistant) .. Assignment;1;case_14_university_courses;model011;;;;;gpt5
+case_14_university_courses;Attributes;;;case_14_university_courses;model011;Attributes;Assignment.role;1;0;gpt5
+case_14_university_courses;Attributes;;;case_14_university_courses;model011;Attributes;LabSection.timeSlot;1;0;gpt5
+case_14_university_courses;Class;;;case_14_university_courses;model011;Class;TimeSlot;1;0;gpt5
+case_14_university_courses;Class;;;case_14_university_courses;model011;Class;University;1;0;gpt5
+case_14_university_courses;Association;;;case_14_university_courses;model011;Association;"TeachingAssistant ""0..*"" -- ""1"" Assignment";1;0;gpt5
+case_14_university_courses;Association;;;case_14_university_courses;model011;Association;"Course ""0..*"" -- ""1"" Assignment";1;0;gpt5
+case_14_university_courses;Composition;;;case_14_university_courses;model011;Composition;"LabSection ""1"" *-- ""1"" TimeSlot";1;0;gpt5
+case_14_university_courses;Composition;;;case_14_university_courses;model011;Composition;"University ""0..*"" *-- ""1"" Course";1;0;gpt5
+case_14_university_courses;Class;Student;1;case_14_university_courses;model012;Class;Student;1;1;gpt5
+case_14_university_courses;Class;Course;1;case_14_university_courses;model012;Class;Course;1;1;gpt5
+case_14_university_courses;Class;TeachingAssistant;1;case_14_university_courses;model012;Class;TeachingAssistant;1;1;gpt5
+case_14_university_courses;Class;LabSection;1;case_14_university_courses;model012;Class;LabSection;1;1;gpt5
+case_14_university_courses;Class;CourseRegistration;1;case_14_university_courses;model012;Class;Enrollment;1;1;gpt5
+case_14_university_courses;Class;Assignment;1;case_14_university_courses;model012;Class;Assignment;1;1;gpt5
+case_14_university_courses;Attributes;Student.ID;1;case_14_university_courses;model012;Attributes;Student.studentCode;1;1;gpt5
+case_14_university_courses;Attributes;TeachingAssistant.FirstName;1;case_14_university_courses;model012;Attributes;TeachingAssistant.firstName;1;1;gpt5
+case_14_university_courses;Attributes;TeachingAssistant.LastName;1;case_14_university_courses;model012;Attributes;TeachingAssistant.lastName;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.StartTime;1;case_14_university_courses;model012;Attributes;TimeSlot.startTime;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.EndTime;1;case_14_university_courses;model012;Attributes;TimeSlot.endTime;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.Location;1;case_14_university_courses;model012;Attributes;LabSection.location;1;1;gpt5
+case_14_university_courses;Attributes;CourseRegistration.dateRegistered;1;case_14_university_courses;model012;Attributes;Enrollment.date;1;1;gpt5
+case_14_university_courses;Attributes;Assignment.details;1;case_14_university_courses;model012;Attributes;Assignment.details;1;1;gpt5
+case_14_university_courses;Attributes;Assignment.responsibilities;1;case_14_university_courses;model012;Attributes;Assignment.responsibilities;1;1;gpt5
+case_14_university_courses;Association;"Student ""*"" -- ""*"" Course";1;case_14_university_courses;model012;;;;;gpt5
+case_14_university_courses;Association;"TeachingAssistant ""*"" -- ""*"" Course";1;case_14_university_courses;model012;;;;;gpt5
+case_14_university_courses;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;case_14_university_courses;model012;Composition;"Course ""1..*"" *-- ""1"" LabSection";1;0;gpt5
+case_14_university_courses;Association Class;(Student, Course) .. CourseRegistration;1;case_14_university_courses;model012;;;;;gpt5
+case_14_university_courses;Association Class;(Course, TeachingAssistant) .. Assignment;1;case_14_university_courses;model012;Association Class;(TeachingAssistant, Course) .. Assignment;1;1;gpt5
+case_14_university_courses;Attributes;;;case_14_university_courses;model012;Attributes;Assignment.role;1;0;gpt5
+case_14_university_courses;Class;;;case_14_university_courses;model012;Class;TimeSlot;1;0;gpt5
+case_14_university_courses;Association;;;case_14_university_courses;model012;Association;"Student ""0..*"" -- ""1"" Enrollment";1;0;gpt5
+case_14_university_courses;Composition;;;case_14_university_courses;model012;Composition;"LabSection ""1"" *-- ""1"" TimeSlot";1;0;gpt5
+case_14_university_courses;Class;Student;1;case_14_university_courses;model013;Class;Student;1;1;gpt5
+case_14_university_courses;Class;Course;1;case_14_university_courses;model013;Class;Course;1;1;gpt5
+case_14_university_courses;Class;TeachingAssistant;1;case_14_university_courses;model013;Class;TeachingAssistant;1;1;gpt5
+case_14_university_courses;Class;LabSection;1;case_14_university_courses;model013;Class;LabSection;1;1;gpt5
+case_14_university_courses;Class;CourseRegistration;1;case_14_university_courses;model013;Class;Enrollment;1;1;gpt5
+case_14_university_courses;Class;Assignment;1;case_14_university_courses;model013;Class;Assignment;1;1;gpt5
+case_14_university_courses;Attributes;Student.ID;1;case_14_university_courses;model013;Attributes;Student.studentCode;1;1;gpt5
+case_14_university_courses;Attributes;TeachingAssistant.FirstName;1;case_14_university_courses;model013;Attributes;TeachingAssistant.firstName;1;1;gpt5
+case_14_university_courses;Attributes;TeachingAssistant.LastName;1;case_14_university_courses;model013;Attributes;TeachingAssistant.lastName;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.StartTime;1;case_14_university_courses;model013;Attributes;TimeSlot.startTime;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.EndTime;1;case_14_university_courses;model013;Attributes;TimeSlot.endTime;1;1;gpt5
+case_14_university_courses;Attributes;LabSection.Location;1;case_14_university_courses;model013;Attributes;LabSection.location;1;1;gpt5
+case_14_university_courses;Attributes;CourseRegistration.dateRegistered;1;case_14_university_courses;model013;Attributes;Enrollment.date;1;1;gpt5
+case_14_university_courses;Attributes;Assignment.details;1;case_14_university_courses;model013;Attributes;Assignment.details;1;1;gpt5
+case_14_university_courses;Attributes;Assignment.responsibilities;1;case_14_university_courses;model013;Attributes;Assignment.responsibilities;1;1;gpt5
+case_14_university_courses;Association;"Student ""*"" -- ""*"" Course";1;case_14_university_courses;model013;;;;;gpt5
+case_14_university_courses;Association;"TeachingAssistant ""*"" -- ""*"" Course";1;case_14_university_courses;model013;;;;;gpt5
+case_14_university_courses;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;case_14_university_courses;model013;Composition;"Course ""1"" *-- ""1..*"" LabSection";1;1;gpt5
+case_14_university_courses;Association Class;(Student, Course) .. CourseRegistration;1;case_14_university_courses;model013;;;;;gpt5
+case_14_university_courses;Association Class;(Course, TeachingAssistant) .. Assignment;1;case_14_university_courses;model013;Association Class;(TeachingAssistant, Course) .. Assignment;1;1;gpt5
+case_14_university_courses;Class;;;case_14_university_courses;model013;Class;TimeSlot;1;0;gpt5
+case_14_university_courses;Association;;;case_14_university_courses;model013;Association;"Student ""1"" -- ""0..*"" Enrollment";1;0;gpt5
+case_14_university_courses;Composition;;;case_14_university_courses;model013;Composition;"LabSection ""1"" *-- ""1"" TimeSlot";1;0;gpt5
+case_15_robots;Class;Enumeration Location;1;case_15_robots;model001;Class;Enumeration LocationCategory;1;1;gpt4.1
+case_15_robots;Class;Abstract Robot;1;case_15_robots;model001;Class;Abstract Robot;1;1;gpt4.1
+case_15_robots;Class;CleaningRobot;1;case_15_robots;model001;Class;CleaningRobot;1;1;gpt4.1
+case_15_robots;Class;TransportRobot;1;case_15_robots;model001;Class;TransportRobot;1;1;gpt4.1
+case_15_robots;Class;Task;1;case_15_robots;model001;Class;Task;1;1;gpt4.1
+case_15_robots;Class;TaskExecution;1;case_15_robots;model001;Class;TaskExecution;1;1;gpt4.1
+case_15_robots;Attributes;Location.Corridors;1;case_15_robots;model001;Attributes;LocationCategory.corridor;1;1;gpt4.1
+case_15_robots;Attributes;Location.Rooms;1;case_15_robots;model001;Attributes;LocationCategory.room;1;1;gpt4.1
+case_15_robots;Attributes;Robot.id;1;case_15_robots;model001;Attributes;Robot.id;1;1;gpt4.1
+case_15_robots;Attributes;Task.id;1;case_15_robots;model001;Attributes;Task.code;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.id;1;case_15_robots;model001;Attributes;TaskExecution.referenceCode;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.startTime;1;case_15_robots;model001;Attributes;TaskExecution.startTime;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.Location;1;case_15_robots;model001;Attributes;TaskExecution.locationCategory;1;1;gpt4.1
+case_15_robots;Association;"Robot ""*"" -- ""*"" Task : performs";1;case_15_robots;model001;;;;;gpt4.1
+case_15_robots;Inheritance;CleaningRobot --|> Robot;1;case_15_robots;model001;Inheritance;CleaningRobot --|> Robot;1;1;gpt4.1
+case_15_robots;Inheritance;TransportRobot --|> Robot;1;case_15_robots;model001;Inheritance;TransportRobot --|> Robot;1;1;gpt4.1
+case_15_robots;Association Class;(Robot, Task) .. TaskExecution;1;case_15_robots;model001;;;;;gpt4.1
+case_15_robots;Association;;;case_15_robots;model001;Association;"Robot ""0..*"" -- ""1"" TaskExecution";1;0;gpt4.1
+case_15_robots;Association;;;case_15_robots;model001;Association;"Task ""0..*"" -- ""1"" TaskExecution";1;0;gpt4.1
+case_15_robots;Class;Enumeration Location;1;case_15_robots;model002;Class;Enumeration LocationCategory;1;1;gpt4.1
+case_15_robots;Class;Abstract Robot;1;case_15_robots;model002;Class;Abstract Robot;1;1;gpt4.1
+case_15_robots;Class;CleaningRobot;1;case_15_robots;model002;Class;CleaningRobot;1;1;gpt4.1
+case_15_robots;Class;TransportRobot;1;case_15_robots;model002;Class;TransportRobot;1;1;gpt4.1
+case_15_robots;Class;Task;1;case_15_robots;model002;Class;Task;1;1;gpt4.1
+case_15_robots;Class;TaskExecution;1;case_15_robots;model002;Class;TaskExecution;1;1;gpt4.1
+case_15_robots;Attributes;Location.Corridors;1;case_15_robots;model002;Attributes;LocationCategory.corridor;1;1;gpt4.1
+case_15_robots;Attributes;Location.Rooms;1;case_15_robots;model002;Attributes;LocationCategory.room;1;1;gpt4.1
+case_15_robots;Attributes;Robot.id;1;case_15_robots;model002;Attributes;Robot.robotId;1;1;gpt4.1
+case_15_robots;Attributes;Task.id;1;case_15_robots;model002;Attributes;Task.taskCode;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.id;1;case_15_robots;model002;Attributes;TaskExecution.executionRefCode;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.startTime;1;case_15_robots;model002;Attributes;TaskExecution.startTime;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.Location;1;case_15_robots;model002;Attributes;TaskExecution.locationCategory;1;1;gpt4.1
+case_15_robots;Association;"Robot ""*"" -- ""*"" Task : performs";1;case_15_robots;model002;;;;;gpt4.1
+case_15_robots;Inheritance;CleaningRobot --|> Robot;1;case_15_robots;model002;Inheritance;CleaningRobot --|> Robot;1;1;gpt4.1
+case_15_robots;Inheritance;TransportRobot --|> Robot;1;case_15_robots;model002;Inheritance;TransportRobot --|> Robot;1;1;gpt4.1
+case_15_robots;Association Class;(Robot, Task) .. TaskExecution;1;case_15_robots;model002;Association Class;(Robot, Task) .. TaskExecution;1;1;gpt4.1
+case_15_robots;Class;Enumeration Location;1;case_15_robots;model003;Class;Enumeration LocationCategory;1;1;gpt4.1
+case_15_robots;Class;Abstract Robot;1;case_15_robots;model003;Class;Abstract Robot;1;1;gpt4.1
+case_15_robots;Class;CleaningRobot;1;case_15_robots;model003;Class;CleaningRobot;1;1;gpt4.1
+case_15_robots;Class;TransportRobot;1;case_15_robots;model003;Class;TransportRobot;1;1;gpt4.1
+case_15_robots;Class;Task;1;case_15_robots;model003;Class;Task;1;1;gpt4.1
+case_15_robots;Class;TaskExecution;1;case_15_robots;model003;Class;TaskExecution;1;1;gpt4.1
+case_15_robots;Attributes;Location.Corridors;1;case_15_robots;model003;Attributes;LocationCategory.corridor;1;1;gpt4.1
+case_15_robots;Attributes;Location.Rooms;1;case_15_robots;model003;Attributes;LocationCategory.room;1;1;gpt4.1
+case_15_robots;Attributes;Robot.id;1;case_15_robots;model003;Attributes;Robot.identifier;1;1;gpt4.1
+case_15_robots;Attributes;Task.id;1;case_15_robots;model003;Attributes;Task.code;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.id;1;case_15_robots;model003;Attributes;TaskExecution.referenceCode;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.startTime;1;case_15_robots;model003;Attributes;TaskExecution.startTime;1;1;gpt4.1
+case_15_robots;Attributes;TaskExecution.Location;1;case_15_robots;model003;Attributes;TaskExecution.locationCategory;1;1;gpt4.1
+case_15_robots;Association;"Robot ""*"" -- ""*"" Task : performs";1;case_15_robots;model003;;;;;gpt4.1
+case_15_robots;Inheritance;CleaningRobot --|> Robot;1;case_15_robots;model003;Inheritance;CleaningRobot --|> Robot;1;1;gpt4.1
+case_15_robots;Inheritance;TransportRobot --|> Robot;1;case_15_robots;model003;Inheritance;TransportRobot --|> Robot;1;1;gpt4.1
+case_15_robots;Association Class;(Robot, Task) .. TaskExecution;1;case_15_robots;model003;Association Class;(Robot, Task) .. TaskExecution;1;1;gpt4.1
+case_15_robots;Class;Enumeration Location;1;case_15_robots;model011;Class;Enumeration LocationCategory;1;1;gpt5
+case_15_robots;Class;Abstract Robot;1;case_15_robots;model011;Class;Abstract Robot;1;1;gpt5
+case_15_robots;Class;CleaningRobot;1;case_15_robots;model011;Class;CleaningRobot;1;1;gpt5
+case_15_robots;Class;TransportRobot;1;case_15_robots;model011;Class;TransportRobot;1;1;gpt5
+case_15_robots;Class;Task;1;case_15_robots;model011;Class;Task;1;1;gpt5
+case_15_robots;Class;TaskExecution;1;case_15_robots;model011;Class;TaskExecution;1;1;gpt5
+case_15_robots;Attributes;Location.Corridors;1;case_15_robots;model011;Attributes;LocationCategory.Corridor;1;1;gpt5
+case_15_robots;Attributes;Location.Rooms;1;case_15_robots;model011;Attributes;LocationCategory.Room;1;1;gpt5
+case_15_robots;Attributes;Robot.id;1;case_15_robots;model011;Attributes;Robot.robotId;1;1;gpt5
+case_15_robots;Attributes;Task.id;1;case_15_robots;model011;Attributes;Task.taskCode;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.id;1;case_15_robots;model011;Attributes;TaskExecution.referenceCode;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.startTime;1;case_15_robots;model011;Attributes;TaskExecution.startTime;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.Location;1;case_15_robots;model011;Attributes;TaskExecution.locationCategory;1;1;gpt5
+case_15_robots;Association;"Robot ""*"" -- ""*"" Task : performs";1;case_15_robots;model011;Association;"Robot ""0..*"" -- ""0..*"" Task";1;1;gpt5
+case_15_robots;Inheritance;CleaningRobot --|> Robot;1;case_15_robots;model011;Inheritance;CleaningRobot --|> Robot;1;1;gpt5
+case_15_robots;Inheritance;TransportRobot --|> Robot;1;case_15_robots;model011;Inheritance;TransportRobot --|> Robot;1;1;gpt5
+case_15_robots;Association Class;(Robot, Task) .. TaskExecution;1;case_15_robots;model011;Association Class;(Robot, Task) .. TaskExecution;1;1;gpt5
+case_15_robots;Association;;;case_15_robots;model011;Association;"Robot ""0..*"" -- ""1"" TaskExecution";1;0;gpt5
+case_15_robots;Composition;;;case_15_robots;model011;Composition;"Task ""0..*"" *-- ""1"" TaskExecution";1;0;gpt5
+case_15_robots;Class;Enumeration Location;1;case_15_robots;model012;Class;Enumeration LocationCategory;1;1;gpt5
+case_15_robots;Class;Abstract Robot;1;case_15_robots;model012;Class;Abstract Robot;1;1;gpt5
+case_15_robots;Class;CleaningRobot;1;case_15_robots;model012;Class;CleaningRobot;1;1;gpt5
+case_15_robots;Class;TransportRobot;1;case_15_robots;model012;Class;TransportRobot;1;1;gpt5
+case_15_robots;Class;Task;1;case_15_robots;model012;Class;Task;1;1;gpt5
+case_15_robots;Class;TaskExecution;1;case_15_robots;model012;Class;TaskExecution;1;1;gpt5
+case_15_robots;Attributes;Location.Corridors;1;case_15_robots;model012;Attributes;LocationCategory.Corridor;1;1;gpt5
+case_15_robots;Attributes;Location.Rooms;1;case_15_robots;model012;Attributes;LocationCategory.Room;1;1;gpt5
+case_15_robots;Attributes;Robot.id;1;case_15_robots;model012;Attributes;Robot.identifier;1;1;gpt5
+case_15_robots;Attributes;Task.id;1;case_15_robots;model012;Attributes;Task.code;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.id;1;case_15_robots;model012;Attributes;TaskExecution.referenceCode;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.startTime;1;case_15_robots;model012;Attributes;TaskExecution.startTime;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.Location;1;case_15_robots;model012;Attributes;TaskExecution.locationCategory;1;1;gpt5
+case_15_robots;Association;"Robot ""*"" -- ""*"" Task : performs";1;case_15_robots;model012;Association;"Robot ""0..*"" -- ""0..*"" Task";1;1;gpt5
+case_15_robots;Inheritance;CleaningRobot --|> Robot;1;case_15_robots;model012;Inheritance;CleaningRobot --|> Robot;1;1;gpt5
+case_15_robots;Inheritance;TransportRobot --|> Robot;1;case_15_robots;model012;Inheritance;TransportRobot --|> Robot;1;1;gpt5
+case_15_robots;Association Class;(Robot, Task) .. TaskExecution;1;case_15_robots;model012;;;;;gpt5
+case_15_robots;Class;;;case_15_robots;model012;Class;Facility;1;0;gpt5
+case_15_robots;Attributes;;;case_15_robots;model012;Attributes;Facility.id;1;0;gpt5
+case_15_robots;Association;;;case_15_robots;model012;Association;"Robot ""0..*"" -- ""1"" TaskExecution";1;0;gpt5
+case_15_robots;Association;;;case_15_robots;model012;Association;"Task ""0..*"" -- ""1"" TaskExecution";1;0;gpt5
+case_15_robots;Composition;;;case_15_robots;model012;Composition;"Facility ""0..*"" *-- ""1"" Robot";1;0;gpt5
+case_15_robots;Composition;;;case_15_robots;model012;Composition;"Facility ""0..*"" *-- ""1"" Task";1;0;gpt5
+case_15_robots;Composition;;;case_15_robots;model012;Composition;"Facility ""0..*"" *-- ""1"" TaskExecution";1;0;gpt5
+case_15_robots;Class;Enumeration Location;1;case_15_robots;model013;Class;Enumeration LocationCategory;1;1;gpt5
+case_15_robots;Class;Abstract Robot;1;case_15_robots;model013;Class;Abstract Robot;1;1;gpt5
+case_15_robots;Class;CleaningRobot;1;case_15_robots;model013;Class;CleaningRobot;1;1;gpt5
+case_15_robots;Class;TransportRobot;1;case_15_robots;model013;Class;TransportRobot;1;1;gpt5
+case_15_robots;Class;Task;1;case_15_robots;model013;Class;Task;1;1;gpt5
+case_15_robots;Class;TaskExecution;1;case_15_robots;model013;Class;TaskExecution;1;1;gpt5
+case_15_robots;Attributes;Location.Corridors;1;case_15_robots;model013;Attributes;LocationCategory.Corridor;1;1;gpt5
+case_15_robots;Attributes;Location.Rooms;1;case_15_robots;model013;Attributes;LocationCategory.Room;1;1;gpt5
+case_15_robots;Attributes;Robot.id;1;case_15_robots;model013;Attributes;Robot.identifier;1;1;gpt5
+case_15_robots;Attributes;Task.id;1;case_15_robots;model013;Attributes;Task.code;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.id;1;case_15_robots;model013;Attributes;TaskExecution.referenceCode;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.startTime;1;case_15_robots;model013;Attributes;TaskExecution.startTime;1;1;gpt5
+case_15_robots;Attributes;TaskExecution.Location;1;case_15_robots;model013;Attributes;TaskExecution.locationCategory;1;1;gpt5
+case_15_robots;Association;"Robot ""*"" -- ""*"" Task : performs";1;case_15_robots;model013;Association;"Robot ""0..*"" -- ""0..*"" Task";1;1;gpt5
+case_15_robots;Inheritance;CleaningRobot --|> Robot;1;case_15_robots;model013;Inheritance;CleaningRobot --|> Robot;1;1;gpt5
+case_15_robots;Inheritance;TransportRobot --|> Robot;1;case_15_robots;model013;Inheritance;TransportRobot --|> Robot;1;1;gpt5
+case_15_robots;Association Class;(Robot, Task) .. TaskExecution;1;case_15_robots;model013;Association Class;(Robot, Task) .. TaskExecution;1;1;gpt5
+case_15_robots;Association;;;case_15_robots;model013;Association;"Robot ""1"" -- ""0..*"" TaskExecution";1;0;gpt5
+case_15_robots;Association;;;case_15_robots;model013;Association;"Task ""1"" -- ""0..*"" TaskExecution";1;0;gpt5

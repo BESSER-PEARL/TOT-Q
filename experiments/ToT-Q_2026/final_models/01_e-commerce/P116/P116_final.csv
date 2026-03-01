@@ -1,0 +1,27 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P116;e-commerce;model002;Class;Customer;1
+P116;e-commerce;model002;Attributes;Customer.customerId;1
+P116;e-commerce;model002;Class;Order;1
+P116;e-commerce;model002;Attributes;Order.orderId;1
+P116;e-commerce;model002;Class;Product;1
+P116;e-commerce;model002;Attributes;Product.name;1
+P116;e-commerce;model002;Attributes;Product.description;1
+P116;e-commerce;model002;Class;Promotion;1
+P116;e-commerce;model002;Attributes;Promotion.promotionId;1
+P116;e-commerce;model002;Association;"Customer ""1"" -- ""0..*"" Order";1
+P116;e-commerce;model002;Association;"Order ""*"" -- ""*"" Product";1
+P116;e-commerce;model002;Association;"Customer ""*"" -- ""*"" Product";1
+P116;e-commerce;model002;Association;"Product ""*"" -- ""*"" Promotion";1
+P116;e-commerce;model002;Class;OrderItem;1
+P116;e-commerce;model002;Attributes;OrderItem.quantity;1
+P116;e-commerce;model002;Attributes;OrderItem.agreedPrice;1
+P116;e-commerce;model002;Association Class;(Order, Product) .. OrderItem;1
+P116;e-commerce;model002;Class;Review;1
+P116;e-commerce;model002;Attributes;Review.reviewDate;1
+P116;e-commerce;model002;Attributes;Review.ratingScore;1
+P116;e-commerce;model002;Association Class;(Customer, Product) .. Review;1
+P116;e-commerce;model002;Class;ProductPromotion;1
+P116;e-commerce;model002;Attributes;ProductPromotion.discountRate;1
+P116;e-commerce;model002;Attributes;ProductPromotion.startDate;1
+P116;e-commerce;model002;Attributes;ProductPromotion.endDate;1
+P116;e-commerce;model002;Association Class;(Product, Promotion) .. ProductPromotion;1

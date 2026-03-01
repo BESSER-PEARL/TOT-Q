@@ -1,0 +1,32 @@
+@startuml
+class Theater {
+    - location : String
+    - name : String
+}
+abstract class Play {
+    - name : String
+}
+class Musical {
+}
+class Opera {
+}
+class Author {
+}
+class Participant {
+}
+abstract class Person {
+    - name : String
+}
+Play <|-- Musical
+Play <|-- Opera
+Author "0..*" -- "0..*"  Participant : IsSamePersonAs
+Play "0..*" -- "1..*"  Author : IsWrittenBy
+Play "0..*" -- "0..*"  Participant : Involves
+Theater "*" -- "*"  Play : associates
+class Session {
+    - scheduledDate : Date
+    - startTime : Time
+    - endTime : Time
+}
+(Theater, Play) .. Session
+@enduml

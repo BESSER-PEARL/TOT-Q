@@ -1,0 +1,26 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P034;e-commerce;model012;Class;Customer;1
+P034;e-commerce;model012;Attributes;Customer.customerId;1
+P034;e-commerce;model012;Class;Order;1
+P034;e-commerce;model012;Attributes;Order.orderId;1
+P034;e-commerce;model012;Class;Product;1
+P034;e-commerce;model012;Attributes;Product.name;1
+P034;e-commerce;model012;Attributes;Product.description;1
+P034;e-commerce;model012;Class;PromotionalCampaign;1
+P034;e-commerce;model012;Association;"Customer ""1"" -- ""0..*"" Order";1
+P034;e-commerce;model012;Association;"Product ""*"" -- ""*"" Order";1
+P034;e-commerce;model012;Association;"Customer ""*"" -- ""*"" Product";1
+P034;e-commerce;model012;Association;"Product ""*"" -- ""*"" PromotionalCampaign";1
+P034;e-commerce;model012;Class;OrderItem;1
+P034;e-commerce;model012;Attributes;OrderItem.quantityRequested;1
+P034;e-commerce;model012;Attributes;OrderItem.agreedPrice;1
+P034;e-commerce;model012;Association Class;(Product, Order) .. OrderItem;1
+P034;e-commerce;model012;Class;Review;1
+P034;e-commerce;model012;Attributes;Review.dateWritten;1
+P034;e-commerce;model012;Attributes;Review.ratingScore;1
+P034;e-commerce;model012;Association Class;(Customer, Product) .. Review;1
+P034;e-commerce;model012;Class;ProductPromotion;1
+P034;e-commerce;model012;Attributes;ProductPromotion.discountRate;1
+P034;e-commerce;model012;Attributes;ProductPromotion.startDate;1
+P034;e-commerce;model012;Attributes;ProductPromotion.endDate;1
+P034;e-commerce;model012;Association Class;(Product, PromotionalCampaign) .. ProductPromotion;1

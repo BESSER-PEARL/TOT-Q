@@ -1,30 +1,24 @@
 import copy
 from tree_of_thought.model_elements import UMLClass, UMLAttribute, UMLEnumeration, Visibility, UMLRelationship, UMLDomainModel, UMLAssociationClass
-from configuration import Configuration
-from configuration import split_camel_case, correct_article, plural, name_format, is_similar
-from configuration import high_confidence, low_confidence
+from .configuration import Configuration
+from .configuration import split_camel_case, correct_article, plural, name_format, is_similar
+from .configuration import high_confidence, low_confidence, get_question_function
 from collections import Counter
-from template_questions import generate_abstract_superclass_question, generate_concrete_superclass_question
-
 
 ##############Concrete Class vs Abstract Class##############
-###Concrete Class vs Abstract Class - concrete identified
 def find_concrete_superclasses(domain_model):
     concrete_superclasses = []
     for uml_class in domain_model.classes:
-        if uml_class.is_abstract is False:  # Concrete class
-            # Check if it's a superclass (has child classes)
+        if uml_class.is_abstract is False:
             subclasses = [rel.target for rel in domain_model.relationships if rel.type.lower() == "inheritance" and rel.source.name == uml_class.name]
             if subclasses:
                 concrete_superclasses.append((uml_class, subclasses))
     return concrete_superclasses
 
-###Concrete Class vs Abstract Class - abstract identified
 def find_abstract_superclasses(domain_model):
     abstract_superclasses = []
     for uml_class in domain_model.classes:
-        if uml_class.is_abstract is True:  # Abstract class
-            # Check if it's a superclass (has child classes)
+        if uml_class.is_abstract is True:
             subclasses = [rel.target for rel in domain_model.relationships if rel.type.lower() == "inheritance" and rel.source.name == uml_class.name]
             if subclasses:
                 abstract_superclasses.append((uml_class, subclasses))
@@ -40,15 +34,19 @@ class ConcreteVsAbstractClassConfiguration(Configuration):
         if (check_option == "Option 1" and cfg.option_1_dm) or \
             (check_option == "Option 2" and cfg.option_2_dm):
             if check_option == "Option 1":
-                cfg.update_confidence_model_element(domain_model.get_class(alt1[0].name), high_confidence)
+                resulting_class = domain_model.get_class(alt1[0].name)
+                cfg.update_confidence_model_element(resulting_class, high_confidence)
+                cfg.resulting_element = ('concrete_class', resulting_class)
             else:
-                cfg.update_confidence_model_element(domain_model.get_class(alt2[0].name), high_confidence)
+                resulting_class = domain_model.get_class(alt2[0].name)
+                cfg.update_confidence_model_element(resulting_class, high_confidence)
+                cfg.resulting_element = ('abstract_class', resulting_class)
             return None
         elif check_option == "Option 1" and not cfg.option_1_dm:
             cfg.update_confidence_model_element(alt1[0], high_confidence)
             domain_model.update_model_general(
                 classes_to_remove=[alt2[0]],
-                attributes_to_remove=[],  
+                attributes_to_remove=[],
                 relationships_to_remove=[],
                 enumerations_to_remove=[],
                 assoc_classes_to_remove=[],
@@ -59,12 +57,13 @@ class ConcreteVsAbstractClassConfiguration(Configuration):
                 assoc_classes_to_add=[],
                 replacement_map={alt2[0]: alt1[0]},
             )
+            cfg.resulting_element = ('concrete_class', alt1[0])
             return domain_model
         elif check_option == "Option 2" and not cfg.option_2_dm:
             cfg.update_confidence_model_element(alt2[0], high_confidence)
             domain_model.update_model_general(
                 classes_to_remove=[alt1[0]],
-                attributes_to_remove=[],  
+                attributes_to_remove=[],
                 relationships_to_remove=[],
                 enumerations_to_remove=[],
                 assoc_classes_to_remove=[],
@@ -75,11 +74,10 @@ class ConcreteVsAbstractClassConfiguration(Configuration):
                 assoc_classes_to_add=[],
                 replacement_map={alt1[0]: alt2[0]},
             )
+            cfg.resulting_element = ('abstract_class', alt2[0])
             return domain_model
-        
 
     def set_confidence(self, configurations, alternative = True):
-    #def confidence_configuration_abstract_class(configurations, alternative = True):
         for conf in configurations:
             alternative_1_score = None
             if hasattr(conf.alternative_1[0], '_metadata') and conf.alternative_1[0].get_metadata():
@@ -95,9 +93,7 @@ class ConcreteVsAbstractClassConfiguration(Configuration):
                 conf.set_metadata('alternative_2', alternative_1_score, alternative_2_score)
         return configurations
 
-
-###Concrete Class vs Abstract Class - concrete identified
-def find_abstract_class_alternatives(concrete_class_alternatives, abstract_class_alternatives, domain_model):
+def find_abstract_class_alternatives(concrete_class_alternatives, abstract_class_alternatives, domain_model, template_module=None):
     alternatives = []
     no_alternatives = []
     for concrete_class in concrete_class_alternatives:
@@ -108,10 +104,13 @@ def find_abstract_class_alternatives(concrete_class_alternatives, abstract_class
         relationships =[concrete_class_dm.add_relationship(
                         UMLRelationship(concrete_class[0], sc, "Inheritance", "inherits", sourceCardinality="1", targetCardinality="1"))
                         for sc in concrete_class[1]]
-        #inheritance
+        if template_module:
+            generate_concrete_superclass_question = template_module.generate_concrete_superclass_question
+        else:
+            generate_concrete_superclass_question = get_question_function('generate_concrete_superclass_question')
         q, o1, o2 = generate_concrete_superclass_question(concrete_class[0], concrete_class[1])
-        #config = Configuration(alternative_1= concrete_class, alternative_1_dm= concrete_class_dm, question=q, option_1=o1, option_2=o2)
         config = ConcreteVsAbstractClassConfiguration(alternative_1= concrete_class, alternative_1_dm= concrete_class_dm, question=q, option_1=o1, option_2=o2)
+        config.originated_from = ('superclass', concrete_class[0])
         config.option_1_dm = domain_model
         alt2_found = None
         for abstract_class in abstract_class_alternatives:
@@ -144,8 +143,7 @@ def find_abstract_class_alternatives(concrete_class_alternatives, abstract_class
             no_alternatives.append(config)
     return alternatives, no_alternatives
 
-###Concrete Class vs Abstract Class - abstract identified
-def find_concrete_class_alternatives(concrete_class_alternatives, abstract_class_alternatives, domain_model):
+def find_concrete_class_alternatives(concrete_class_alternatives, abstract_class_alternatives, domain_model, template_module=None):
     alternatives = []
     no_alternatives = []
     for abstract_class in abstract_class_alternatives:
@@ -156,9 +154,13 @@ def find_concrete_class_alternatives(concrete_class_alternatives, abstract_class
         relationships =[abstract_class_dm.add_relationship(
                         UMLRelationship(abstract_class[0], sc, "Inheritance", "inherits", sourceCardinality="1", targetCardinality="1"))
                         for sc in abstract_class[1]]
+        if template_module:
+            generate_abstract_superclass_question = template_module.generate_abstract_superclass_question
+        else:
+            generate_abstract_superclass_question = get_question_function('generate_abstract_superclass_question')
         q, o1, o2 = generate_abstract_superclass_question(abstract_class[0], abstract_class[1])
-        #config = Configuration(alternative_2= abstract_class, alternative_2_dm= abstract_class_dm, question=q, option_1=o1, option_2=o2)
         config = ConcreteVsAbstractClassConfiguration(alternative_2= abstract_class, alternative_2_dm= abstract_class_dm, question=q, option_1=o1, option_2=o2)
+        config.originated_from = ('superclass', abstract_class[0])
         config.option_2_dm = domain_model
         alt1_found = None
         for concrete_class in concrete_class_alternatives:
@@ -193,18 +195,16 @@ def find_concrete_class_alternatives(concrete_class_alternatives, abstract_class
     return alternatives, no_alternatives
 
 
-def setup_concrete_vs_abstract_class_patterns(domain_model, domain_model_alternatives):
+def setup_concrete_vs_abstract_class_patterns(domain_model, domain_model_alternatives, template_module=None):
     concrete_class_dm = find_concrete_superclasses(domain_model)
     abstract_class_dm = find_abstract_superclasses(domain_model)
-    # Find concrete and abstract class alternatives
     concrete_class_alternatives = find_concrete_superclasses(domain_model_alternatives)
     abstract_class_alternatives = find_abstract_superclasses(domain_model_alternatives)
-    
+
     # Generate alternative configurations for concrete and abstract classes
-    concrete_class_conf_alt, concrete_class_conf_no_alt = find_concrete_class_alternatives(concrete_class_alternatives, abstract_class_dm, domain_model)
-    abstract_class_conf_alt, abstract_class_conf_no_alt = find_abstract_class_alternatives(concrete_class_dm, abstract_class_alternatives, domain_model)
+    concrete_class_conf_alt, concrete_class_conf_no_alt = find_concrete_class_alternatives(concrete_class_alternatives, abstract_class_dm, domain_model, template_module)
+    abstract_class_conf_alt, abstract_class_conf_no_alt = find_abstract_class_alternatives(concrete_class_dm, abstract_class_alternatives, domain_model, template_module)
     
-    # Combine configurations
     configurations_alt = concrete_class_conf_alt + abstract_class_conf_alt
     configurations_no_alt = concrete_class_conf_no_alt + abstract_class_conf_no_alt
     return configurations_alt, configurations_no_alt

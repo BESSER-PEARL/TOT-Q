@@ -1,0 +1,22 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P058;person_and_resources;model013;Class;Abstract Resource;1
+P058;person_and_resources;model013;Attributes;Resource.name;1
+P058;person_and_resources;model013;Class;File;1
+P058;person_and_resources;model013;Class;Folder;1
+P058;person_and_resources;model013;Class;User;1
+P058;person_and_resources;model013;Attributes;User.password;1
+P058;person_and_resources;model013;Class;Access;1
+P058;person_and_resources;model013;Attributes;Access.canView;1
+P058;person_and_resources;model013;Attributes;Access.canEdit;1
+P058;person_and_resources;model013;Class;Person;1
+P058;person_and_resources;model013;Attributes;Person.name;1
+P058;person_and_resources;model013;Attributes;Person.identifier;1
+P058;person_and_resources;model013;Attributes;Person.AncestorLink;1
+P058;person_and_resources;model013;Association;"Person ""0..1"" -- ""0..*"" Person";1
+P058;person_and_resources;model013;Composition;"Folder ""0..1"" *-- ""0..1"" Folder";1
+P058;person_and_resources;model013;Inheritance;User --|> Person;1
+P058;person_and_resources;model013;Inheritance;File --|> Resource;1
+P058;person_and_resources;model013;Inheritance;Folder --|> Resource;1
+P058;person_and_resources;model013;Association;"User ""1..*"" -- ""0..*"" Access";1
+P058;person_and_resources;model013;Association;"Access ""0..*"" -- ""0..*"" Resource";1
+P058;person_and_resources;model013;Composition;"Folder ""1"" *-- ""1"" File";1

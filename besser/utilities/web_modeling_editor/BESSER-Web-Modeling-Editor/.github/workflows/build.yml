@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+env:
+  node: 22
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node.js '${{ env.node }}'
+        uses: actions/setup-node@v1
+        with:
+          node-version: '${{ env.node }}'
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+      # see prepare script
+      - name: Install Dependencies and Build Library
+        run: npm install
+      - name: TypeScript Tests
+        run: npm run test:coverage --ci
+      - name: "Codacy: Report coverage"
+        uses: codacy/codacy-coverage-reporter-action@master
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: coverage/lcov.info
+        if: (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name) && (success() || failure())
+      - name: TypeScript Formatting
+        run: npm run prettier:check
+        if: success() || failure()
+      - name: TypeScript Code Style
+        run: npm run lint
+        if: success() || failure()

@@ -1,0 +1,27 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+gpt5;case_13_theater_scheduling;model013;Class;Abstract Play;1
+gpt5;case_13_theater_scheduling;model013;Attributes;Play.name;1
+gpt5;case_13_theater_scheduling;model013;Attributes;Play.timeOfDay;1
+gpt5;case_13_theater_scheduling;model013;Class;Musical;1
+gpt5;case_13_theater_scheduling;model013;Class;Opera;1
+gpt5;case_13_theater_scheduling;model013;Class;Theater;1
+gpt5;case_13_theater_scheduling;model013;Attributes;Theater.location;1
+gpt5;case_13_theater_scheduling;model013;Class;PlaySession;1
+gpt5;case_13_theater_scheduling;model013;Attributes;PlaySession.scheduledDate;1
+gpt5;case_13_theater_scheduling;model013;Attributes;PlaySession.startTime;1
+gpt5;case_13_theater_scheduling;model013;Attributes;PlaySession.endTime;1
+gpt5;case_13_theater_scheduling;model013;Class;Author;1
+gpt5;case_13_theater_scheduling;model013;Attributes;Author.name;1
+gpt5;case_13_theater_scheduling;model013;Class;Participant;1
+gpt5;case_13_theater_scheduling;model013;Attributes;Participant.name;1
+gpt5;case_13_theater_scheduling;model013;Class;Enumeration TimeOfDay;1
+gpt5;case_13_theater_scheduling;model013;Attributes;TimeOfDay.Day;1
+gpt5;case_13_theater_scheduling;model013;Attributes;TimeOfDay.Night;1
+gpt5;case_13_theater_scheduling;model013;Association;"Play ""1..*"" -- ""0..*"" Author";1
+gpt5;case_13_theater_scheduling;model013;Association;"Play ""1..*"" -- ""0..*"" Participant";1
+gpt5;case_13_theater_scheduling;model013;Association;"PlaySession ""1..1"" -- ""0..*"" Theater";1
+gpt5;case_13_theater_scheduling;model013;Association;"Play ""1..*"" -- ""0..*"" Theater";1
+gpt5;case_13_theater_scheduling;model013;Association;"Author ""0..1"" -- ""0..1"" Participant";1
+gpt5;case_13_theater_scheduling;model013;Inheritance;Musical --|> Play;1
+gpt5;case_13_theater_scheduling;model013;Inheritance;Opera --|> Play;1
+gpt5;case_13_theater_scheduling;model013;Association Class;(Play, Theater) .. PlaySession;1

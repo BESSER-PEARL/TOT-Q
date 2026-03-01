@@ -1,15 +1,13 @@
 import copy
 from tree_of_thought.model_elements import UMLClass, UMLAttribute, UMLEnumeration, Visibility, UMLRelationship, UMLDomainModel, UMLAssociationClass
-from configuration import Configuration
-from configuration import split_camel_case, correct_article, plural, name_format, is_similar
-from configuration import high_confidence, low_confidence
+from .configuration import Configuration
+from .configuration import split_camel_case, correct_article, plural, name_format, is_similar
+#from .configuration import high_confidence, low_confidence
+from .configuration import high_confidence, low_confidence, get_question_function
 from collections import Counter
-from template_questions import generate_single_empty_subclass_question, generate_boolean_attributes_question
-
+#from .template_questions import generate_single_empty_subclass_question, generate_boolean_attributes_question
 
 ##############Attribute vs Inheritance##############
-###Attribute vs Inheritance - Inheritance identified
-#TODO run with multiple patterns in same model
 def find_single_empty_subclass(domain_model):
     inheritance = [(rel.source, rel.target) for rel in domain_model.relationships if domain_model.compare_relationship_type(rel.type.lower(), "inheritance")]
     subclasses = [(sup, sub) for sup, sub in inheritance
@@ -23,7 +21,8 @@ def find_single_empty_subclass(domain_model):
     #number of relationships subclass:
     if len(subclass_with_no_attributes)>0:
         num_relationships = {}
-        for subcls in [subclass_with_no_attributes[0][1]]:
+        for pair in subclass_with_no_attributes:
+            subcls = pair[1]
             relationship_count=0
             for rel in domain_model.relationships:
                 if rel.source.name.lower() == subcls.name.lower():
@@ -31,9 +30,7 @@ def find_single_empty_subclass(domain_model):
                 elif rel.target.name.lower() == subcls.name.lower():    
                     relationship_count += 1
             num_relationships[subcls.name]=relationship_count
-            #num_relationships[subcls.name]=1
-        subclass_with_no_attributes = [(sup, sub) for sup, sub in subclass_with_no_attributes 
-                                        if num_relationships[sub.name]==1]
+        subclass_with_no_attributes = [(sup, sub) for sup, sub in subclass_with_no_attributes if num_relationships[sub.name]==1]
     superclasses = set(k for k, _ in subclass_with_no_attributes)
     superclass_subclass_with_no_attributes = [(cls, [sub for sup, sub in subclass_with_no_attributes if sup.name == cls.name]) for cls in superclasses]
     return superclass_subclass_with_no_attributes
@@ -53,17 +50,18 @@ class AttributeVsInheritanceConfiguration(Configuration):
             if check_option == "Option 1":
                 cls_conf = [cfg.update_confidence_model_element(domain_model.get_class(cls.name), high_confidence) for cls in alt1_dm.classes[1:]]
                 rel_to_update = [domain_model.get_relationship_ignore_name(r.source.name, r.target.name, r.type) for r in alt1_dm.relationships]
-                rel_conf = [(cfg.update_confidence_model_element(rel, high_confidence), 
+                rel_conf = [(cfg.update_confidence_model_element(rel, high_confidence),
                             cfg.update_confidence_model_element(rel.sourceCardinality, high_confidence),
                             cfg.update_confidence_model_element(rel.targetCardinality, high_confidence))
                             for rel in rel_to_update]
+                cfg.resulting_element = ('subclass', alt1[1])
             else:
                 att_to_update = domain_model.get_class(alt2[0].name).get_attribute(alt2[1].name)
                 cfg.update_confidence_model_element(att_to_update, high_confidence)
+                cfg.resulting_element = ('attribute', att_to_update)
             return None
         elif check_option == "Option 1" and not cfg.option_1_dm:
             print()
-            #update confidence
             cls_conf = [cfg.update_confidence_model_element(cls, high_confidence) for cls in alt1_dm.classes[1:]]
             rel_conf = [(cfg.update_confidence_model_element(rel, high_confidence), 
                         cfg.update_confidence_model_element(rel.sourceCardinality, high_confidence),
@@ -71,22 +69,21 @@ class AttributeVsInheritanceConfiguration(Configuration):
                         for rel in alt1_dm.relationships]
             domain_model.update_model_general(
                 classes_to_remove=[alt2[0]],
-                attributes_to_remove=[],  
+                attributes_to_remove=[(alt2[0],alt2[1])],  
                 relationships_to_remove=[],
-                enumerations_to_remove=[alt2[1]],
+                enumerations_to_remove=[],
                 assoc_classes_to_remove=[],
                 classes_to_add=alt1_dm.classes,
                 attributes_to_add=[],
                 relationships_to_add=alt1_dm.relationships,
                 enumerations_to_add=[],
                 assoc_classes_to_add=[],
-                replacement_map={alt2[0]: alt1_dm.classes[0]},
+                replacement_map={alt2[0]: alt1_dm.classes[0]}, 
             )
+            cfg.resulting_element = ('subclass', alt1[1])
             return domain_model
         elif check_option == "Option 2" and not cfg.option_2_dm:
-            #update confidence
             cfg.update_confidence_model_element(alt2[1], high_confidence) 
-            #TODO check if attribute is already in domain_model class
             domain_model.update_model_general(
                 classes_to_remove=alt1_dm.classes,
                 attributes_to_remove=[],  
@@ -98,26 +95,23 @@ class AttributeVsInheritanceConfiguration(Configuration):
                 relationships_to_add=[],
                 enumerations_to_add=[],
                 assoc_classes_to_add=[],
-                replacement_map={alt1_dm.classes[0]: alt2[0]},
+                replacement_map={alt1_dm.classes[0]: alt2[0]}, 
             )
+            cfg.resulting_element = ('attribute', alt2[1])
             return domain_model
     
     def set_confidence(self, configurations, alternative = True):
-    #def confidence_configuration_attribute_vs_inheritance(configurations, alternative = True):
         for conf in configurations:
             alternative_1_score = None
-            #subclasses is a list
             if hasattr(conf.alternative_1[1][0], '_metadata') and conf.alternative_1[1][0].get_metadata():
                 if alternative or conf.option_1_dm:
                     subclass_scores = [c.get_metadata().score for c in conf.alternative_1[1]]
                     alternative_1_score = min(subclass_scores)
             alternative_2_score = None
             if hasattr(conf.alternative_2[1], '_metadata') and conf.alternative_2[1].get_metadata():
-                #Attribute score exists
                 if alternative or conf.option_2_dm:
                     alternative_2_score = conf.alternative_2[1].get_metadata().score
             elif hasattr(conf.alternative_2[0], '_metadata') and conf.alternative_2[0].get_metadata():
-                #Attribute score do not exists
                 if alternative or conf.option_2_dm:
                     alternative_2_score = conf.alternative_2[0].get_metadata().score
             if conf.option_1_dm:
@@ -126,7 +120,7 @@ class AttributeVsInheritanceConfiguration(Configuration):
                 conf.set_metadata('alternative_2', alternative_1_score, alternative_2_score)
         return configurations
 
-def find_attribute_boolean_alternatives(attribute_alternatives, inheritance_alternatives, domain_model):
+def find_attribute_boolean_alternatives(attribute_alternatives, inheritance_alternatives, domain_model, template_module=None):
     alternatives = []
     no_alternatives = []
     for alt1 in inheritance_alternatives:
@@ -141,9 +135,13 @@ def find_attribute_boolean_alternatives(attribute_alternatives, inheritance_alte
         relationships =[inheritance_dm.add_relationship(
                         UMLRelationship(alt1[0], sc, "Inheritance", "inherits", sourceCardinality="1", targetCardinality="1"))
                         for sc in alt1[1]]
+        if template_module:
+            generate_single_empty_subclass_question = template_module.generate_single_empty_subclass_question
+        else:
+            generate_single_empty_subclass_question = get_question_function('generate_single_empty_subclass_question')
         q, o1, o2 = generate_single_empty_subclass_question(alt1[0], alt1[1][0])
-        #config = Configuration(alternative_1= alt1, alternative_1_dm= inheritance_dm, question=q, option_1=o1, option_2=o2)
         config = AttributeVsInheritanceConfiguration(alternative_1= alt1, alternative_1_dm= inheritance_dm, question=q, option_1=o1, option_2=o2)
+        config.originated_from = ('subclass', alt1[1][0])
         config.option_1_dm = domain_model
         alt2_found = None
         for alt2 in attribute_alternatives:
@@ -157,7 +155,6 @@ def find_attribute_boolean_alternatives(attribute_alternatives, inheritance_alte
                 alt_2_dm = UMLDomainModel()
                 alt2[0].is_abstract = False
                 alt_2_dm.add_class(alt2[0])
-                #alt_2_dm.add_enumeration(alt2[1])
                 config.add_alternative_2(alternative_2 = alt2, alternative_2_dm = alt_2_dm)
                 alt2_found = alt2
                 alternatives.append(config)
@@ -174,7 +171,7 @@ def find_attribute_boolean_alternatives(attribute_alternatives, inheritance_alte
             no_alternatives.append(config)
     return alternatives, no_alternatives
 
-def find_inheritance_single_subclass_alternatives(attribute_alternatives, inheritance_alternatives, domain_model):
+def find_inheritance_single_subclass_alternatives(attribute_alternatives, inheritance_alternatives, domain_model, template_module=None):
     alternatives = []
     no_alternatives = []
     for alt2 in attribute_alternatives:
@@ -184,9 +181,13 @@ def find_inheritance_single_subclass_alternatives(attribute_alternatives, inheri
         attribute_name = [att.lower() for att in attribute_name]
         alt_2_dm = UMLDomainModel()
         alt_2_dm.add_class(alt2[0])
+        if template_module:
+            generate_boolean_attributes_question = template_module.generate_boolean_attributes_question
+        else:
+            generate_boolean_attributes_question = get_question_function('generate_boolean_attributes_question')
         q, o1, o2 = generate_boolean_attributes_question(alt2[0], alt2[1])
-        #config = Configuration(alternative_2= alt2, alternative_2_dm= alt_2_dm, question=q, option_1=o1, option_2=o2)
         config = AttributeVsInheritanceConfiguration(alternative_2= alt2, alternative_2_dm= alt_2_dm, question=q, option_1=o1, option_2=o2)
+        config.originated_from = ('attribute', alt2[1])
         config.option_2_dm = domain_model
         alt1_found = None
         for alt1 in inheritance_alternatives:
@@ -199,7 +200,6 @@ def find_inheritance_single_subclass_alternatives(attribute_alternatives, inheri
             if is_alternative:
                 inheritance_dm = UMLDomainModel()
                 parent_cls = copy.deepcopy(alt1[0])
-                #Abstract is another question
                 if alt2[0].name.lower() == parent_cls.name.lower():
                     parent_cls.is_abstract = alt2[0].is_abstract
                 inheritance_dm.add_class(parent_cls)
@@ -217,7 +217,6 @@ def find_inheritance_single_subclass_alternatives(attribute_alternatives, inheri
         if not alt1_found:
             alt_1_dm = UMLDomainModel()
             parent_cls = copy.deepcopy(alt2[0])
-            #delete attribute pend
             new_attributes = [copy.deepcopy(att) for att in parent_cls.attributes 
                               if att.name.lower() != alt2[1].name.lower()]
             parent_cls.attributes = new_attributes
@@ -232,17 +231,16 @@ def find_inheritance_single_subclass_alternatives(attribute_alternatives, inheri
             no_alternatives.append(config)
     return alternatives, no_alternatives
 
-def setup_attribute_vs_inheritance_patterns(domain_model, domain_model_alternatives):
+def setup_attribute_vs_inheritance_patterns(domain_model, domain_model_alternatives, template_module=None):
     attributes_dm = find_boolean_attributes(domain_model)
     subclass_dm = find_single_empty_subclass(domain_model)
 
     attributes_alternatives = find_boolean_attributes(domain_model_alternatives)
     subclass_alternatives = find_single_empty_subclass(domain_model_alternatives)
-    
-    # Attribute and inheritance is the same model. How to solve this?
+
     # Find alternatives for enumerations and inheritance
-    attributes_conf_alt, attributes_conf_no_alt = find_attribute_boolean_alternatives(attributes_alternatives, subclass_dm, domain_model)
-    subclass_conf_alt, subclass_conf_no_alt  = find_inheritance_single_subclass_alternatives(attributes_dm, subclass_alternatives, domain_model)
+    attributes_conf_alt, attributes_conf_no_alt = find_attribute_boolean_alternatives(attributes_alternatives, subclass_dm, domain_model, template_module)
+    subclass_conf_alt, subclass_conf_no_alt  = find_inheritance_single_subclass_alternatives(attributes_dm, subclass_alternatives, domain_model, template_module)
     
     configurations_alt = attributes_conf_alt + subclass_conf_alt
     configurations_no_alt = attributes_conf_no_alt + subclass_conf_no_alt

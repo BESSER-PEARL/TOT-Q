@@ -1,0 +1,35 @@
+@startuml
+abstract class Resource {
+    - name : String
+}
+class File {
+}
+class Folder {
+}
+class User {
+    - password : String
+}
+class Person {
+    - name : String
+    - identifier : String
+    - AncestorDegree : string
+}
+class View {
+}
+class Edit {
+}
+class AccessPermission {
+}
+
+Person "0..1" -- "0..*"  Person : Parent
+Person "0..*" -- "0..1"  Person : Children
+Resource <|-- File
+Resource <|-- Folder
+Person <|-- User
+AccessPermission <|-- View
+AccessPermission <|-- Edit
+User "0..*" -- "0..*"  AccessPermission : Permissions
+Resource "0..1" -- "0..*"  AccessPermission : AccessedBy
+Folder "0..1" -- "0..*"  Folder : ParentFolder
+Folder "1" *-- "1"  Resource : Folder_Contains_Resource
+@enduml

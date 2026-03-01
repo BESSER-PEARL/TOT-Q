@@ -1,0 +1,32 @@
+@startuml
+class Student {
+    - studentCode : String
+}
+class Course {
+}
+class TeachingAssistant {
+    - firstName : String
+    - lastName : String
+}
+class Assignment {
+}
+class Role {
+    - name : string
+    - description : string
+}
+class LabSection {
+    - location : String
+    - timeSlot : string
+}
+
+Course "1" *-- "1..*"  LabSection
+Course "1" *-- "0..*"  Assignment
+Assignment "1" -- "1"  Assignment : has
+Assignment "0..1" -- "0..1"  Role
+TeachingAssistant "1..*" -- "0..*"  Assignment : AssignedRoles
+Course "*" -- "*"  Student : associates
+class Enrollment {
+    - date : Date
+}
+(Course, Student) .. Enrollment
+@enduml

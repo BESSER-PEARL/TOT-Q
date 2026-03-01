@@ -1,0 +1,24 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P099;robots;model012;Class;Task;1
+P099;robots;model012;Attributes;Task.code;1
+P099;robots;model012;Class;TaskExecution;1
+P099;robots;model012;Attributes;TaskExecution.referenceCode;1
+P099;robots;model012;Attributes;TaskExecution.startTime;1
+P099;robots;model012;Attributes;TaskExecution.locationCategory;1
+P099;robots;model012;Class;Facility;1
+P099;robots;model012;Attributes;Facility.id;1
+P099;robots;model012;Class;Robot;1
+P099;robots;model012;Attributes;Robot.identifier;1
+P099;robots;model012;Attributes;Robot.RobotType;1
+P099;robots;model012;Class;Enumeration LocationCategory;1
+P099;robots;model012;Attributes;LocationCategory.Corridor;1
+P099;robots;model012;Attributes;LocationCategory.Room;1
+P099;robots;model012;Class;Enumeration RobotType;1
+P099;robots;model012;Attributes;RobotType.CLEANING;1
+P099;robots;model012;Attributes;RobotType.TRANSPORT;1
+P099;robots;model012;Association;"Robot ""0..*"" -- ""0..*"" Task";1
+P099;robots;model012;Composition;"Facility ""1"" *-- ""1"" Robot";1
+P099;robots;model012;Composition;"Facility ""1"" *-- ""1"" Task";1
+P099;robots;model012;Composition;"Facility ""1"" *-- ""1"" TaskExecution";1
+P099;robots;model012;Association;"Robot ""0..*"" -- ""0..1"" TaskExecution";1
+P099;robots;model012;Association;"Task ""1"" -- ""0..1"" TaskExecution";1

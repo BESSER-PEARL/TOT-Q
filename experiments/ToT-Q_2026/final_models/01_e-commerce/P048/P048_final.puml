@@ -1,0 +1,35 @@
+@startuml
+class Customer {
+    - customerId : String
+}
+class Order {
+    - orderId : String
+}
+class Product {
+    - name : String
+    - description : String
+}
+class OrderItem {
+    - quantity : Integer
+    - agreedPrice : Decimal
+}
+class Review {
+    - reviewDate : Date
+    - ratingScore : Integer
+}
+class Promotion {
+    - promotionId : String
+}
+class ProductPromotion {
+    - discountRate : Decimal
+    - startDate : Date
+    - endDate : Date
+}
+Customer "1" -- "0..*"  Order : Places
+Customer "1" -- "0..*"  Review : Writes
+Product "1" -- "0..*"  Review : Receives
+Product "1" -- "0..*"  ProductPromotion : ParticipatesIn
+Promotion "1" -- "0..*"  ProductPromotion : Promotion_Contains_ProductPromotion
+Order "1" *-- "1..*"  OrderItem
+OrderItem "0..1" -- "1"  Product : RefersTo
+@enduml

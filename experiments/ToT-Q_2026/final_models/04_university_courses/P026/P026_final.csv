@@ -1,0 +1,23 @@
+session_id;exercise_name;model_number;elem_type;plantuml;count
+P026;university_courses;model002;Class;Student;1
+P026;university_courses;model002;Attributes;Student.studentCode;1
+P026;university_courses;model002;Class;Course;1
+P026;university_courses;model002;Attributes;Course.courseName;1
+P026;university_courses;model002;Class;TeachingAssistant;1
+P026;university_courses;model002;Attributes;TeachingAssistant.firstName;1
+P026;university_courses;model002;Attributes;TeachingAssistant.lastName;1
+P026;university_courses;model002;Class;LabSection;1
+P026;university_courses;model002;Attributes;LabSection.location;1
+P026;university_courses;model002;Attributes;LabSection.startTime;1
+P026;university_courses;model002;Attributes;LabSection.endTime;1
+P026;university_courses;model002;Composition;"Course ""1"" *-- ""1..*"" LabSection";1
+P026;university_courses;model002;Association;"LabSection ""1..*"" -- ""1..*"" TeachingAssistant";1
+P026;university_courses;model002;Association;"Student ""*"" -- ""*"" Course";1
+P026;university_courses;model002;Association;"Course ""*"" -- ""*"" TeachingAssistant";1
+P026;university_courses;model002;Class;Enrollment;1
+P026;university_courses;model002;Attributes;Enrollment.enrollmentDate;1
+P026;university_courses;model002;Association Class;(Student, Course) .. Enrollment;1
+P026;university_courses;model002;Class;Assignment;1
+P026;university_courses;model002;Attributes;Assignment.details;1
+P026;university_courses;model002;Attributes;Assignment.responsibilities;1
+P026;university_courses;model002;Association Class;(Course, TeachingAssistant) .. Assignment;1
