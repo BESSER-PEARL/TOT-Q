@@ -7,7 +7,9 @@ from pydantic import BaseModel
 from enum import Enum
 from tree_of_thought.llm import gpt,client, model_name
 import copy
-import sys
+import logging
+
+logger = logging.getLogger(__name__)
 
 class AssociationType(str, Enum):
     Association = "Association"
@@ -44,10 +46,6 @@ class RelationCardinality(BaseModel):
     confidence: float
 
 class Association(BaseModel):
-    source: DomainConcept
-    target: DomainConcept
-    #rule: list[str]
-    #traceability: str
     source: str
     target: str
     name: str
@@ -65,33 +63,6 @@ class ListConcepts(BaseModel):
 class ListRelationships(BaseModel):
     relationship: list[Association]
 
-def class_extract(output):
-    completion = client.beta.chat.completions.parse(
-        model = model_name,
-        messages=[
-            {"role": "system", "content": "Extract the class information."},
-            {"role": "user", "content": output},
-        ],
-        response_format=ListConcepts,
-    )
-
-    event = completion.choices[0].message.parsed
-    print(completion.choices[0].message.parsed.model_dump_json(indent=2))
-
-def relationship_extract(output):
-    completion = client.beta.chat.completions.parse(
-        model = model_name,
-        messages=[
-            {"role": "system", "content": "Extract the relationship information."},
-            {"role": "user", "content": output},
-        ],
-        response_format=ListRelationships
-,
-    )
-
-    event = completion.choices[0].message.parsed
-    print(completion.choices[0].message.parsed.model_dump_json(indent=2))
-
 def element_struct_output(output, element= 'class'):
     if element == 'class': 
         so_format = ListConcepts
@@ -107,7 +78,7 @@ def element_struct_output(output, element= 'class'):
     )
 
     result = completion.choices[0].message.parsed
-    print(completion.choices[0].message.parsed.model_dump_json(indent=2))
+    logger.debug(result.model_dump_json(indent=2))
     return result
 
 
@@ -199,9 +170,12 @@ def relationship_elements(elements_list, domain_model):
         elem = UMLRelationship(source, target, name_format(so.association_type), name_format(so.name), source_cardinality, target_cardinality)
         elem.set_metadata(score=so.confidence)
         if source is None or target is None:
-            str_irrelevant = f"{so.source} {'is irrelevant' if source is None else 'exists'},"
-            str_irrelevant += f"{so.target} {'is irrelevant' if target is None else 'exists'}."
-            print(str_irrelevant)# check bug
+            logger.debug(
+                "Dropped relationship '%s' (%s): source '%s' %s, target '%s' %s",
+                so.name, so.association_type,
+                so.source, "irrelevant" if source is None else "exists",
+                so.target, "irrelevant" if target is None else "exists",
+            )
         else:
             elements.append(elem)
     return elements

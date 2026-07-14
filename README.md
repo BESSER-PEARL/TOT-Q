@@ -64,6 +64,16 @@ HIGH_CONFIDENCE = 0.95        # Suggested range: [0.8, 1.0]
 LOW_CONFIDENCE = 0.4          # Suggested range: [0.1, 0.5]
 ```
 
+### How to configure the confidence model provider
+
+The initial domain model and its per-element confidence are produced by a *confidence model provider*. ToT4DM is the default, but the refinement workflow is decoupled from it, so other LLM frameworks can be plugged in. Select it in the [.env file](.env_example) with a provider key (by default ToT4DM is used):
+
+```python
+MODEL_PROVIDER = tot
+```
+
+The key is resolved at runtime against the `_PROVIDERS` registry in [confidence_model_provider.py](tot_rules_q/confidence_model_provider.py); see that file to register a new provider.
+
 ### Run the project
 
 **Quick Start**: Run both the rule-based agent and editor, then access at http://localhost:5000

@@ -15,17 +15,14 @@ from modeling_patterns import ModelingPatterns
 from rule_agent_config import MAX_QUESTIONS, REFINEMENT_THRESHOLD
 import subprocess
 from os.path import exists, dirname, join
-from convert_tot_to_rbagent import get_domain_models
+from confidence_model_provider import get_provider
 from rule_agent_utils import render_model_in_editor, render_submodel_in_editor, generate_json_log, domain_model_to_json
 from rule_agent_utils import configuration_steps, deferred_steps, PATTERN_PRIORITY, TYPE_PRIORITY, DIRECTION_PRIORITY
 from rule_agent_utils import identify_element_from_config, get_element_identifier, sort_configurations, format_relationship_for_log, copy_file
 from rule_agent_utils import get_configuration_confidence, call_configuration_function, list_all_configurations, list_all_submodel_configurations, update_selected_configuration
 
 current_folder = dirname(__file__)
-project_folder = dirname(current_folder)
 domain_path = join(current_folder, 'domains/')
-logs_path = join(current_folder, 'tot_q/logs/')
-DEFAULT_TOT_MODEL_PREFIX = 'tot_thoughts'
 
 max_questions = MAX_QUESTIONS
 
@@ -170,7 +167,6 @@ def process_domain(session: Session):
 
     sessions = agent._sessions
     global domain_path
-    global logs_path
 
     domain = ""
     domain_model = None
@@ -197,23 +193,17 @@ def process_domain(session: Session):
     copy_file(domain_folder + domain_file_path, domain_path)
     session.reply("The model is being created. Please wait a moment...")
     try:
-        result = subprocess.run(
-            ["python", "run.py", "--model", "asocclass_3lev_unc.dmtot", "--domain", domain_file_path],
-            capture_output=True,
-            text=True,
-            check=True,
-            cwd=project_folder
-        )
-        tree_levels = DEFAULT_TOT_MODEL_PREFIX +"_" + domain_file_path.replace('.txt', '.json')
-        domain_model, domain_model_alt, _, _ = get_domain_models(tree_levels)
+        # Confidence provider (ToT by default, via MODEL_PROVIDER): generation + parsing.
+        provider = get_provider()
+        domain_model, domain_model_alt = provider.build(domain_file_path, session_id)
         session.set('domain', domain)
         session.set('domain_model', copy.deepcopy(domain_model))
         session.set('domain_model_alt', copy.deepcopy(domain_model_alt))
         session.set('initial_domain_model', copy.deepcopy(domain_model))
         session.set('updated_domain_model', copy.deepcopy(domain_model))
-        tot_json_path = join(logs_path, tree_levels)
-        if exists(tot_json_path):
-            copy_file(tot_json_path, domain_folder)
+        artifact_path = provider.output_artifact(domain_file_path)
+        if artifact_path and exists(artifact_path):
+            copy_file(artifact_path, domain_folder)
         buml = domain_model.to_buml()
         buml_json = domain_model_to_json(buml)
         answer = json.dumps(buml_json)
